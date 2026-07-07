@@ -596,3 +596,8 @@ img {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
+
+/* Solid background for subpage headers */
+.site-header.solid-bg {
+  background-color: var(--color-primary);
+}
