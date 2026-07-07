@@ -1,0 +1,102 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const workItems = await getCollection('work');
+  return workItems.map(item => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+---
+
+<Layout title={`${item.data.title} | Carlos Ozuna`} headerClass="solid-bg">
+  <section class="portfolio-single">
+    <div class="portfolio-header">
+      <h1 class="portfolio-title">{item.data.title}</h1>
+      <div class="portfolio-category">
+        {item.data.category === 'web' ? 'Web Design' : 'Graphic Design'}
+      </div>
+      {item.data.description && (
+        <p class="portfolio-description">{item.data.description}</p>
+      )}
+      {item.data.link && (
+        <a href={item.data.link} target="_blank" class="portfolio-link">Go to website</a>
+      )}
+    </div>
+
+    {item.data.gallery && item.data.gallery.length > 0 && (
+      <div class="portfolio-gallery">
+        {item.data.gallery.map(imgSrc => (
+          <img src={imgSrc} alt={item.data.title} loading="lazy" />
+        ))}
+      </div>
+    )}
+  </section>
+</Layout>
+
+<style>
+  .portfolio-single {
+    padding-top: 8rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  .portfolio-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .portfolio-title {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+  .portfolio-category {
+    font-family: var(--font-text);
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+  .portfolio-description {
+    font-family: var(--font-text);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .portfolio-link {
+    display: inline-block;
+    font-family: var(--font-text);
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    border: 2px solid var(--color-primary);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+  .portfolio-link:hover {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+  }
+  .portfolio-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+  .portfolio-gallery img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+</style>

@@ -1,0 +1,21 @@
+---
+title: "Degan Tax"
+category: "graphic"
+image: "/assets/uploads/2023/07/Bus-Advertising.jpg"
+link: "https://degantax.com/"
+gallery:
+  - "/assets/uploads/2023/07/flyers.jpg"
+  - "/assets/uploads/2023/07/Bus-Advertising.jpg"
+  - "/assets/uploads/2023/07/Degan-Business-C.jpg"
+  - "/assets/uploads/2023/07/degan-posters.jpg"
+  - "/assets/uploads/2023/07/Poeters.jpg"
+  - "/assets/uploads/2023/07/Pdegan-poster.jpg"
+  - "/assets/uploads/2023/07/banner-scaled-1.jpg"
+  - "/assets/uploads/2023/07/degan-business-cards.jpg"
+  - "/assets/uploads/2023/07/rollup-banners.jpg"
+  - "/assets/uploads/2023/07/X-Stand-Banner.jpg"
+  - "/assets/uploads/2023/07/posters.jpg"
+  - "/assets/uploads/2023/07/Feather-Flag.jpg"
+  - "/assets/uploads/2023/07/degan-web-design.jpg"
+  - "/assets/uploads/2023/07/degan-logo.jpg"
+---

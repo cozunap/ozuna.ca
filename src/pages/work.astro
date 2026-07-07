@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+// Fetch all work items from the "work" collection
+const workItems = await getCollection('work');
+
+// Optionally sort them if there is a date, for now just rendering them.
+---
+
+<Layout title="Work | Carlos Ozuna">
+  <section class="page-section text-center" style="padding-top: 10rem;">
+    <h1 class="text-huge stroke-text">Work</h1>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section class="portfolio-section">
+    <div class="content-narrow" style="max-width: 1200px;">
+      
+      <!-- Filters UI -->
+      <div class="portfolio-filters text-center">
+        <ul class="filter-list">
+          <li><button class="filter-btn active" data-filter="all">All</button></li>
+          <li><button class="filter-btn" data-filter="graphic">Graphic Design</button></li>
+          <li><button class="filter-btn" data-filter="web">Web Design</button></li>
+        </ul>
+      </div>
+
+      <div class="portfolio-grid" id="portfolio-grid">
+        {workItems.map((item) => (
+          <article class="portfolio-item" data-category={item.data.category}>
+            <a href={`/${item.id}`} class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src={item.data.image} alt={item.data.title} loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>{item.data.title}</h3>
+                  <span class="portfolio-cat">
+                    {item.data.category === 'web' ? 'Web Design' : 'Graphic Design'}
+                  </span>
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
