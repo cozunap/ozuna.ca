@@ -25,45 +25,32 @@
 
   <!-- Header -->
   <header class="site-header">
-    <div class="header-container">
-      <div class="site-branding">
-        <a href="../index.html">
-          <img src="../assets/images/logo.svg" alt="Cozuna red logo" class="site-logo">
-        </a>
-      </div>
-      
-      <div class="menu-toggle" id="mobile-menu-toggle">
-        <i class="fas fa-bars"></i>
-      </div>
-      
-      <nav class="nav-menu" id="main-nav">
-        <ul>
+    <a href="../index.html" class="site-logo">
+      <img src="../assets/images/logo.svg" alt="Carlos Ozuna Logo">
+    </a>
+    
+    <div class="header-actions">
+      <nav class="site-nav">
+        <ul class="nav-menu">
           <li><a href="../about-me/index.html">About</a></li>
-          <li><a href="index.html" class="active">Work</a></li>
+          <li><a href="../work/index.html">Work</a></li>
         </ul>
       </nav>
       
-      <div class="header-actions">
-        <a href="#contact" class="btn btn-outline btn-contact">Contact Me</a>
-        <div class="social-icons">
-          <a href="https://www.behance.net/cozuna" target="_blank" aria-label="Behance"><i class="fab fa-behance"></i></a>
-        </div>
-      </div>
+      <a href="#contact" class="btn btn-outline">Contact Me</a>
+      
+      <button class="menu-toggle" aria-label="Toggle Menu">
+        <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+      </button>
     </div>
   </header>
 
-  <!-- Mobile Navigation Menu -->
-  <div class="mobile-nav-menu" id="mobile-nav">
-    <div class="mobile-nav-close" id="mobile-nav-close">
-      <i class="fas fa-times"></i>
-    </div>
-    <ul>
+  <!-- Mobile Menu -->
+  <div class="mobile-menu-overlay">
+    <ul class="mobile-nav-menu">
       <li><a href="../about-me/index.html">About</a></li>
-      <li><a href="index.html" class="active">Work</a></li>
-      <li><a href="#contact" class="btn-contact">Contact Me</a></li>
-      <li class="mobile-socials">
-        <a href="https://www.behance.net/cozuna" target="_blank" aria-label="Behance"><i class="fab fa-behance"></i></a>
-      </li>
+      <li><a href="../work/index.html">Work</a></li>
+      <li><a href="#contact">Contact Me</a></li>
     </ul>
   </div>
 
