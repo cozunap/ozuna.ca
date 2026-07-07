@@ -1,5 +1,8 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: cozunap/ozuna.ca
+  base_url: https://ozuna.pages.dev
+  auth_endpoint: auth
   branch: main # Branch to update (optional; defaults to master)
 
 media_folder: "public/assets/uploads"
