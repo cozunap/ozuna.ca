@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
 export async function getStaticPaths() {
@@ -11,11 +11,12 @@ export async function getStaticPaths() {
 }
 
 const { item } = Astro.props;
+const { Content } = await render(item);
 ---
 
 <Layout title={`${item.data.title} | Carlos Ozuna`} headerClass="solid-bg">
-  <section class="portfolio-single">
-    <div class="portfolio-header">
+  <section class="page-section portfolio-detail">
+    <div class="portfolio-detail-header text-center">
       <h1 class="portfolio-title">{item.data.title}</h1>
       <div class="portfolio-category">
         {item.data.category === 'web' ? 'Web Design' : 'Graphic Design'}
