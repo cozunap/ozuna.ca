@@ -1,8 +1,12 @@
 ---
+import { getEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+
+const homeEntry = await getEntry('pages', 'home');
+const { title, heroTitle } = homeEntry.data;
 ---
 
-<Layout title="Carlos Ozuna | Senior Graphic Designer & Web Developer">
+<Layout title={title}>
   <!-- Hero Section -->
   <section class="hero-section">
     <div class="hero-video-bg">
@@ -13,7 +17,7 @@ import Layout from '../layouts/Layout.astro';
     <div class="hero-overlay"></div>
     
     <div class="hero-content">
-      <h2 class="hero-title">Welcome to<br><span>Carlos Ozuna's</span> portfolio</h2>
+      <h2 class="hero-title" set:html={heroTitle} />
       
       <div class="hero-buttons">
         <a href="/assets/docs/CV.pdf" target="_blank" class="btn btn-primary btn-animated">Download CV</a>

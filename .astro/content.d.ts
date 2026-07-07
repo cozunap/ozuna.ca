@@ -124,7 +124,15 @@ declare module 'astro:content' {
 		: any;
 
 	type DataEntryMap = {
-		"work": Record<string, {
+		"pages": Record<string, {
+  id: string;
+  body?: string;
+  collection: "pages";
+  data: InferEntrySchema<"pages">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+"work": Record<string, {
   id: string;
   body?: string;
   collection: "work";

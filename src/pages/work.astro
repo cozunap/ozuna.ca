@@ -1,16 +1,16 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
-// Fetch all work items from the "work" collection
+const workEntry = await getEntry('pages', 'work');
+const { title, subtitle } = workEntry.data;
 const workItems = await getCollection('work');
-
-// Optionally sort them if there is a date, for now just rendering them.
 ---
 
-<Layout title="Work | Carlos Ozuna" headerClass="solid-bg">
+<Layout title={title} headerClass="solid-bg">
   <section class="page-section text-center" style="padding-top: 10rem;">
-    <h1 class="text-huge stroke-text">Work</h1>
+    <h1 class="text-huge stroke-text">{title.split(' |')[0]}</h1>
+    {subtitle && <p>{subtitle}</p>}
   </section>
 
   <!-- Portfolio Section -->

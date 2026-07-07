@@ -13,6 +13,16 @@ const workCollection = defineCollection({
   }),
 });
 
+const pagesCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/pages" }),
+  schema: z.object({
+    title: z.string(),
+    heroTitle: z.string().optional(),
+    subtitle: z.string().optional(),
+  }),
+});
+
 export const collections = {
   'work': workCollection,
+  'pages': pagesCollection,
 };

@@ -19,3 +19,30 @@ collections:
       - {label: "Category", name: "category", widget: "select", options: ["web", "graphic"]}
       - {label: "Image", name: "image", widget: "image"}
       - {label: "Body", name: "body", widget: "markdown"}
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "src/content/pages/home.md"
+        label: "Home Page"
+        name: "home"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Hero Title HTML", name: "heroTitle", widget: "text"}
+      - file: "src/content/pages/about.md"
+        label: "About Me Page"
+        name: "about"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Body", name: "body", widget: "markdown"}
+      - file: "src/content/pages/work.md"
+        label: "Work Page"
+        name: "work"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Subtitle", name: "subtitle", widget: "string", required: false}
+      - file: "src/content/pages/contact.md"
+        label: "Contact Page"
+        name: "contact"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Body", name: "body", widget: "markdown"}
