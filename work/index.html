@@ -78,163 +78,238 @@
     <section class="portfolio-section">
       <div class="content-narrow" style="max-width: 1200px;">
         
-        <!-- Filters (Static UI for now) -->
-        <div class="portfolio-filters text-center" style="margin-bottom: 3rem;">
-          <ul style="list-style: none; padding: 0; display: flex; justify-content: center; gap: 2rem;">
-            <li><a href="#" style="color: var(--color-primary); font-family: var(--font-text); font-weight: 600; text-decoration: none; text-transform: uppercase;">All</a></li>
-            <li><a href="#" style="color: var(--color-secondary); font-family: var(--font-text); font-weight: 600; text-decoration: none; text-transform: uppercase;">Graphic Design</a></li>
-            <li><a href="#" style="color: var(--color-secondary); font-family: var(--font-text); font-weight: 600; text-decoration: none; text-transform: uppercase;">Web Design</a></li>
+        <!-- Filters UI -->
+        <div class="portfolio-filters text-center">
+          <ul class="filter-list">
+            <li><button class="filter-btn active" data-filter="all">All</button></li>
+            <li><button class="filter-btn" data-filter="graphic">Graphic Design</button></li>
+            <li><button class="filter-btn" data-filter="web">Web Design</button></li>
           </ul>
         </div>
 
-        <div class="portfolio-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <div class="portfolio-grid" id="portfolio-grid">
           
-          <!-- Item 1 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../ajs-mechanical/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/07/ajsmechanical-net.jpg" alt="AJS Mechanical" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">AJS Mechanical</h3>
+          <!-- Item 1: AJS Mechanical -->
+          <article class="portfolio-item" data-category="web">
+            <a href="../ajs-mechanical/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/07/ajsmechanical-net.jpg" alt="AJS Mechanical" loading="lazy">
               </div>
-            </a>
-          </article>
-          
-          <!-- Item 2 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../business-cards/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/07/jacinta.jpg" alt="Business Cards" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Business Cards</h3>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>AJS Mechanical</h3>
+                  <span class="portfolio-cat">Web Design</span>
+                </div>
               </div>
             </a>
           </article>
           
-          <!-- Item 3 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../cross-way-driving-school/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/08/carro.jpg" alt="Cross Way Driving School" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Cross Way Driving School</h3>
+          <!-- Item 2: Business Cards -->
+          <article class="portfolio-item" data-category="graphic">
+            <a href="../business-cards/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/07/jacinta.jpg" alt="Business Cards" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Business Cards</h3>
+                  <span class="portfolio-cat">Graphic Design</span>
+                </div>
               </div>
             </a>
           </article>
           
-          <!-- Item 4 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../degan-tax/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/07/Bus-Advertising.jpg" alt="Degan Tax" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Degan Tax</h3>
+          <!-- Item 3: Cross Way Driving School -->
+          <article class="portfolio-item" data-category="web">
+            <a href="../cross-way-driving-school/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/08/carro.jpg" alt="Cross Way Driving School" loading="lazy">
               </div>
-            </a>
-          </article>
-
-          <!-- Item 5 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../degan-tax-web-design/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/07/degantax-scaled-1.jpg" alt="Degan Tax Web Design" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Degan Tax Web Design</h3>
-              </div>
-            </a>
-          </article>
-
-          <!-- Item 6 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../jacinthe-coiffure-studio/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/07/jacinthecoiffurestudio.jpg" alt="Jacinthe Coiffure Studio" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Jacinthe Coiffure Studio</h3>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Cross Way Driving School</h3>
+                  <span class="portfolio-cat">Web Design</span>
+                </div>
               </div>
             </a>
           </article>
           
-          <!-- Item 7 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../over-all-hvac-nj/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/07/overallhvacnj-home-scaled.jpg" alt="Over All HVAC NJ" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Over All HVAC NJ</h3>
+          <!-- Item 4: Degan Tax -->
+          <article class="portfolio-item" data-category="graphic">
+            <a href="../degan-tax/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/07/Bus-Advertising.jpg" alt="Degan Tax" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Degan Tax</h3>
+                  <span class="portfolio-cat">Graphic Design</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <!-- Item 5: Degan Tax Web Design -->
+          <article class="portfolio-item" data-category="web">
+            <a href="../degan-tax-web-design/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/07/degantax-scaled-1.jpg" alt="Degan Tax Web Design" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Degan Tax Web Design</h3>
+                  <span class="portfolio-cat">Web Design</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <!-- Item 6: Jacinthe Coiffure Studio -->
+          <article class="portfolio-item" data-category="web">
+            <a href="../jacinthe-coiffure-studio/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/07/jacinthecoiffurestudio.jpg" alt="Jacinthe Coiffure Studio" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Jacinthe Coiffure Studio</h3>
+                  <span class="portfolio-cat">Web Design</span>
+                </div>
               </div>
             </a>
           </article>
           
-          <!-- Item 8 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../postcards/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/07/pennzoil-9.jpg" alt="PostCards" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">PostCards</h3>
+          <!-- Item 7: Over All HVAC NJ -->
+          <article class="portfolio-item" data-category="web">
+            <a href="../over-all-hvac-nj/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/07/overallhvacnj-home-scaled.jpg" alt="Over All HVAC NJ" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Over All HVAC NJ</h3>
+                  <span class="portfolio-cat">Web Design</span>
+                </div>
               </div>
             </a>
           </article>
           
-          <!-- Item 9 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../promotional-flyers/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/08/Celebrating-Life.jpg" alt="Promotional Flyers" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Promotional Flyers</h3>
+          <!-- Item 8: PostCards -->
+          <article class="portfolio-item" data-category="graphic">
+            <a href="../postcards/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/07/pennzoil-9.jpg" alt="PostCards" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>PostCards</h3>
+                  <span class="portfolio-cat">Graphic Design</span>
+                </div>
+              </div>
+            </a>
+          </article>
+          
+          <!-- Item 9: Promotional Flyers -->
+          <article class="portfolio-item" data-category="graphic">
+            <a href="../promotional-flyers/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/08/Celebrating-Life.jpg" alt="Promotional Flyers" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Promotional Flyers</h3>
+                  <span class="portfolio-cat">Graphic Design</span>
+                </div>
               </div>
             </a>
           </article>
 
-          <!-- Item 10 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../refried-beans/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/07/menu-cover.jpg" alt="Refried Beans" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Refried Beans</h3>
+          <!-- Item 10: Refried Beans -->
+          <article class="portfolio-item" data-category="graphic">
+            <a href="../refried-beans/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/07/menu-cover.jpg" alt="Refried Beans" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Refried Beans</h3>
+                  <span class="portfolio-cat">Graphic Design</span>
+                </div>
               </div>
             </a>
           </article>
 
-          <!-- Item 11 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../reseind/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/08/bcmockup-scaled.jpg" alt="Reseind" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Reseind</h3>
+          <!-- Item 11: Reseind -->
+          <article class="portfolio-item" data-category="graphic">
+            <a href="../reseind/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/08/bcmockup-scaled.jpg" alt="Reseind" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Reseind</h3>
+                  <span class="portfolio-cat">Graphic Design</span>
+                </div>
               </div>
             </a>
           </article>
 
-          <!-- Item 12 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../roberto-clemente-foundation-booklet/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/07/Roberto-Clemente-Booklet-1.jpg" alt="Roberto Clemente Foundation Booklet" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Roberto Clemente Foundation Booklet</h3>
+          <!-- Item 12: Roberto Clemente Foundation Booklet -->
+          <article class="portfolio-item" data-category="graphic">
+            <a href="../roberto-clemente-foundation-booklet/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/07/Roberto-Clemente-Booklet-1.jpg" alt="Roberto Clemente Foundation Booklet" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Roberto Clemente Foundation Booklet</h3>
+                  <span class="portfolio-cat">Graphic Design</span>
+                </div>
               </div>
             </a>
           </article>
 
-          <!-- Item 13 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../roberto-clemente-invitations/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/07/Sponsorship-RSVP-Card-8x6-1.jpg" alt="Roberto Clemente Invitations" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Roberto Clemente Invitations</h3>
+          <!-- Item 13: Roberto Clemente Invitations -->
+          <article class="portfolio-item" data-category="graphic">
+            <a href="../roberto-clemente-invitations/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/07/Sponsorship-RSVP-Card-8x6-1.jpg" alt="Roberto Clemente Invitations" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Roberto Clemente Invitations</h3>
+                  <span class="portfolio-cat">Graphic Design</span>
+                </div>
               </div>
             </a>
           </article>
 
-          <!-- Item 14 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../primo-sports/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2024/12/Children-Shoe-Box-Template.webp" alt="Sannico Sports" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Sannico Sports</h3>
+          <!-- Item 14: Sannico Sports -->
+          <article class="portfolio-item" data-category="graphic">
+            <a href="../primo-sports/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2024/12/Children-Shoe-Box-Template.webp" alt="Sannico Sports" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Sannico Sports</h3>
+                  <span class="portfolio-cat">Graphic Design</span>
+                </div>
               </div>
             </a>
           </article>
 
-          <!-- Item 15 -->
-          <article class="portfolio-item" style="position: relative; aspect-ratio: 1; overflow: hidden; background: #000;">
-            <a href="../tu-voz-amiga/index.html" style="display: block; width: 100%; height: 100%;">
-              <img src="../assets/uploads/2023/07/tuvozamiga.jpg" alt="Tu Voz Amiga" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
-              <div class="portfolio-overlay" style="position: absolute; inset: 0; background: rgba(0, 58, 167, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 24px; text-align: center;">Tu Voz Amiga</h3>
+          <!-- Item 15: Tu Voz Amiga -->
+          <article class="portfolio-item" data-category="graphic">
+            <a href="../tu-voz-amiga/index.html" class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src="../assets/uploads/2023/07/tuvozamiga.jpg" alt="Tu Voz Amiga" loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>Tu Voz Amiga</h3>
+                  <span class="portfolio-cat">Graphic Design</span>
+                </div>
               </div>
             </a>
           </article>

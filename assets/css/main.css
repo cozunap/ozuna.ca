@@ -464,3 +464,135 @@ img {
 .contact-link:hover {
   color: var(--color-primary);
 }
+
+/* Portfolio Filters */
+.portfolio-filters {
+  margin-bottom: 3rem;
+}
+
+.filter-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: transparent;
+  border: 2px solid transparent;
+  color: var(--color-text);
+  font-family: var(--font-text);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 0.5rem 1.5rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  color: var(--color-primary);
+}
+
+.filter-btn.active {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 15px rgba(228, 48, 56, 0.3);
+}
+
+/* Portfolio Grid Improvements */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+  padding-bottom: 4rem;
+}
+
+.portfolio-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, visibility 0.4s;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Filtering animation */
+.portfolio-item.hide-item {
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  visibility: hidden;
+  position: absolute; /* Take out of flow to let grid collapse nicely */
+}
+
+.portfolio-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+}
+
+.portfolio-image-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.portfolio-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.portfolio-item:hover .portfolio-image-wrapper img {
+  transform: scale(1.1);
+}
+
+.portfolio-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 58, 167, 0.9) 0%, rgba(0, 58, 167, 0.4) 50%, transparent 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.portfolio-item:hover .portfolio-overlay {
+  opacity: 1;
+}
+
+.portfolio-text {
+  transform: translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.portfolio-item:hover .portfolio-text {
+  transform: translateY(0);
+}
+
+.portfolio-text h3 {
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 24px;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.portfolio-cat {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-text);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
