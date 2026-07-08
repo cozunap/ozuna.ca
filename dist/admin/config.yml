@@ -18,7 +18,10 @@ collections:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Category", name: "category", widget: "select", options: ["web", "graphic"]}
       - {label: "Image", name: "image", widget: "image"}
-      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "Website Link", name: "link", widget: "string", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Gallery", name: "gallery", widget: "list", field: {label: "Image", name: "image", widget: "image"}, required: false}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
   - name: "pages"
     label: "Pages"
     files:
