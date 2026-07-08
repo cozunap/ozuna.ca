@@ -15,89 +15,272 @@ const { Content } = await render(item);
 ---
 
 <Layout title={`${item.data.title} | Carlos Ozuna`} headerClass="solid-bg">
-  <section class="page-section portfolio-detail">
-    <div class="portfolio-detail-header text-center">
-      <h1 class="portfolio-title">{item.data.title}</h1>
-      <div class="portfolio-category">
-        {item.data.category === 'web' ? 'Web Design' : 'Graphic Design'}
+  
+  <!-- HERO SECTION -->
+  <section class="portfolio-hero">
+    <div class="portfolio-hero-image" style={`background-image: url('${item.data.image}')`}>
+      <div class="portfolio-hero-overlay"></div>
+      <div class="portfolio-hero-content text-center">
+        <h1 class="portfolio-title stroke-text">{item.data.title}</h1>
+        <div class="portfolio-category badge">
+          {item.data.category === 'web' ? 'Web Design' : 'Graphic Design'}
+        </div>
       </div>
-      {item.data.description && (
-        <p class="portfolio-description">{item.data.description}</p>
-      )}
-      {item.data.link && (
-        <a href={item.data.link} target="_blank" class="portfolio-link">Go to website</a>
-      )}
     </div>
+  </section>
 
-    {item.data.gallery && item.data.gallery.length > 0 && (
-      <div class="portfolio-gallery">
-        {item.data.gallery.map(imgSrc => (
-          <img src={imgSrc} alt={item.data.title} loading="lazy" />
-        ))}
+  <!-- CONTENT SECTION -->
+  <section class="page-section portfolio-body">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      
+      <div class="portfolio-info-grid">
+        <div class="portfolio-main-content">
+          <Content />
+        </div>
+        
+        <div class="portfolio-sidebar">
+          {item.data.description && (
+            <div class="sidebar-block">
+              <h3>Overview</h3>
+              <p>{item.data.description}</p>
+            </div>
+          )}
+          
+          {item.data.link && (
+            <div class="sidebar-block text-center" style="margin-top: 2rem;">
+              <a href={item.data.link} target="_blank" class="btn btn-primary btn-animated" style="width: 100%; display: block; padding: 15px;">Visit Live Website</a>
+            </div>
+          )}
+        </div>
       </div>
-    )}
+      
+      <!-- GALLERY SECTION -->
+      {item.data.gallery && item.data.gallery.length > 0 && (
+        <div class="portfolio-gallery-modern">
+          <h3 class="gallery-title text-center stroke-text" style="font-size: 3rem; margin-bottom: 3rem;">Highlights</h3>
+          <div class="gallery-grid">
+            {item.data.gallery.map(imgSrc => (
+              <div class="gallery-item">
+                <img src={imgSrc} alt={`${item.data.title} mockup`} loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      
+    </div>
   </section>
 </Layout>
 
 <style>
-  .portfolio-single {
-    padding-top: 8rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-left: 2rem;
-    padding-right: 2rem;
+  /* HERO STYLES */
+  .portfolio-hero {
+    width: 100%;
+    height: 60vh;
+    min-height: 400px;
+    position: relative;
+    background-color: #000;
   }
-  .portfolio-header {
-    text-align: center;
-    margin-bottom: 4rem;
+  
+  .portfolio-hero-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 4rem;
   }
+  
+  .portfolio-hero-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
+    z-index: 1;
+  }
+  
+  .portfolio-hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 2rem;
+  }
+  
   .portfolio-title {
     font-family: var(--font-heading);
-    font-size: 3rem;
-    color: var(--color-primary);
+    font-size: 4.5rem;
+    color: #fff;
     margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
-  .portfolio-category {
-    font-family: var(--font-text);
-    font-size: 1.2rem;
-    color: #666;
-    margin-bottom: 2rem;
+
+  .portfolio-title.stroke-text {
+    -webkit-text-stroke: 2px #fff;
+    color: transparent;
   }
-  .portfolio-description {
-    font-family: var(--font-text);
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: var(--color-text);
-    margin-bottom: 2rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .portfolio-link {
+  
+  .badge {
     display: inline-block;
-    font-family: var(--font-text);
-    font-weight: 600;
-    color: var(--color-primary);
-    text-decoration: none;
-    padding: 0.8rem 1.5rem;
-    border: 2px solid var(--color-primary);
-    border-radius: 4px;
-    transition: all 0.3s ease;
-  }
-  .portfolio-link:hover {
     background-color: var(--color-primary);
     color: var(--color-secondary);
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    font-family: var(--font-text);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
   }
-  .portfolio-gallery {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+
+  /* BODY STYLES */
+  .portfolio-body {
+    background-color: #f8f8f8;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+  
+  .portfolio-info-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
     margin-bottom: 4rem;
   }
-  .portfolio-gallery img {
-    width: 100%;
-    height: auto;
+  
+  @media (max-width: 992px) {
+    .portfolio-info-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+
+  /* MAIN CONTENT FORMATTING (Markdown output) */
+  .portfolio-main-content {
+    font-family: var(--font-text);
+    color: #333;
+    line-height: 1.8;
+    font-size: 1.15rem;
+  }
+  
+  .portfolio-main-content :global(h2) {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: #000;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+  
+  .portfolio-main-content :global(h2:first-child) {
+    margin-top: 0;
+  }
+  
+  .portfolio-main-content :global(h3) {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: #000;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .portfolio-main-content :global(p) {
+    margin-bottom: 1.5rem;
+  }
+  
+  .portfolio-main-content :global(ul), .portfolio-main-content :global(ol) {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+  }
+  
+  .portfolio-main-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+  
+  .portfolio-main-content :global(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+    font-weight: 600;
+  }
+  
+  .portfolio-main-content :global(img) {
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin: 2rem 0;
+    width: 100%;
+    height: auto;
+  }
+
+  /* SIDEBAR STYLES */
+  .portfolio-sidebar {
+    background-color: #fff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+    align-self: start;
+    position: sticky;
+    top: 100px;
+  }
+  
+  .sidebar-block h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: #000;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+  }
+  
+  .sidebar-block p {
+    font-family: var(--font-text);
+    color: #555;
+    line-height: 1.6;
+  }
+
+  /* GALLERY STYLES */
+  .portfolio-gallery-modern {
+    margin-top: 5rem;
+  }
+  
+  .gallery-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+  
+  .gallery-item {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+    background-color: #fff;
+  }
+  
+  .gallery-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+  
+  @media (max-width: 768px) {
+    .portfolio-hero {
+      height: 50vh;
+    }
+    .portfolio-title {
+      font-size: 3rem;
+    }
+    .gallery-grid {
+      gap: 2rem;
+    }
+    .portfolio-sidebar {
+      position: static;
+    }
   }
 </style>
