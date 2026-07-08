@@ -11,6 +11,66 @@
     "subtitle": {
       "type": "string"
     },
+    "backgroundVideo": {
+      "type": "string"
+    },
+    "buttons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "isExternal": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "text",
+          "link"
+        ]
+      }
+    },
+    "contactLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "isExternal": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "text",
+          "link"
+        ]
+      }
+    },
+    "actionButton": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "link": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "link"
+      ]
+    },
     "$schema": {
       "type": "string"
     }

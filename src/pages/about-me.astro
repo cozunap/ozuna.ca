@@ -3,7 +3,7 @@ import { getEntry, render } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
 const aboutEntry = await getEntry('pages', 'about');
-const { title } = aboutEntry.data;
+const { title, contactLinks } = aboutEntry.data;
 const { Content } = await render(aboutEntry);
 ---
 
@@ -25,11 +25,21 @@ const { Content } = await render(aboutEntry);
   <section id="contact-carlos" class="page-section bg-image-center text-center">
     <h2 class="section-title">Contact Carlos Ozuna</h2>
     
-    <ul class="contact-links-list">
-      <li><a href="/assets/docs/CV.pdf" target="_blank" class="contact-link">Download my CV.</a></li>
-      <li><a href="/work" class="contact-link">See Carlos Ozuna's work</a></li>
-      <li><a href="/contact" class="contact-link">contact me</a></li>
-    </ul>
+    {contactLinks && contactLinks.length > 0 && (
+      <ul class="contact-links-list">
+        {contactLinks.map((linkItem) => (
+          <li>
+            <a 
+              href={linkItem.link} 
+              target={linkItem.isExternal ? "_blank" : undefined} 
+              class="contact-link"
+            >
+              {linkItem.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
   </section>
 
 

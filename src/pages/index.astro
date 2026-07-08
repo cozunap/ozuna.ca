@@ -3,26 +3,37 @@ import { getEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
 const homeEntry = await getEntry('pages', 'home');
-const { title, heroTitle } = homeEntry.data;
+const { title, heroTitle, backgroundVideo, buttons } = homeEntry.data;
 ---
 
 <Layout title={title}>
   <!-- Hero Section -->
   <section class="hero-section">
-    <div class="hero-video-bg">
-      <video autoplay loop muted playsinline class="hero-video-element">
-        <source src="/assets/videos/designer-working.mp4" type="video/mp4">
-      </video>
-    </div>
+    {backgroundVideo && (
+      <div class="hero-video-bg">
+        <video autoplay loop muted playsinline class="hero-video-element">
+          <source src={backgroundVideo} type="video/mp4">
+        </video>
+      </div>
+    )}
     <div class="hero-overlay"></div>
     
     <div class="hero-content">
       <h2 class="hero-title" set:html={heroTitle} />
       
-      <div class="hero-buttons">
-        <a href="/assets/docs/CV.pdf" target="_blank" class="btn btn-primary btn-animated">Download CV</a>
-        <a href="/work" class="btn btn-primary btn-animated">go to portfolio</a>
-      </div>
+      {buttons && buttons.length > 0 && (
+        <div class="hero-buttons">
+          {buttons.map((btn) => (
+            <a 
+              href={btn.link} 
+              target={btn.isExternal ? "_blank" : undefined} 
+              class="btn btn-primary btn-animated"
+            >
+              {btn.text}
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   </section>
 </Layout>

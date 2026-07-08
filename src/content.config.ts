@@ -19,6 +19,21 @@ const pagesCollection = defineCollection({
     title: z.string(),
     heroTitle: z.string().optional(),
     subtitle: z.string().optional(),
+    backgroundVideo: z.string().optional(),
+    buttons: z.array(z.object({
+      text: z.string(),
+      link: z.string(),
+      isExternal: z.boolean().optional(),
+    })).optional(),
+    contactLinks: z.array(z.object({
+      text: z.string(),
+      link: z.string(),
+      isExternal: z.boolean().optional(),
+    })).optional(),
+    actionButton: z.object({
+      text: z.string(),
+      link: z.string(),
+    }).optional(),
   }),
 });
 

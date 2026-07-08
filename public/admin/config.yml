@@ -28,12 +28,27 @@ collections:
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Hero Title HTML", name: "heroTitle", widget: "text"}
+          - {label: "Background Video", name: "backgroundVideo", widget: "file", required: false}
+          - label: "Buttons"
+            name: "buttons"
+            widget: "list"
+            fields:
+              - {label: "Button Text", name: "text", widget: "string"}
+              - {label: "Link/File", name: "link", widget: "string"}
+              - {label: "Open in new tab?", name: "isExternal", widget: "boolean", default: false, required: false}
       - file: "src/content/pages/about.md"
         label: "About Me Page"
         name: "about"
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Body", name: "body", widget: "markdown"}
+          - label: "Contact Links"
+            name: "contactLinks"
+            widget: "list"
+            fields:
+              - {label: "Link Text", name: "text", widget: "string"}
+              - {label: "URL/File", name: "link", widget: "string"}
+              - {label: "Open in new tab?", name: "isExternal", widget: "boolean", default: false, required: false}
       - file: "src/content/pages/work.md"
         label: "Work Page"
         name: "work"
@@ -46,3 +61,10 @@ collections:
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Body", name: "body", widget: "markdown"}
+          - label: "Action Button"
+            name: "actionButton"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Button Text", name: "text", widget: "string"}
+              - {label: "Email Address / Link", name: "link", widget: "string"}

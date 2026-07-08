@@ -1,5 +1,15 @@
 ---
 title: "About | Carlos Ozuna"
+contactLinks:
+  - text: "Download my CV."
+    link: "/assets/docs/CV.pdf"
+    isExternal: true
+  - text: "See Carlos Ozuna's work"
+    link: "/work"
+    isExternal: false
+  - text: "contact me"
+    link: "/contact"
+    isExternal: false
 ---
 
 <p><strong>Let’s Create Something Great Together</strong><br>
