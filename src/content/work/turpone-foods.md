@@ -2,7 +2,7 @@
 title: Turpone Foods
 category: web
 image: /assets/uploads/turpone-foods.webp
-link: https://turponefoods.com/
+link: https://turponefoods.com
 ---
 ## **Mission**
 
