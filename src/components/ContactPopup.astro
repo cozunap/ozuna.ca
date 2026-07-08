@@ -5,7 +5,7 @@
   <div class="contact-popup-close" id="contact-popup-close">&times;</div>
   <div class="contact-popup-content">
     <h2 class="contact-popup-title stroke-text">CONTACT ME TODAY!</h2>
-    <form class="contact-popup-form" action="mailto:ozunaprinting@gmail.com" method="POST" enctype="text/plain">
+    <form class="contact-popup-form" id="contactForm">
       <div class="form-row">
         <input type="text" name="name" placeholder="Name" required>
         <input type="text" name="lastname" placeholder="Last Name" required>
@@ -195,6 +195,7 @@
     const popup = document.getElementById('contact-popup');
     const closeBtn = document.getElementById('contact-popup-close');
     const openBtns = document.querySelectorAll('.btn-open-popup');
+    const contactForm = document.getElementById('contactForm');
     
     if (popup && closeBtn) {
       openBtns.forEach(btn => {
@@ -217,6 +218,23 @@
           popup.style.transition = '';
           document.body.classList.remove('popup-open');
         }, 500);
+      });
+    }
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(contactForm);
+        const name = formData.get('name') || '';
+        const lastname = formData.get('lastname') || '';
+        const email = formData.get('email') || '';
+        const phone = formData.get('phone') || '';
+        const message = formData.get('message') || '';
+
+        const subject = encodeURIComponent(`New Contact Request from ${name} ${lastname}`);
+        const body = encodeURIComponent(`Name: ${name} ${lastname}\nEmail: ${email}\nPhone: ${phone}\nMessage:\n${message}`);
+        
+        window.location.href = `mailto:ozunaprinting@gmail.com?subject=${subject}&body=${body}`;
       });
     }
   });
