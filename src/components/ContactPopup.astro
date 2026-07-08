@@ -239,7 +239,10 @@
         .then(response => response.json())
         .then(data => {
           if(data.result === 'success') {
-            contactForm.innerHTML = '<h3 style="color:#000; margin-top:20px; font-family: var(--font-text);">Thank you!<br>Your message has been sent successfully.</h3>';
+            contactForm.innerHTML = '<h3 style="color:#000; margin-top:20px; font-family: var(--font-text);">Thank you!<br>Your message has been sent successfully.</h3><p style="color:#555; margin-top:15px; font-family: var(--font-text); font-size: 14px;">Redirecting in 5 seconds...</p>';
+            setTimeout(() => {
+              window.location.href = '/work';
+            }, 5000);
           } else {
             submitBtn.textContent = 'ERROR. TRY AGAIN';
             submitBtn.disabled = false;
