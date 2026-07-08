@@ -428,6 +428,13 @@ img {
   margin-bottom: 0.5rem;
 }
 
+.page-content-text strong,
+.page-content-text b {
+  font-family: var(--font-heading);
+  font-weight: normal;
+  font-size: 1.1em;
+}
+
 .bg-image-center {
   background-color: transparent;
   color: var(--color-text);
