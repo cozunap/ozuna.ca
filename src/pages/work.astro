@@ -3,11 +3,11 @@ import { getCollection, getEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
 const workEntry = await getEntry('pages', 'work');
-const { title, subtitle } = workEntry.data;
+const { title, subtitle, meta_description } = workEntry.data;
 const workItems = await getCollection('work');
 ---
 
-<Layout title={title} headerClass="solid-bg">
+<Layout title={title} description={meta_description} headerClass="solid-bg">
   <section class="page-section text-center" style="padding-top: 10rem;">
     <h1 class="text-huge stroke-text">{title.split(' |')[0]}</h1>
     {subtitle && <p>{subtitle}</p>}

@@ -14,7 +14,12 @@ const { item } = Astro.props;
 const { Content } = await render(item);
 ---
 
-<Layout title={`${item.data.title} | Carlos Ozuna`} headerClass="solid-bg">
+<Layout 
+  title={`${item.data.title} | Carlos Ozuna`} 
+  description={item.data.meta_description || item.data.description || `View the ${item.data.title} project by Carlos Ozuna.`}
+  image={item.data.image}
+  headerClass="solid-bg"
+>
   <section class="page-section portfolio-detail">
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem; padding-top: 6rem;">
       

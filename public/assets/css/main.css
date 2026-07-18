@@ -1,18 +1,18 @@
 :root {
   /* Global Colors */
-  --color-primary: #FF1D25;
+  --color-primary: #B8001F;
   --color-secondary: #FFFFFF;
-  --color-text: #011437;
-  --color-accent: #A40404;
+  --color-text: #0d1f3c;
+  --color-accent: #7a0014;
   --color-bg-dark: #020202;
   --color-light-gray: #EBEBEB;
   
   /* Typography */
-  --font-heading: 'Archivo Black', sans-serif;
-  --font-text: 'Raleway', sans-serif;
+  --font-heading: 'Outfit', 'Archivo Black', sans-serif;
+  --font-text: 'Inter', 'Raleway', sans-serif;
 
   /* Padding & Spacing */
-  --fluid-side-padding: clamp(1.25rem, 6vw, 5rem);
+  --fluid-side-padding: clamp(2rem, 8vw, 7rem);
 }
 
 /* Reset and Base Styles */
@@ -367,7 +367,7 @@ img {
 
 /* Page Sub-Sections (About, Work) */
 .page-section {
-  padding: 8rem 2rem 4rem;
+  padding: clamp(4rem, 8vw, 7rem) 2rem clamp(2rem, 5vw, 4rem);
 }
 
 .content-narrow {
@@ -525,8 +525,13 @@ img {
   border-radius: 12px;
   overflow: hidden;
   background: #000;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, visibility 0.4s;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, opacity 0.4s ease, visibility 0.4s;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.portfolio-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
 /* Filtering animation */

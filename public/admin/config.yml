@@ -5,6 +5,8 @@ backend:
   auth_endpoint: auth
   branch: main # Branch to update (optional; defaults to master)
 
+publish_mode: editorial_workflow
+
 media_folder: "public/assets/uploads"
 public_folder: "/assets/uploads"
 
@@ -17,10 +19,11 @@ collections:
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Category", name: "category", widget: "select", options: ["web", "graphic"]}
-      - {label: "Image", name: "image", widget: "image"}
-      - {label: "Website Link", name: "link", widget: "string", required: false}
+      - {label: "Image", name: "image", widget: "image", hint: "Recomendado: Imágenes de alta calidad en formato WebP o JPG"}
+      - {label: "Website Link", name: "link", widget: "string", required: false, hint: "Ej: https://midominio.com"}
       - {label: "Description", name: "description", widget: "text", required: false}
-      - {label: "Gallery", name: "gallery", widget: "list", field: {label: "Image", name: "image", widget: "image"}, required: false}
+      - {label: "Gallery", name: "gallery", widget: "list", field: {label: "Image", name: "image", widget: "image"}, required: false, collapsed: true}
+      - {label: "Meta Description", name: "meta_description", widget: "string", required: false, hint: "Breve descripción para Google (150-160 caracteres)"}
       - {label: "Body", name: "body", widget: "markdown", required: false}
   - name: "pages"
     label: "Pages"
@@ -30,11 +33,13 @@ collections:
         name: "home"
         fields:
           - {label: "Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "string", required: false, hint: "Breve descripción para Google (150-160 caracteres)"}
           - {label: "Hero Title HTML", name: "heroTitle", widget: "text"}
-          - {label: "Background Video", name: "backgroundVideo", widget: "file", required: false}
+          - {label: "Background Video", name: "backgroundVideo", widget: "file", required: false, hint: "Sube un archivo .mp4 ligero"}
           - label: "Buttons"
             name: "buttons"
             widget: "list"
+            collapsed: true
             fields:
               - {label: "Button Text", name: "text", widget: "string"}
               - {label: "Link/File", name: "link", widget: "string"}
@@ -44,10 +49,12 @@ collections:
         name: "about"
         fields:
           - {label: "Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "string", required: false, hint: "Breve descripción para Google"}
           - {label: "Body", name: "body", widget: "markdown"}
           - label: "Contact Links"
             name: "contactLinks"
             widget: "list"
+            collapsed: true
             fields:
               - {label: "Link Text", name: "text", widget: "string"}
               - {label: "URL/File", name: "link", widget: "string"}
@@ -57,12 +64,14 @@ collections:
         name: "work"
         fields:
           - {label: "Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "string", required: false, hint: "Breve descripción para Google"}
           - {label: "Subtitle", name: "subtitle", widget: "string", required: false}
       - file: "src/content/pages/contact.md"
         label: "Contact Page"
         name: "contact"
         fields:
           - {label: "Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "string", required: false, hint: "Breve descripción para Google"}
           - {label: "Body", name: "body", widget: "markdown"}
           - label: "Action Button"
             name: "actionButton"

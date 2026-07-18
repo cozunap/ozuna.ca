@@ -3,11 +3,11 @@ import { getEntry, render } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
 const contactEntry = await getEntry('pages', 'contact');
-const { title, actionButton } = contactEntry.data;
+const { title, actionButton, meta_description } = contactEntry.data;
 const { Content } = await render(contactEntry);
 ---
 
-<Layout title={title} headerClass="solid-bg">
+<Layout title={title} description={meta_description} headerClass="solid-bg">
   <section class="page-section content-narrow" style="padding-top: 10rem;">
     <h1 class="page-title text-center text-huge stroke-text">Contact</h1>
     

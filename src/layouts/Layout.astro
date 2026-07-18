@@ -4,10 +4,16 @@ import ContactPopup from '../components/ContactPopup.astro';
 export interface Props {
   title: string;
   description?: string;
+  image?: string;
   headerClass?: string;
 }
 
-const { title, description = "Welcome to Carlos Ozuna's portfolio.", headerClass = "" } = Astro.props;
+const { 
+  title, 
+  description = "Welcome to Carlos Ozuna's premium design portfolio.", 
+  image = "/assets/images/logo.svg",
+  headerClass = "" 
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -18,6 +24,12 @@ const { title, description = "Welcome to Carlos Ozuna's portfolio.", headerClass
   <title>{title}</title>
   <meta name="description" content={description}>
   
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={image} />
+  <meta property="og:type" content="website" />
+  
   <!-- Favicons -->
   <link rel="icon" href="/assets/images/favico.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/assets/images/favico.svg">
@@ -25,7 +37,7 @@ const { title, description = "Welcome to Carlos Ozuna's portfolio.", headerClass
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Raleway:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700;800;900&family=Raleway:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   
   <!-- CSS -->
   <link rel="stylesheet" href="/assets/css/main.css">
