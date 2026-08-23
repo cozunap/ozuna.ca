@@ -1,0 +1,16 @@
+---
+import HeroBlock from './HeroBlock.astro';
+import TextBlock from './TextBlock.astro';
+import GalleryBlock from './GalleryBlock.astro';
+import TestimonialBlock from './TestimonialBlock.astro';
+
+const { blocks } = Astro.props;
+---
+
+{blocks && blocks.map((block: any) => {
+  if (block._template === 'hero') return <HeroBlock block={block} />
+  if (block._template === 'text') return <TextBlock block={block} />
+  if (block._template === 'gallery') return <GalleryBlock block={block} />
+  if (block._template === 'testimonial') return <TestimonialBlock block={block} />
+  return null;
+})}

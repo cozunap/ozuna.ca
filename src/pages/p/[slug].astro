@@ -1,0 +1,31 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BlocksRenderer from '../../components/blocks/BlocksRenderer.astro';
+
+export async function getStaticPaths() {
+  const customPages = await import.meta.glob('../../content/custom-pages/*.md', { eager: true });
+  
+  return Object.values(customPages).map((page: any) => {
+    // Extract slug from filename (e.g. '../../content/custom-pages/test.md' -> 'test')
+    const slug = page.file.split('/').pop().replace(/\.md$/, '');
+    return {
+      params: { slug },
+      props: { page },
+    };
+  });
+}
+
+const { page } = Astro.props;
+---
+
+<Layout title={page.frontmatter.title} description={page.frontmatter.meta_description}>
+  <div class="custom-page-container">
+    {page.frontmatter.blocks && <BlocksRenderer blocks={page.frontmatter.blocks} />}
+  </div>
+</Layout>
+
+<style>
+  .custom-page-container {
+    min-height: 80vh;
+  }
+</style>
