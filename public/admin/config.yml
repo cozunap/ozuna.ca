@@ -15,7 +15,6 @@ collections:
     label: "Work"
     folder: "src/content/work"
     create: true
-    slug: "{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Category", name: "category", widget: "select", options: ["web", "graphic"]}
@@ -50,7 +49,11 @@ collections:
             name: "gallery"
             widget: "object"
             fields:
-              - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
+              - label: "Images"
+                name: "images"
+                widget: "list"
+                fields:
+                  - {label: "Image", name: "image", widget: "image"}
           - label: "Testimonial Block"
             name: "testimonial"
             widget: "object"
@@ -96,7 +99,11 @@ collections:
                 name: "gallery"
                 widget: "object"
                 fields:
-                  - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
+                  - label: "Images"
+                    name: "images"
+                    widget: "list"
+                    fields:
+                      - {label: "Image", name: "image", widget: "image"}
               - label: "Testimonial Block"
                 name: "testimonial"
                 widget: "object"
@@ -139,7 +146,11 @@ collections:
                 name: "gallery"
                 widget: "object"
                 fields:
-                  - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
+                  - label: "Images"
+                    name: "images"
+                    widget: "list"
+                    fields:
+                      - {label: "Image", name: "image", widget: "image"}
               - label: "Testimonial Block"
                 name: "testimonial"
                 widget: "object"
@@ -182,7 +193,11 @@ collections:
                 name: "gallery"
                 widget: "object"
                 fields:
-                  - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
+                  - label: "Images"
+                    name: "images"
+                    widget: "list"
+                    fields:
+                      - {label: "Image", name: "image", widget: "image"}
               - label: "Testimonial Block"
                 name: "testimonial"
                 widget: "object"
@@ -225,7 +240,11 @@ collections:
                 name: "gallery"
                 widget: "object"
                 fields:
-                  - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
+                  - label: "Images"
+                    name: "images"
+                    widget: "list"
+                    fields:
+                      - {label: "Image", name: "image", widget: "image"}
               - label: "Testimonial Block"
                 name: "testimonial"
                 widget: "object"
