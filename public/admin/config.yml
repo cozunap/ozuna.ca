@@ -5,7 +5,7 @@ backend:
   auth_endpoint: auth
   branch: main # Branch to update (optional; defaults to master)
 
-publish_mode: editorial_workflow
+# publish_mode: editorial_workflow
 
 media_folder: "public/assets/uploads"
 public_folder: "/assets/uploads"
