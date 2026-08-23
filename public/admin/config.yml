@@ -21,7 +21,6 @@ collections:
       - {label: "Category", name: "category", widget: "select", options: ["web", "graphic"]}
       - {label: "Cover Image", name: "image", widget: "image", hint: "Thumbnail for portfolio grid"}
       - {label: "Meta Description", name: "meta_description", widget: "string", required: false}
-
       - label: "Blocks"
         name: "blocks"
         widget: "list"
@@ -68,43 +67,42 @@ collections:
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Meta Description", name: "meta_description", widget: "string", required: false}
-
-      - label: "Blocks"
-        name: "blocks"
-        widget: "list"
-        types:
-          - label: "Hero Block"
-            name: "hero"
-            widget: "object"
-            fields:
-              - {label: "Headline", name: "headline", widget: "string"}
-              - {label: "Subheadline", name: "subheadline", widget: "string", required: false}
-              - {label: "Background Video", name: "backgroundVideo", widget: "file", required: false}
-              - {label: "Background Image", name: "background", widget: "image", required: false}
-              - label: "Buttons"
-                name: "buttons"
-                widget: "list"
-                required: false
+          - label: "Blocks"
+            name: "blocks"
+            widget: "list"
+            types:
+              - label: "Hero Block"
+                name: "hero"
+                widget: "object"
                 fields:
-                  - {label: "Text", name: "text", widget: "string"}
-                  - {label: "Link", name: "link", widget: "string"}
-                  - {label: "Open in new tab?", name: "isExternal", widget: "boolean", default: false, required: false}
-          - label: "Text Block"
-            name: "text"
-            widget: "object"
-            fields:
-              - {label: "Content", name: "content", widget: "markdown"}
-          - label: "Gallery Block"
-            name: "gallery"
-            widget: "object"
-            fields:
-              - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
-          - label: "Testimonial Block"
-            name: "testimonial"
-            widget: "object"
-            fields:
-              - {label: "Quote", name: "quote", widget: "text"}
-              - {label: "Author", name: "author", widget: "string"}
+                  - {label: "Headline", name: "headline", widget: "string"}
+                  - {label: "Subheadline", name: "subheadline", widget: "string", required: false}
+                  - {label: "Background Video", name: "backgroundVideo", widget: "file", required: false}
+                  - {label: "Background Image", name: "background", widget: "image", required: false}
+                  - label: "Buttons"
+                    name: "buttons"
+                    widget: "list"
+                    required: false
+                    fields:
+                      - {label: "Text", name: "text", widget: "string"}
+                      - {label: "Link", name: "link", widget: "string"}
+                      - {label: "Open in new tab?", name: "isExternal", widget: "boolean", default: false, required: false}
+              - label: "Text Block"
+                name: "text"
+                widget: "object"
+                fields:
+                  - {label: "Content", name: "content", widget: "markdown"}
+              - label: "Gallery Block"
+                name: "gallery"
+                widget: "object"
+                fields:
+                  - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
+              - label: "Testimonial Block"
+                name: "testimonial"
+                widget: "object"
+                fields:
+                  - {label: "Quote", name: "quote", widget: "text"}
+                  - {label: "Author", name: "author", widget: "string"}
 
       - file: "src/content/pages/about.md"
         label: "About Me Page"
@@ -112,43 +110,42 @@ collections:
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Meta Description", name: "meta_description", widget: "string", required: false}
-
-      - label: "Blocks"
-        name: "blocks"
-        widget: "list"
-        types:
-          - label: "Hero Block"
-            name: "hero"
-            widget: "object"
-            fields:
-              - {label: "Headline", name: "headline", widget: "string"}
-              - {label: "Subheadline", name: "subheadline", widget: "string", required: false}
-              - {label: "Background Video", name: "backgroundVideo", widget: "file", required: false}
-              - {label: "Background Image", name: "background", widget: "image", required: false}
-              - label: "Buttons"
-                name: "buttons"
-                widget: "list"
-                required: false
+          - label: "Blocks"
+            name: "blocks"
+            widget: "list"
+            types:
+              - label: "Hero Block"
+                name: "hero"
+                widget: "object"
                 fields:
-                  - {label: "Text", name: "text", widget: "string"}
-                  - {label: "Link", name: "link", widget: "string"}
-                  - {label: "Open in new tab?", name: "isExternal", widget: "boolean", default: false, required: false}
-          - label: "Text Block"
-            name: "text"
-            widget: "object"
-            fields:
-              - {label: "Content", name: "content", widget: "markdown"}
-          - label: "Gallery Block"
-            name: "gallery"
-            widget: "object"
-            fields:
-              - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
-          - label: "Testimonial Block"
-            name: "testimonial"
-            widget: "object"
-            fields:
-              - {label: "Quote", name: "quote", widget: "text"}
-              - {label: "Author", name: "author", widget: "string"}
+                  - {label: "Headline", name: "headline", widget: "string"}
+                  - {label: "Subheadline", name: "subheadline", widget: "string", required: false}
+                  - {label: "Background Video", name: "backgroundVideo", widget: "file", required: false}
+                  - {label: "Background Image", name: "background", widget: "image", required: false}
+                  - label: "Buttons"
+                    name: "buttons"
+                    widget: "list"
+                    required: false
+                    fields:
+                      - {label: "Text", name: "text", widget: "string"}
+                      - {label: "Link", name: "link", widget: "string"}
+                      - {label: "Open in new tab?", name: "isExternal", widget: "boolean", default: false, required: false}
+              - label: "Text Block"
+                name: "text"
+                widget: "object"
+                fields:
+                  - {label: "Content", name: "content", widget: "markdown"}
+              - label: "Gallery Block"
+                name: "gallery"
+                widget: "object"
+                fields:
+                  - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
+              - label: "Testimonial Block"
+                name: "testimonial"
+                widget: "object"
+                fields:
+                  - {label: "Quote", name: "quote", widget: "text"}
+                  - {label: "Author", name: "author", widget: "string"}
 
       - file: "src/content/pages/contact.md"
         label: "Contact Page"
@@ -156,43 +153,42 @@ collections:
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Meta Description", name: "meta_description", widget: "string", required: false}
-
-      - label: "Blocks"
-        name: "blocks"
-        widget: "list"
-        types:
-          - label: "Hero Block"
-            name: "hero"
-            widget: "object"
-            fields:
-              - {label: "Headline", name: "headline", widget: "string"}
-              - {label: "Subheadline", name: "subheadline", widget: "string", required: false}
-              - {label: "Background Video", name: "backgroundVideo", widget: "file", required: false}
-              - {label: "Background Image", name: "background", widget: "image", required: false}
-              - label: "Buttons"
-                name: "buttons"
-                widget: "list"
-                required: false
+          - label: "Blocks"
+            name: "blocks"
+            widget: "list"
+            types:
+              - label: "Hero Block"
+                name: "hero"
+                widget: "object"
                 fields:
-                  - {label: "Text", name: "text", widget: "string"}
-                  - {label: "Link", name: "link", widget: "string"}
-                  - {label: "Open in new tab?", name: "isExternal", widget: "boolean", default: false, required: false}
-          - label: "Text Block"
-            name: "text"
-            widget: "object"
-            fields:
-              - {label: "Content", name: "content", widget: "markdown"}
-          - label: "Gallery Block"
-            name: "gallery"
-            widget: "object"
-            fields:
-              - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
-          - label: "Testimonial Block"
-            name: "testimonial"
-            widget: "object"
-            fields:
-              - {label: "Quote", name: "quote", widget: "text"}
-              - {label: "Author", name: "author", widget: "string"}
+                  - {label: "Headline", name: "headline", widget: "string"}
+                  - {label: "Subheadline", name: "subheadline", widget: "string", required: false}
+                  - {label: "Background Video", name: "backgroundVideo", widget: "file", required: false}
+                  - {label: "Background Image", name: "background", widget: "image", required: false}
+                  - label: "Buttons"
+                    name: "buttons"
+                    widget: "list"
+                    required: false
+                    fields:
+                      - {label: "Text", name: "text", widget: "string"}
+                      - {label: "Link", name: "link", widget: "string"}
+                      - {label: "Open in new tab?", name: "isExternal", widget: "boolean", default: false, required: false}
+              - label: "Text Block"
+                name: "text"
+                widget: "object"
+                fields:
+                  - {label: "Content", name: "content", widget: "markdown"}
+              - label: "Gallery Block"
+                name: "gallery"
+                widget: "object"
+                fields:
+                  - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
+              - label: "Testimonial Block"
+                name: "testimonial"
+                widget: "object"
+                fields:
+                  - {label: "Quote", name: "quote", widget: "text"}
+                  - {label: "Author", name: "author", widget: "string"}
 
       - file: "src/content/pages/work.md"
         label: "Work Index Page"
@@ -200,41 +196,40 @@ collections:
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Meta Description", name: "meta_description", widget: "string", required: false}
-
-      - label: "Blocks"
-        name: "blocks"
-        widget: "list"
-        types:
-          - label: "Hero Block"
-            name: "hero"
-            widget: "object"
-            fields:
-              - {label: "Headline", name: "headline", widget: "string"}
-              - {label: "Subheadline", name: "subheadline", widget: "string", required: false}
-              - {label: "Background Video", name: "backgroundVideo", widget: "file", required: false}
-              - {label: "Background Image", name: "background", widget: "image", required: false}
-              - label: "Buttons"
-                name: "buttons"
-                widget: "list"
-                required: false
+          - label: "Blocks"
+            name: "blocks"
+            widget: "list"
+            types:
+              - label: "Hero Block"
+                name: "hero"
+                widget: "object"
                 fields:
-                  - {label: "Text", name: "text", widget: "string"}
-                  - {label: "Link", name: "link", widget: "string"}
-                  - {label: "Open in new tab?", name: "isExternal", widget: "boolean", default: false, required: false}
-          - label: "Text Block"
-            name: "text"
-            widget: "object"
-            fields:
-              - {label: "Content", name: "content", widget: "markdown"}
-          - label: "Gallery Block"
-            name: "gallery"
-            widget: "object"
-            fields:
-              - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
-          - label: "Testimonial Block"
-            name: "testimonial"
-            widget: "object"
-            fields:
-              - {label: "Quote", name: "quote", widget: "text"}
-              - {label: "Author", name: "author", widget: "string"}
+                  - {label: "Headline", name: "headline", widget: "string"}
+                  - {label: "Subheadline", name: "subheadline", widget: "string", required: false}
+                  - {label: "Background Video", name: "backgroundVideo", widget: "file", required: false}
+                  - {label: "Background Image", name: "background", widget: "image", required: false}
+                  - label: "Buttons"
+                    name: "buttons"
+                    widget: "list"
+                    required: false
+                    fields:
+                      - {label: "Text", name: "text", widget: "string"}
+                      - {label: "Link", name: "link", widget: "string"}
+                      - {label: "Open in new tab?", name: "isExternal", widget: "boolean", default: false, required: false}
+              - label: "Text Block"
+                name: "text"
+                widget: "object"
+                fields:
+                  - {label: "Content", name: "content", widget: "markdown"}
+              - label: "Gallery Block"
+                name: "gallery"
+                widget: "object"
+                fields:
+                  - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
+              - label: "Testimonial Block"
+                name: "testimonial"
+                widget: "object"
+                fields:
+                  - {label: "Quote", name: "quote", widget: "text"}
+                  - {label: "Author", name: "author", widget: "string"}
 
