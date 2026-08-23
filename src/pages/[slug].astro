@@ -1,189 +1,26 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import BlocksRenderer from '../components/blocks/BlocksRenderer.astro';
 
 export async function getStaticPaths() {
-  const workItems = await getCollection('work');
-  return workItems.map(item => ({
-    params: { slug: item.id },
-    props: { item },
-  }));
+  const workEntries = await getCollection('work');
+  return workEntries.map(entry => {
+    const slug = entry.slug || (entry.id ? entry.id.replace(/\.[^/.]+$/, '') : null);
+    return {
+      params: { slug },
+      props: { entry },
+    };
+  }).filter(route => route.params.slug);
 }
 
-const { item } = Astro.props;
-const { Content } = await render(item);
+const { entry } = Astro.props;
+const { title, meta_description, blocks } = entry.data || {};
 ---
 
-<Layout 
-  title={`${item.data.title} | Carlos Ozuna`} 
-  description={item.data.meta_description || item.data.description || `View the ${item.data.title} project by Carlos Ozuna.`}
-  image={item.data.image}
-  headerClass="solid-bg"
->
-  <section class="page-section portfolio-detail">
-    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem; padding-top: 6rem;">
-      
-      <div class="portfolio-two-column">
-        
-        <!-- LEFT COLUMN: IMAGES -->
-        <div class="portfolio-images">
-          {/* Main Image */}
-          <div class="main-image">
-            <img src={item.data.image} alt={item.data.title} loading="lazy" />
-          </div>
-          
-          {/* Gallery Images */}
-          {item.data.gallery && item.data.gallery.length > 0 && (
-            <div class="gallery-images">
-              {item.data.gallery.map(imgSrc => (
-                <img src={imgSrc} alt={`${item.data.title} gallery image`} loading="lazy" />
-              ))}
-            </div>
-          )}
-        </div>
-        
-        <!-- RIGHT COLUMN: TEXTS AND BUTTON -->
-        <div class="portfolio-content">
-          <div class="portfolio-text-sticky">
-            <h1 class="portfolio-title">{item.data.title}</h1>
-            <div class="portfolio-category">
-              {item.data.category === 'web' ? 'Web Design' : 'Graphic Design'}
-            </div>
-            
-            {item.data.description && (
-              <p class="portfolio-description">{item.data.description}</p>
-            )}
-            
-            <div class="portfolio-markdown prose">
-              <Content />
-            </div>
-            
-            {item.data.link && (
-              <div class="portfolio-button-container" style="margin-top: 2rem;">
-                <a href={item.data.link} target="_blank" class="btn btn-primary btn-animated" style="display: inline-block; padding: 15px 30px;">Visit Live Website</a>
-              </div>
-            )}
-          </div>
-        </div>
-        
-      </div>
-      
-    </div>
-  </section>
+<Layout title={`${title} | Carlos Ozuna`} description={meta_description} headerClass="solid-bg">
+  <div class="page-section">
+    <h1 class="page-title text-center text-huge stroke-text">{title}</h1>
+    {blocks && <BlocksRenderer blocks={blocks} />}
+  </div>
 </Layout>
-
-<style>
-  .portfolio-two-column {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: 4rem;
-    margin-bottom: 6rem;
-    align-items: start;
-  }
-  
-  @media (max-width: 992px) {
-    .portfolio-two-column {
-      grid-template-columns: 1fr;
-      gap: 3rem;
-    }
-  }
-
-  /* LEFT COLUMN STYLES */
-  .portfolio-images {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  
-  .portfolio-images img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    display: block;
-  }
-  
-  .gallery-images {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  /* RIGHT COLUMN STYLES */
-  .portfolio-text-sticky {
-    position: sticky;
-    top: 120px;
-  }
-  
-  .portfolio-title {
-    font-family: var(--font-heading);
-    font-size: 3.5rem;
-    color: var(--color-primary);
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    line-height: 1.1;
-  }
-  
-  .portfolio-category {
-    font-family: var(--font-text);
-    font-size: 1.2rem;
-    color: #666;
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 1px;
-  }
-  
-  .portfolio-description {
-    font-family: var(--font-text);
-    font-size: 1.2rem;
-    color: #444;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-  }
-  
-  .portfolio-markdown {
-    font-family: var(--font-text);
-    color: #333;
-    line-height: 1.7;
-    font-size: 1.1rem;
-  }
-  
-  .portfolio-markdown :global(h2), .portfolio-markdown :global(h3) {
-    font-family: var(--font-heading);
-    color: #000;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-  }
-  
-  .portfolio-markdown :global(h2) {
-    font-size: 2rem;
-  }
-  
-  .portfolio-markdown :global(h2:first-child) {
-    margin-top: 0;
-  }
-  
-  .portfolio-markdown :global(p) {
-    margin-bottom: 1.5rem;
-  }
-  
-  .portfolio-markdown :global(ul) {
-    margin-bottom: 1.5rem;
-    padding-left: 1.5rem;
-  }
-  
-  .portfolio-markdown :global(li) {
-    margin-bottom: 0.5rem;
-  }
-  
-  @media (max-width: 768px) {
-    .portfolio-title {
-      font-size: 2.5rem;
-    }
-    .portfolio-text-sticky {
-      position: static;
-    }
-  }
-</style>
