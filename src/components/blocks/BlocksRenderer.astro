@@ -8,9 +8,10 @@ const { blocks } = Astro.props;
 ---
 
 {blocks && blocks.map((block: any) => {
-  if (block._template === 'hero') return <HeroBlock block={block} />
-  if (block._template === 'text') return <TextBlock block={block} />
-  if (block._template === 'gallery') return <GalleryBlock block={block} />
-  if (block._template === 'testimonial') return <TestimonialBlock block={block} />
+  const type = block.type || block._template;
+  if (type === 'hero') return <HeroBlock block={block} />
+  if (type === 'text') return <TextBlock block={block} />
+  if (type === 'gallery') return <GalleryBlock block={block} />
+  if (type === 'testimonial') return <TestimonialBlock block={block} />
   return null;
 })}

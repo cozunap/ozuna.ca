@@ -1,0 +1,124 @@
+backend:
+  name: github
+  repo: cozunap/ozuna.ca
+  base_url: https://ozuna.pages.dev
+  auth_endpoint: auth
+  branch: main # Branch to update (optional; defaults to master)
+
+publish_mode: editorial_workflow
+
+media_folder: "public/assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "work"
+    label: "Work"
+    folder: "src/content/work"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Category", name: "category", widget: "select", options: ["web", "graphic"]}
+      - {label: "Image", name: "image", widget: "image", hint: "Recomendado: Imágenes de alta calidad en formato WebP o JPG"}
+      - {label: "Website Link", name: "link", widget: "string", required: false, hint: "Ej: https://midominio.com"}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Gallery", name: "gallery", widget: "list", field: {label: "Image", name: "image", widget: "image"}, required: false, collapsed: true}
+      - {label: "Meta Description", name: "meta_description", widget: "string", required: false, hint: "Breve descripción para Google (150-160 caracteres)"}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "src/content/pages/home.md"
+        label: "Home Page"
+        name: "home"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "string", required: false, hint: "Breve descripción para Google (150-160 caracteres)"}
+          - {label: "Hero Title HTML", name: "heroTitle", widget: "text"}
+          - {label: "Background Video", name: "backgroundVideo", widget: "file", required: false, hint: "Sube un archivo .mp4 ligero"}
+          - label: "Buttons"
+            name: "buttons"
+            widget: "list"
+            collapsed: true
+            fields:
+              - {label: "Button Text", name: "text", widget: "string"}
+              - {label: "Link/File", name: "link", widget: "string"}
+              - {label: "Open in new tab?", name: "isExternal", widget: "boolean", default: false, required: false}
+      - file: "src/content/pages/about.md"
+        label: "About Me Page"
+        name: "about"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "string", required: false, hint: "Breve descripción para Google"}
+          - {label: "Body", name: "body", widget: "markdown"}
+          - label: "Contact Links"
+            name: "contactLinks"
+            widget: "list"
+            collapsed: true
+            fields:
+              - {label: "Link Text", name: "text", widget: "string"}
+              - {label: "URL/File", name: "link", widget: "string"}
+              - {label: "Open in new tab?", name: "isExternal", widget: "boolean", default: false, required: false}
+      - file: "src/content/pages/work.md"
+        label: "Work Page"
+        name: "work"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "string", required: false, hint: "Breve descripción para Google"}
+          - {label: "Subtitle", name: "subtitle", widget: "string", required: false}
+      - file: "src/content/pages/contact.md"
+        label: "Contact Page"
+        name: "contact"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "string", required: false, hint: "Breve descripción para Google"}
+          - {label: "Body", name: "body", widget: "markdown"}
+          - label: "Action Button"
+            name: "actionButton"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Button Text", name: "text", widget: "string"}
+              - {label: "Email Address / Link", name: "link", widget: "string"}
+  - name: "custom-pages"
+    label: "Custom Pages (Block Builder)"
+    folder: "src/content/custom-pages"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Meta Description", name: "meta_description", widget: "string", required: false}
+      - label: "Blocks"
+        name: "blocks"
+        widget: "list"
+        types:
+          - label: "Hero Block"
+            name: "hero"
+            widget: "object"
+            fields:
+              - {label: "Headline", name: "headline", widget: "string"}
+              - {label: "Subheadline", name: "subheadline", widget: "string", required: false}
+              - {label: "Background", name: "background", widget: "image", required: false}
+              - label: "Button"
+                name: "button"
+                widget: "object"
+                required: false
+                fields:
+                  - {label: "Text", name: "text", widget: "string"}
+                  - {label: "Link", name: "link", widget: "string"}
+          - label: "Text Block"
+            name: "text"
+            widget: "object"
+            fields:
+              - {label: "Content", name: "content", widget: "markdown"}
+          - label: "Gallery Block"
+            name: "gallery"
+            widget: "object"
+            fields:
+              - {label: "Images", name: "images", widget: "list", field: {label: "Image", name: "image", widget: "image"}}
+          - label: "Testimonial Block"
+            name: "testimonial"
+            widget: "object"
+            fields:
+              - {label: "Quote", name: "quote", widget: "text"}
+              - {label: "Author", name: "author", widget: "string"}
