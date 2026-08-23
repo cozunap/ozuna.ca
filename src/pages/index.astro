@@ -1,12 +1,39 @@
 ---
 import { getEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
-import BlocksRenderer from '../components/blocks/BlocksRenderer.astro';
 
 const homeEntry = await getEntry('pages', 'home');
-const { title, meta_description, blocks } = homeEntry.data;
+const { title, heroTitle, backgroundVideo, buttons, meta_description } = homeEntry.data;
 ---
 
 <Layout title={title} description={meta_description}>
-  {blocks && <BlocksRenderer blocks={blocks} />}
+  <!-- Hero Section -->
+  <section class="hero-section">
+    {backgroundVideo && (
+      <div class="hero-video-bg">
+        <video autoplay loop muted playsinline class="hero-video-element">
+          <source src={backgroundVideo} type="video/mp4">
+        </video>
+      </div>
+    )}
+    <div class="hero-overlay"></div>
+    
+    <div class="hero-content">
+      <h2 class="hero-title" set:html={heroTitle} />
+      
+      {buttons && buttons.length > 0 && (
+        <div class="hero-buttons">
+          {buttons.map((btn) => (
+            <a 
+              href={btn.link} 
+              target={btn.isExternal ? "_blank" : undefined} 
+              class="btn btn-primary btn-animated"
+            >
+              {btn.text}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
 </Layout>

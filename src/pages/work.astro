@@ -1,35 +1,50 @@
 ---
-import { getEntry, getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
-import BlocksRenderer from '../components/blocks/BlocksRenderer.astro';
 
 const workEntry = await getEntry('pages', 'work');
-const { title, meta_description, blocks } = workEntry.data;
-const allWork = await getCollection('work');
+const { title, subtitle, meta_description } = workEntry.data;
+const workItems = await getCollection('work');
 ---
 
 <Layout title={title} description={meta_description} headerClass="solid-bg">
-  <div class="page-section">
-    {blocks && <BlocksRenderer blocks={blocks} />}
-    <div class="portfolio-grid container">
-      {allWork.map((project: any) => (
-        <a href={`/${project.slug}`} class="portfolio-item">
-          <div class="portfolio-image-wrapper">
-            {project.data.image ? (
-              <img src={project.data.image} alt={project.data.title} loading="lazy" />
-            ) : (
-              <div class="placeholder-image"></div>
-            )}
-            <div class="portfolio-overlay">
-              <span class="view-project-text">View Project</span>
-            </div>
-          </div>
-          <div class="portfolio-meta">
-            <h3>{project.data.title}</h3>
-            <span class="portfolio-category">{project.data.category}</span>
-          </div>
-        </a>
-      ))}
+  <section class="page-section text-center" style="padding-top: 10rem;">
+    <h1 class="text-huge stroke-text">{title.split(' |')[0]}</h1>
+    {subtitle && <p>{subtitle}</p>}
+  </section>
+
+  <!-- Portfolio Section -->
+  <section class="portfolio-section">
+    <div class="content-narrow" style="max-width: 1200px;">
+      
+      <!-- Filters UI -->
+      <div class="portfolio-filters text-center">
+        <ul class="filter-list">
+          <li><button class="filter-btn active" data-filter="all">All</button></li>
+          <li><button class="filter-btn" data-filter="graphic">Graphic Design</button></li>
+          <li><button class="filter-btn" data-filter="web">Web Design</button></li>
+        </ul>
+      </div>
+
+      <div class="portfolio-grid" id="portfolio-grid">
+        {workItems.map((item) => (
+          <article class="portfolio-item" data-category={item.data.category}>
+            <a href={`/${item.id}`} class="portfolio-link">
+              <div class="portfolio-image-wrapper">
+                <img src={item.data.image} alt={item.data.title} loading="lazy">
+              </div>
+              <div class="portfolio-overlay">
+                <div class="portfolio-text">
+                  <h3>{item.data.title}</h3>
+                  <span class="portfolio-cat">
+                    {item.data.category === 'web' ? 'Web Design' : 'Graphic Design'}
+                  </span>
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
     </div>
-  </div>
+  </section>
 </Layout>
