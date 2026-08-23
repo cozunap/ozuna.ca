@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AdminApp from '../components/admin/AdminApp.jsx';
+---
+
+<Layout title="Admin Panel" description="Manage your website" headerClass="solid-bg">
+  <div class="admin-wrapper" style="padding-top: 100px; min-height: 100vh; background-color: var(--color-bg);">
+    <AdminApp client:only="react" />
+  </div>
+</Layout>
