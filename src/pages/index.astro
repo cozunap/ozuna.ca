@@ -5,39 +5,50 @@ import { getCollection } from 'astro:content';
 let projects = [];
 try {
   projects = await getCollection('work');
-  projects = projects.slice(0, 3); // Show top 3
+  projects = projects.slice(0, 4); // Show top 4
 } catch (e) {}
+
+// Video de fondo (puedes cambiar esta URL en src/content/pages/home.md)
+const backgroundVideo = "https://cdn.pixabay.com/video/2020/05/25/40131-424783331_large.mp4"; // Abstract dark ink video placeholder
 ---
 <Layout title="Carlos Ozuna | Premium Design Portfolio">
-  <section class="section" style="padding-top: 10rem; padding-bottom: 5rem; text-align: center;">
-    <div class="container">
-      <h1 class="title-giant">Elevating Brands <br><span style="color: var(--gold); font-style: italic;">through Design.</span></h1>
-      <p class="subtitle" style="margin: 0 auto 3rem auto;">I am a graphic designer & web developer specializing in premium digital experiences, brand identity, and scalable design systems.</p>
+  
+  <section class="hero-video-section">
+    <div class="hero-video-bg">
+      <video autoplay loop muted playsinline class="hero-video-element">
+        <source src={backgroundVideo} type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-overlay"></div>
+    
+    <div class="container hero-content text-center">
+      <h1 class="title-giant text-white">Elevating Brands <br><span style="color: var(--gold); font-style: italic;">through Design.</span></h1>
+      <p class="subtitle text-white" style="margin: 0 auto 3rem auto; opacity: 0.9;">I am a graphic designer & web developer specializing in premium digital experiences, brand identity, and scalable design systems.</p>
       <div style="display: flex; gap: 1rem; justify-content: center;">
         <a href="/work" class="btn btn-gold">View Portfolio</a>
-        <a href="/cv" class="btn btn-outline">Read CV</a>
+        <a href="/cv" class="btn btn-outline-white">Read CV</a>
       </div>
     </div>
   </section>
 
-  <section class="section container" style="border-top: 1px solid #e2e8f0;">
+  <section class="section container">
     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem;">
       <h2 class="title-section" style="margin: 0;">Selected Works</h2>
-      <a href="/work" style="color: var(--gold); font-weight: 600;">View all works &rarr;</a>
+      <a href="/work" style="color: var(--gold); font-weight: 600; font-size: 1.1rem;">View all works &rarr;</a>
     </div>
     
     <div class="gallery-grid">
       {projects.map((project) => (
         <a href={`/work/${project.slug}`} class="gallery-card">
           <div class="gallery-image-wrap">
-            <img src={project.data.image || project.data.coverImage || '/assets/images/placeholder.jpg'} alt={project.data.title} class="gallery-image" />
+            <img src={project.data.image || project.data.coverImage || '/assets/images/placeholder.jpg'} alt={project.data.title} class="gallery-image" loading="lazy" />
           </div>
           <h3>{project.data.title}</h3>
           <p>{project.data.category || 'Graphic Design'}</p>
         </a>
       ))}
       {projects.length === 0 && (
-        <p style="color: var(--text-muted); grid-column: 1/-1;">No projects added yet. Add markdown files in src/content/work/.</p>
+        <p style="color: var(--text-muted); grid-column: 1/-1;">No projects added yet.</p>
       )}
     </div>
   </section>

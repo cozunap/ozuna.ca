@@ -9,22 +9,56 @@ try {
 ---
 <Layout title="Portfolio | Carlos Ozuna">
   <div class="container section">
-    <h1 class="title-giant">Portfolio</h1>
-    <p class="subtitle">A curated gallery of my latest graphic design, branding, and web development projects.</p>
+    <h1 class="title-giant text-center">Portfolio</h1>
+    <p class="subtitle" style="margin: 0 auto 3rem auto; text-align: center;">A curated gallery of my latest graphic design, branding, and web development projects.</p>
     
-    <div class="gallery-grid">
-      {projects.map((project) => (
-        <a href={`/work/${project.slug}`} class="gallery-card">
-          <div class="gallery-image-wrap">
-            <img src={project.data.image || project.data.coverImage || '/assets/images/placeholder.jpg'} alt={project.data.title} class="gallery-image" />
-          </div>
-          <h3>{project.data.title}</h3>
-          <p>{project.data.category || 'Graphic Design'}</p>
-        </a>
-      ))}
+    <div class="portfolio-filter">
+      <button class="filter-btn active" data-filter="all">All Projects</button>
+      <button class="filter-btn" data-filter="graphic">Graphic Design</button>
+      <button class="filter-btn" data-filter="web">Web Design</button>
+    </div>
+
+    <div class="gallery-grid" id="portfolio-grid">
+      {projects.map((project) => {
+        const cat = (project.data.category || '').toLowerCase().includes('web') ? 'web' : 'graphic';
+        return (
+          <a href={`/work/${project.slug}`} class="gallery-card" data-category={cat}>
+            <div class="gallery-image-wrap">
+              <img src={project.data.image || project.data.coverImage || '/assets/images/placeholder.jpg'} alt={project.data.title} class="gallery-image" loading="lazy" />
+            </div>
+            <h3>{project.data.title}</h3>
+            <p style="text-transform: capitalize;">{cat} Design</p>
+          </a>
+        );
+      })}
       {projects.length === 0 && (
         <p style="color: var(--text-muted); grid-column: 1/-1;">No projects added yet.</p>
       )}
     </div>
   </div>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('.gallery-card');
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Update active class
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          // Filter logic
+          const filter = btn.getAttribute('data-filter');
+          cards.forEach(card => {
+            if (filter === 'all' || card.getAttribute('data-category') === filter) {
+              card.style.display = 'block';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    });
+  </script>
 </Layout>

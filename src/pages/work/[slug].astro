@@ -5,52 +5,65 @@ import { getCollection, render } from 'astro:content';
 export async function getStaticPaths() {
   const projects = await getCollection('work');
   return projects.map(project => ({
-    params: { slug: project.slug || project.id.replace(/\.md$/, "") },
-    props: { project },
+    params: { slug: project.slug || project.id.replace(/\.md$/, '') },
+    props: { project, allProjects: projects },
   }));
 }
 
-const { project } = Astro.props;
+const { project, allProjects } = Astro.props;
 const { Content } = await render(project);
 const { title, category, description, image, gallery, link } = project.data;
+
+// Get 4 related projects (excluding current)
+const related = allProjects.filter(p => p.id !== project.id).slice(0, 4);
 ---
 <Layout title={`${title} | Portfolio`}>
-  <article class="container section">
-    <header class="project-header">
-      <h1 class="title-giant" style="font-size: clamp(2.5rem, 6vw, 4.5rem);">{title}</h1>
-      {description && <p class="subtitle" style="max-width: 800px; color: var(--navy); font-size: 1.5rem;">{description}</p>}
+  <article class="section" style="padding-top: 5rem;">
+    <!-- Centered Header aligned with screenshot -->
+    <header class="container" style="text-align: center; max-width: 900px; margin: 0 auto 4rem auto;">
+      <h1 class="title-giant" style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; margin-bottom: 0.5rem;">{title}</h1>
+      {category && <p style="text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; color: var(--text-muted); margin-bottom: 2rem;">{category}</p>}
       
-      <div class="project-meta">
-        {category && (
-          <div class="meta-item">
-            <span>Role / Category</span>
-            <p>{category}</p>
-          </div>
-        )}
-        {link && (
-          <div class="meta-item">
-            <span>Live Website</span>
-            <p><a href={link} target="_blank" style="color: var(--gold); text-decoration: underline;">Visit Site &rarr;</a></p>
-          </div>
-        )}
-      </div>
+      {description && <p style="font-size: 1.125rem; color: var(--navy); line-height: 1.8; margin-bottom: 2.5rem;">{description}</p>}
+      
+      {link && (
+        <a href={link} target="_blank" class="btn btn-gold" style="font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 1rem 3rem;">GO TO WEBSITE</a>
+      )}
     </header>
 
-    <div class="project-images">
-      {image && <img src={image} alt={`${title} Cover`} />}
+    <!-- Gallery / Masonry Layout -->
+    <div class="container">
+      {image && <img src={image} alt={`${title} Cover`} style="width: 100%; height: auto; border-radius: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);" />}
       
-      {gallery && gallery.map((img) => (
-        <img src={img} alt={`${title} Gallery Image`} loading="lazy" />
-      ))}
+      {gallery && gallery.length > 0 && (
+        <div class="masonry-gallery">
+          {gallery.map((img) => (
+            <img src={img} alt={`${title} Gallery Image`} loading="lazy" />
+          ))}
+        </div>
+      )}
     </div>
 
-    <div class="project-content section-sm" style="max-width: 800px; margin: 0 auto; font-size: 1.125rem;">
+    <!-- Content (if any markdown text exists) -->
+    <div class="container project-content section-sm" style="max-width: 800px; margin: 0 auto; font-size: 1.125rem;">
       <Content />
     </div>
-    
-    <div style="text-align: center; padding: 4rem 0; border-top: 1px solid #e2e8f0; margin-top: 4rem;">
-      <h2 style="font-size: 2rem; margin-bottom: 2rem;">Ready to start your next project?</h2>
-      <a href="mailto:contact@ozuna.ca" class="btn btn-gold">Let's talk</a>
-    </div>
   </article>
+
+  <!-- RELATED DESIGNS SECTION -->
+  {related.length > 0 && (
+    <section class="related-section">
+      <div class="container">
+        <h3 style="text-align: center; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.25rem; margin-bottom: 3rem; font-family: 'Inter', sans-serif;">Related Designs</h3>
+        
+        <div class="related-grid">
+          {related.map(rel => (
+            <a href={`/work/${rel.slug || rel.id.replace(/\.md$/, '')}`} class="related-card" style="display: block; overflow: hidden; border-radius: 4px; background: #fff;">
+              <img src={rel.data.image || rel.data.coverImage || '/assets/images/placeholder.jpg'} alt={rel.data.title} loading="lazy" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 </Layout>

@@ -92,3 +92,106 @@ a { text-decoration: none; color: inherit; }
 /* FOOTER */
 .site-footer { background: var(--navy); color: var(--white); padding: 4rem 5%; text-align: center; }
 .site-footer p { color: rgba(255,255,255,0.7); }
+
+/* HERO VIDEO */
+.hero-video-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-top: -85px; /* Offset for sticky nav */
+  padding-top: 85px;
+}
+.hero-video-bg {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 1;
+}
+.hero-video-element {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(13, 31, 60, 0.7); /* Navy overlay */
+  z-index: 2;
+}
+.hero-content {
+  position: relative;
+  z-index: 3;
+}
+.text-white { color: var(--white) !important; }
+.btn-outline-white { border: 1px solid var(--white); color: var(--white); background: transparent; }
+.btn-outline-white:hover { background: var(--white); color: var(--navy); }
+
+/* PORTFOLIO FILTER */
+.portfolio-filter {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem 1.5rem;
+  border-radius: 40px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.3s ease;
+}
+.filter-btn.active, .filter-btn:hover {
+  background: var(--navy);
+  color: var(--white);
+  border-color: var(--navy);
+}
+
+/* GRAPHIC DESIGN DETAIL LAYOUT */
+.masonry-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+.masonry-gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+@media (max-width: 768px) {
+  .masonry-gallery { grid-template-columns: 1fr; }
+}
+
+.related-section {
+  background: #f1f5f9;
+  padding: 5rem 0;
+  margin-top: 5rem;
+}
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+@media (max-width: 1024px) {
+  .related-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .related-grid { grid-template-columns: 1fr; }
+}
+.related-card img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 4px;
+  transition: transform 0.3s;
+}
+.related-card:hover img {
+  transform: scale(1.05);
+}
