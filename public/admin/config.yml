@@ -1,0 +1,33 @@
+backend:
+  name: github
+  repo: cozunap/ozuna.ca
+  branch: main
+  app_id: Ov23livopnlnK9wvImQx
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "pages"
+    label: "Pages"
+    folder: "src/content/pages"
+    create: true
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Display Title (Stroke Text)", name: "displayTitle", widget: "string", required: false}
+      - {label: "Contact Header", name: "contactTitle", widget: "string", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "work"
+    label: "Portfolio Projects"
+    folder: "src/content/work"
+    create: true
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Category", name: "category", widget: "string", required: false}
+      - {label: "Client", name: "client", widget: "string", required: false}
+      - {label: "Year", name: "year", widget: "string", required: false}
+      - {label: "Services", name: "services", widget: "string", required: false}
+      - {label: "External URL", name: "externalUrl", widget: "string", required: false}
+      - {label: "Short Description", name: "shortDescription", widget: "text", required: false}
+      - {label: "Body (Case Study)", name: "body", widget: "markdown"}

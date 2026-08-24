@@ -1,15 +1,28 @@
 ---
-import { getEntry, render } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import { getEntry } from 'astro:content';
 
-const aboutEntry = await getEntry('pages', 'about');
-const { title, contactLinks, meta_description } = aboutEntry.data;
-const { Content } = await render(aboutEntry);
+let pageData = null;
+try {
+  const entry = await getEntry('pages', 'about');
+  if (entry) {
+    pageData = entry;
+  }
+} catch (e) {
+  console.error("Content error", e);
+}
+
+if (!pageData) {
+  return Astro.redirect('/404');
+}
+
+const { title, displayTitle = 'about', contactTitle = 'Contact Carlos Ozuna', contactLinks = [], meta_description } = pageData.data;
+const body = pageData.body || '';
 ---
 
 <Layout title={title} description={meta_description} headerClass="solid-bg">
   <section class="page-section content-narrow">
-    <h1 class="page-title text-center text-huge stroke-text">about</h1>
+    <h1 class="page-title text-center text-huge stroke-text">{displayTitle}</h1>
     
     <div class="text-center bounce-icon">
       <a href="#contact-carlos" style="color: inherit; text-decoration: none;">
@@ -18,12 +31,12 @@ const { Content } = await render(aboutEntry);
     </div>
 
     <div class="page-content-text">
-      <Content />
+      <div class="text-block" set:html={body} />
     </div>
   </section>
 
   <section id="contact-carlos" class="page-section bg-image-center text-center">
-    <h2 class="section-title">Contact Carlos Ozuna</h2>
+    <h2 class="section-title">{contactTitle}</h2>
     
     {contactLinks && contactLinks.length > 0 && (
       <ul class="contact-links-list">
@@ -41,6 +54,4 @@ const { Content } = await render(aboutEntry);
       </ul>
     )}
   </section>
-
-
 </Layout>

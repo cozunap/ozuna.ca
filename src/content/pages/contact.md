@@ -1,7 +1,4 @@
 ---
-title: "Contact | Carlos Ozuna"
-actionButton:
-  text: "Email me"
-  link: "mailto:ozunaprinting@gmail.com"
+title: "Contact"
 ---
-Let's create something great together. If you're looking for a professional graphic designer, reach out to me!
+Let's talk!
