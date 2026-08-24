@@ -1,0 +1,56 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('work');
+  return projects.map(project => ({
+    params: { slug: project.slug || project.id.replace(/\.md$/, "") },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { title, category, description, image, gallery, link } = project.data;
+---
+<Layout title={`${title} | Portfolio`}>
+  <article class="container section">
+    <header class="project-header">
+      <h1 class="title-giant" style="font-size: clamp(2.5rem, 6vw, 4.5rem);">{title}</h1>
+      {description && <p class="subtitle" style="max-width: 800px; color: var(--navy); font-size: 1.5rem;">{description}</p>}
+      
+      <div class="project-meta">
+        {category && (
+          <div class="meta-item">
+            <span>Role / Category</span>
+            <p>{category}</p>
+          </div>
+        )}
+        {link && (
+          <div class="meta-item">
+            <span>Live Website</span>
+            <p><a href={link} target="_blank" style="color: var(--gold); text-decoration: underline;">Visit Site &rarr;</a></p>
+          </div>
+        )}
+      </div>
+    </header>
+
+    <div class="project-images">
+      {image && <img src={image} alt={`${title} Cover`} />}
+      
+      {gallery && gallery.map((img) => (
+        <img src={img} alt={`${title} Gallery Image`} loading="lazy" />
+      ))}
+    </div>
+
+    <div class="project-content section-sm" style="max-width: 800px; margin: 0 auto; font-size: 1.125rem;">
+      <Content />
+    </div>
+    
+    <div style="text-align: center; padding: 4rem 0; border-top: 1px solid #e2e8f0; margin-top: 4rem;">
+      <h2 style="font-size: 2rem; margin-bottom: 2rem;">Ready to start your next project?</h2>
+      <a href="mailto:contact@ozuna.ca" class="btn btn-gold">Let's talk</a>
+    </div>
+  </article>
+</Layout>

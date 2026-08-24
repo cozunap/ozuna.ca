@@ -1,38 +1,43 @@
 ---
-import { getEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
 
-const homeEntry = await getEntry('pages', 'home');
-const { title, heroTitle, backgroundVideo, buttons, meta_description } = homeEntry.data;
+let projects = [];
+try {
+  projects = await getCollection('work');
+  projects = projects.slice(0, 3); // Show top 3
+} catch (e) {}
 ---
-
-<Layout title={title} description={meta_description}>
-  <!-- Hero Section -->
-  <section class="hero-section">
-    {backgroundVideo && (
-      <div class="hero-video-bg">
-        <video autoplay loop muted playsinline class="hero-video-element">
-          <source src={backgroundVideo} type="video/mp4">
-        </video>
+<Layout title="Carlos Ozuna | Premium Design Portfolio">
+  <section class="section" style="padding-top: 10rem; padding-bottom: 5rem; text-align: center;">
+    <div class="container">
+      <h1 class="title-giant">Elevating Brands <br><span style="color: var(--gold); font-style: italic;">through Design.</span></h1>
+      <p class="subtitle" style="margin: 0 auto 3rem auto;">I am a graphic designer & web developer specializing in premium digital experiences, brand identity, and scalable design systems.</p>
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="/work" class="btn btn-gold">View Portfolio</a>
+        <a href="/cv" class="btn btn-outline">Read CV</a>
       </div>
-    )}
-    <div class="hero-overlay"></div>
+    </div>
+  </section>
+
+  <section class="section container" style="border-top: 1px solid #e2e8f0;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem;">
+      <h2 class="title-section" style="margin: 0;">Selected Works</h2>
+      <a href="/work" style="color: var(--gold); font-weight: 600;">View all works &rarr;</a>
+    </div>
     
-    <div class="hero-content">
-      <h2 class="hero-title" set:html={heroTitle} />
-      
-      {buttons && buttons.length > 0 && (
-        <div class="hero-buttons">
-          {buttons.map((btn) => (
-            <a 
-              href={btn.link} 
-              target={btn.isExternal ? "_blank" : undefined} 
-              class="btn btn-primary btn-animated"
-            >
-              {btn.text}
-            </a>
-          ))}
-        </div>
+    <div class="gallery-grid">
+      {projects.map((project) => (
+        <a href={`/work/${project.slug}`} class="gallery-card">
+          <div class="gallery-image-wrap">
+            <img src={project.data.image || project.data.coverImage || '/assets/images/placeholder.jpg'} alt={project.data.title} class="gallery-image" />
+          </div>
+          <h3>{project.data.title}</h3>
+          <p>{project.data.category || 'Graphic Design'}</p>
+        </a>
+      ))}
+      {projects.length === 0 && (
+        <p style="color: var(--text-muted); grid-column: 1/-1;">No projects added yet. Add markdown files in src/content/work/.</p>
       )}
     </div>
   </section>

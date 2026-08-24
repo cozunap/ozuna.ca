@@ -5,30 +5,26 @@ import { getCollection } from 'astro:content';
 let projects = [];
 try {
   projects = await getCollection('work');
-} catch (e) {
-  projects = [];
-}
+} catch (e) {}
 ---
-<Layout title="Work | Carlos Ozuna">
-  <main class="min-h-screen pt-32 pb-24 px-6 md:px-12 lg:px-24">
-    <div class="max-w-7xl mx-auto">
-      <h1 class="font-playfair text-5xl md:text-7xl text-navy mb-4">Selected Work</h1>
-      <p class="text-xl text-slate-600 mb-16 max-w-2xl">A collection of digital experiences, branding, and design systems built for modern companies.</p>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project) => (
-          <a href={`/work/${project.slug}`} class="group block">
-            <div class="aspect-video bg-slate-100 rounded-xl mb-4 overflow-hidden relative">
-              <div class="absolute inset-0 bg-navy/10 group-hover:bg-transparent transition-colors duration-300"></div>
-            </div>
-            <h3 class="font-playfair text-2xl text-navy mb-1">{project.data.title}</h3>
-            <p class="text-slate-500">{project.data.category || 'Project'}</p>
-          </a>
-        ))}
-        {projects.length === 0 && (
-          <p class="text-slate-500 col-span-3">No projects found. Add some in Sveltia CMS.</p>
-        )}
-      </div>
+<Layout title="Portfolio | Carlos Ozuna">
+  <div class="container section">
+    <h1 class="title-giant">Portfolio</h1>
+    <p class="subtitle">A curated gallery of my latest graphic design, branding, and web development projects.</p>
+    
+    <div class="gallery-grid">
+      {projects.map((project) => (
+        <a href={`/work/${project.slug}`} class="gallery-card">
+          <div class="gallery-image-wrap">
+            <img src={project.data.image || project.data.coverImage || '/assets/images/placeholder.jpg'} alt={project.data.title} class="gallery-image" />
+          </div>
+          <h3>{project.data.title}</h3>
+          <p>{project.data.category || 'Graphic Design'}</p>
+        </a>
+      ))}
+      {projects.length === 0 && (
+        <p style="color: var(--text-muted); grid-column: 1/-1;">No projects added yet.</p>
+      )}
     </div>
-  </main>
+  </div>
 </Layout>
