@@ -1,0 +1,55 @@
+backend:
+  name: github
+  repo: cozunap/ozuna.ca
+  branch: main
+  app_id: Ov23livopnlnK9wvImQx
+
+media_folder: "public/assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "config"
+    label: "Global Settings"
+    files:
+      - label: "Site Settings"
+        name: "general"
+        file: "src/content/settings/global.md"
+        fields:
+          - {label: "Site Title", name: "siteTitle", widget: "string"}
+          - {label: "Contact Email", name: "contactEmail", widget: "string"}
+          - {label: "Phone Number", name: "phoneNumber", widget: "string"}
+          - {label: "Footer Text", name: "footerText", widget: "text"}
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "Home Page"
+        name: "home"
+        file: "src/content/pages/home.md"
+        fields:
+          - {label: "Hero Title", name: "heroTitle", widget: "string"}
+          - {label: "Hero Subtitle (Gold Italic)", name: "heroSubtitle", widget: "string"}
+          - {label: "Hero Description", name: "heroDescription", widget: "text"}
+          - {label: "Background Video URL", name: "backgroundVideo", widget: "string"}
+      
+      - label: "About Page"
+        name: "about"
+        file: "src/content/pages/about.md"
+        fields:
+          - {label: "Intro Text", name: "intro", widget: "text"}
+          - {label: "CV PDF File", name: "cvFile", widget: "file", required: false}
+          - {label: "What I Bring (List)", name: "whatIBring", widget: "list"}
+          - {label: "My Approach (Markdown)", name: "body", widget: "markdown"}
+
+  - name: "work"
+    label: "Portfolio Projects"
+    folder: "src/content/work"
+    create: true
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Category (e.g. Graphic Design, Web Design)", name: "category", widget: "string"}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Main Cover Image", name: "image", widget: "image"}
+      - {label: "Project Gallery", name: "gallery", widget: "list", field: {label: "Image", widget: "image"}, required: false}
+      - {label: "Live Website Link", name: "link", widget: "string", required: false}
+      - {label: "Content", name: "body", widget: "markdown", required: false}

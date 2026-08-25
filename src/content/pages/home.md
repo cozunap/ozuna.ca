@@ -1,5 +1,7 @@
 ---
 title: "Home"
-heroTitle: "Designer & Developer"
+heroTitle: "Elevating Brands"
+heroSubtitle: "through Design."
+heroDescription: "I am a graphic designer & web developer specializing in premium digital experiences, brand identity, and scalable design systems."
+backgroundVideo: "/assets/videos/designer-working.mp4"
 ---
-Welcome to my portfolio.

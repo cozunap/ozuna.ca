@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 
 let projects = [];
 try {
@@ -8,22 +8,33 @@ try {
   projects = projects.slice(0, 4); // Show top 4
 } catch (e) {}
 
-// Video de fondo (puedes cambiar esta URL en src/content/pages/home.md)
-const backgroundVideo = "/assets/videos/designer-working.mp4"; // Abstract dark ink video placeholder
+let homeData = {
+  heroTitle: "Elevating Brands",
+  heroSubtitle: "through Design.",
+  heroDescription: "I am a graphic designer & web developer specializing in premium digital experiences, brand identity, and scalable design systems.",
+  backgroundVideo: "/assets/videos/designer-working.mp4"
+};
+
+try {
+  const entry = await getEntry('pages', 'home');
+  if (entry) {
+    homeData = entry.data;
+  }
+} catch (e) {}
 ---
 <Layout title="Carlos Ozuna | Premium Design Portfolio">
   
   <section class="hero-video-section">
     <div class="hero-video-bg">
       <video autoplay loop muted playsinline class="hero-video-element">
-        <source src={backgroundVideo} type="video/mp4">
+        <source src={homeData.backgroundVideo} type="video/mp4">
       </video>
     </div>
     <div class="hero-overlay"></div>
     
     <div class="container hero-content text-center">
-      <h1 class="title-giant text-white">Elevating Brands <br><span style="color: var(--gold); font-style: italic;">through Design.</span></h1>
-      <p class="subtitle text-white" style="margin: 0 auto 3rem auto; opacity: 0.9;">I am a graphic designer & web developer specializing in premium digital experiences, brand identity, and scalable design systems.</p>
+      <h1 class="title-giant text-white">{homeData.heroTitle} <br><span style="color: var(--gold); font-style: italic;">{homeData.heroSubtitle}</span></h1>
+      <p class="subtitle text-white" style="margin: 0 auto 3rem auto; opacity: 0.9;">{homeData.heroDescription}</p>
       <div style="display: flex; gap: 1rem; justify-content: center;">
         <a href="/work" class="btn btn-gold">View Portfolio</a>
         <a href="/about" class="btn btn-outline-white">About Me</a>

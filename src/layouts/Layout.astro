@@ -1,17 +1,36 @@
 ---
+import { getEntry } from 'astro:content';
+
 export interface Props {
-  title: string;
+  title?: string;
   description?: string;
 }
-const { title, description = "Premium Portfolio" } = Astro.props;
+const { title, description } = Astro.props;
+
+let globalSettings = {
+  siteTitle: "Carlos Ozuna | Premium Design Portfolio",
+  contactEmail: "contact@ozuna.ca",
+  phoneNumber: "438-393-9465",
+  footerText: "Let's create something beautiful."
+};
+
+try {
+  const entry = await getEntry('settings', 'global');
+  if (entry) {
+    globalSettings = entry.data;
+  }
+} catch (e) {}
+
+const finalTitle = title || globalSettings.siteTitle;
+const finalDescription = description || "Carlos Ozuna Portfolio";
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{title}</title>
-  <meta name="description" content={description}>
+  <title>{finalTitle}</title>
+  <meta name="description" content={finalDescription}>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -23,7 +42,7 @@ const { title, description = "Premium Portfolio" } = Astro.props;
     <div class="nav-links">
       <a href="/work">Work</a>
       <a href="/about">About</a>
-      <a href="mailto:contact@ozuna.ca" class="btn btn-gold" style="padding: 0.5rem 1.25rem;">Contact</a>
+      <a href={`mailto:${globalSettings.contactEmail}`} class="btn btn-gold" style="padding: 0.5rem 1.25rem;">Contact</a>
     </div>
   </nav>
 
@@ -32,7 +51,8 @@ const { title, description = "Premium Portfolio" } = Astro.props;
   </main>
 
   <footer class="site-footer">
-    <h2 style="font-size: 2rem; margin-bottom: 1rem;">Let's create something beautiful.</h2>
+    <h2 style="font-size: 2rem; margin-bottom: 1rem;">{globalSettings.footerText}</h2>
+    <p style="margin-bottom: 0.5rem;"><a href={`mailto:${globalSettings.contactEmail}`} style="text-decoration: underline;">{globalSettings.contactEmail}</a> | <a href={`tel:${globalSettings.phoneNumber}`} style="text-decoration: underline;">{globalSettings.phoneNumber}</a></p>
     <p>&copy; {new Date().getFullYear()} Carlos Ozuna. All rights reserved.</p>
   </footer>
 </body>
