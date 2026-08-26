@@ -9,6 +9,7 @@ const workCollection = defineCollection({
     image: z.string().optional(),
     coverImage: z.string().optional(),
     gallery: z.array(z.string()).optional(),
+    pdfFile: z.string().optional(),
     link: z.string().optional(),
     externalLink: z.string().optional(),
   })
