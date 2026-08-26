@@ -4,8 +4,12 @@ import { getCollection, getEntry } from 'astro:content';
 
 let projects = [];
 try {
-  projects = await getCollection('work');
-  projects = projects.slice(0, 4); // Show top 4
+  const allProjects = await getCollection('work');
+  const featuredSlugs = ['roberto-clemente-foundation-booklet', 'business-cards', 'degan-tax'];
+  projects = featuredSlugs
+    .map(slug => allProjects.find(p => (p.slug || p.id.replace(/\.md$/, '')) === slug))
+    .filter(Boolean);
+  if (projects.length === 0) projects = allProjects.slice(0, 3);
 } catch (e) {}
 
 let homeData = {
