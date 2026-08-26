@@ -22,7 +22,7 @@ try {
       {projects.map((project) => {
         const cat = (project.data.category || '').toLowerCase().includes('web') ? 'web' : 'graphic';
         return (
-          <a href={`/work/${project.slug}`} class="gallery-card" data-category={cat}>
+          <a href={`/work/${project.slug || project.id.replace(/\.md$/, "")}`} class="gallery-card" data-category={cat}>
             <div class="gallery-image-wrap">
               <img src={project.data.image || project.data.coverImage || '/assets/images/placeholder.jpg'} alt={project.data.title} class="gallery-image" loading="lazy" />
             </div>

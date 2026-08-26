@@ -50,7 +50,7 @@ try {
     
     <div class="gallery-grid">
       {projects.map((project) => (
-        <a href={`/work/${project.slug}`} class="gallery-card">
+        <a href={`/work/${project.slug || project.id.replace(/\.md$/, "")}`} class="gallery-card">
           <div class="gallery-image-wrap">
             <img src={project.data.image || project.data.coverImage || '/assets/images/placeholder.jpg'} alt={project.data.title} class="gallery-image" loading="lazy" />
           </div>
