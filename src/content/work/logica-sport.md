@@ -1,5 +1,5 @@
 ---
-title: Logica Sport
+title: Eletto Sport
 category: graphic
 description: ''
 image: https://www.elettosport.com/cdn/shop/files/Jersey_Banner_1.jpg?v=1775115381
