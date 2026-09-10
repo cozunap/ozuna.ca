@@ -4,13 +4,12 @@ import { getStorage } from 'firebase/storage';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  projectId: "ozuna-cv",
-  appId: "1:119121661780:web:36565d7f2e6685311782c1",
-  storageBucket: "ozuna-cv.firebasestorage.app",
-  apiKey: "AIzaSyArqZN-CIto7baCaqW8EvP7IEf2VoTvsrU",
-  authDomain: "ozuna-cv.firebaseapp.com",
-  messagingSenderId: "119121661780",
-  measurementId: "G-3R93XQ28P3"
+  projectId: "ozuna-portfolio",
+  appId: "1:650035639712:web:100ac93a8b01cdc07de0c5",
+  storageBucket: "ozuna-portfolio.firebasestorage.app",
+  apiKey: "AIzaSyDpFSQnvbjv6_OC1YcmqovydmSJowvFEFY",
+  authDomain: "ozuna-portfolio.firebaseapp.com",
+  messagingSenderId: "650035639712"
 };
 
 const app = initializeApp(firebaseConfig);
