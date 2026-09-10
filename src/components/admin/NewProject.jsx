@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react';
 import DashboardLayout from './DashboardLayout.jsx';
-import { db, storage } from '../../firebase';
-import { collection, addDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { supabase } from '../../supabase';
 
 export default function NewProject() {
   const [formData, setFormData] = useState({
@@ -31,29 +29,58 @@ export default function NewProject() {
       let pdfUrl = '';
 
       if (imageFile) {
-        const imageRef = ref(storage, `uploads/images/${Date.now()}_${imageFile.name}`);
-        const snapshot = await uploadBytes(imageRef, imageFile);
-        imageUrl = await getDownloadURL(snapshot.ref);
+        const fileExt = imageFile.name.split('.').pop();
+        const fileName = `images/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+        
+        const { data, error } = await supabase.storage
+          .from('portfolio')
+          .upload(fileName, imageFile, { upsert: true });
+
+        if (error) throw error;
+        
+        const { data: publicUrlData } = supabase.storage
+          .from('portfolio')
+          .getPublicUrl(fileName);
+          
+        imageUrl = publicUrlData.publicUrl;
       }
 
       if (pdfFile) {
-        const pdfRef = ref(storage, `uploads/pdfs/${Date.now()}_${pdfFile.name}`);
-        const snapshot = await uploadBytes(pdfRef, pdfFile);
-        pdfUrl = await getDownloadURL(snapshot.ref);
+        const fileExt = pdfFile.name.split('.').pop();
+        const fileName = `pdfs/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+        
+        const { data, error } = await supabase.storage
+          .from('portfolio')
+          .upload(fileName, pdfFile, { upsert: true });
+
+        if (error) throw error;
+        
+        const { data: publicUrlData } = supabase.storage
+          .from('portfolio')
+          .getPublicUrl(fileName);
+          
+        pdfUrl = publicUrlData.publicUrl;
       }
 
-      await addDoc(collection(db, 'work'), {
-        ...formData,
-        imageUrl,
-        pdfUrl,
-        createdAt: new Date().toISOString()
-      });
+      const { error } = await supabase
+        .from('portfolio_work')
+        .insert([{
+          title: formData.title,
+          category: formData.category,
+          description: formData.description,
+          link: formData.link,
+          featured: formData.featured,
+          image_url: imageUrl,
+          pdf_url: pdfUrl
+        }]);
 
-      alert('¡Proyecto creado y archivos subidos con éxito a Firebase!');
+      if (error) throw error;
+
+      alert('¡Proyecto creado y archivos subidos con éxito!');
       window.location.href = '/admin/dashboard';
     } catch (error) {
       console.error('Upload Error:', error);
-      alert('Error uploading to Firebase: ' + error.message);
+      alert('Error uploading files: ' + error.message);
     }
     
     setLoading(false);
@@ -100,7 +127,7 @@ export default function NewProject() {
               <p style={{ margin: 0, color: imageFile ? 'var(--admin-gold)' : 'var(--admin-text-muted)' }}>
                 {imageFile ? imageFile.name : 'Click to upload or drag and drop'}
               </p>
-              {!imageFile && <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>Max size: 5MB. Allowed: JPG, PNG, WebP</p>}
+              {!imageFile && <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>Max size: 50MB. Allowed: JPG, PNG, WebP</p>}
             </div>
           </div>
           
@@ -112,7 +139,7 @@ export default function NewProject() {
             >
               <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '0.5rem' }}>{pdfFile ? '📄' : ''}</span>
               <p style={{ margin: 0, color: pdfFile ? 'var(--admin-gold)' : 'var(--admin-text-muted)' }}>
-                {pdfFile ? pdfFile.name : 'Upload PDF (Unlimited Size - Direct to Firebase)'}
+                {pdfFile ? pdfFile.name : 'Upload PDF (Up to 50MB)'}
               </p>
             </div>
           </div>
