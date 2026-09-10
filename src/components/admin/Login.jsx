@@ -8,10 +8,10 @@ export default function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
     // Dummy login for now
-    if(email === 'admin@ozuna.ca' && password === '1234') {
+    if(email === 'cmozunap@gmail.com' && password === 'c@2094Op#') {
       window.location.href = '/admin/dashboard';
     } else {
-      setError('Invalid credentials for preview. Try admin@ozuna.ca / 1234');
+      setError('Invalid credentials for preview. Try cmozunap@gmail.com / c@2094Op#');
     }
   };
 
@@ -37,7 +37,7 @@ export default function Login() {
             <input 
               type="email" 
               className="admin-input" 
-              placeholder="admin@ozuna.ca"
+              placeholder="cmozunap@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
