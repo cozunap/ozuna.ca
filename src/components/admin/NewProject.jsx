@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import DashboardLayout from './DashboardLayout.jsx';
+import { db, storage } from '../../firebase';
+import { collection, addDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function NewProject() {
   const [formData, setFormData] = useState({
@@ -9,12 +12,51 @@ export default function NewProject() {
     link: '',
     featured: false
   });
+  
+  const [imageFile, setImageFile] = useState(null);
+  const [pdfFile, setPdfFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  
+  const imageInputRef = useRef(null);
+  const pdfInputRef = useRef(null);
 
   const categories = ['Graphic Design', 'Web Design', 'Catalog', 'Branding'];
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    alert('Project saved! (Firebase integration pending)');
+    setLoading(true);
+    
+    try {
+      let imageUrl = '';
+      let pdfUrl = '';
+
+      if (imageFile) {
+        const imageRef = ref(storage, `uploads/images/${Date.now()}_${imageFile.name}`);
+        const snapshot = await uploadBytes(imageRef, imageFile);
+        imageUrl = await getDownloadURL(snapshot.ref);
+      }
+
+      if (pdfFile) {
+        const pdfRef = ref(storage, `uploads/pdfs/${Date.now()}_${pdfFile.name}`);
+        const snapshot = await uploadBytes(pdfRef, pdfFile);
+        pdfUrl = await getDownloadURL(snapshot.ref);
+      }
+
+      await addDoc(collection(db, 'work'), {
+        ...formData,
+        imageUrl,
+        pdfUrl,
+        createdAt: new Date().toISOString()
+      });
+
+      alert('¡Proyecto creado y archivos subidos con éxito a Firebase!');
+      window.location.href = '/admin/dashboard';
+    } catch (error) {
+      console.error('Upload Error:', error);
+      alert('Error uploading to Firebase: ' + error.message);
+    }
+    
+    setLoading(false);
   };
 
   return (
@@ -45,19 +87,33 @@ export default function NewProject() {
             <textarea className="admin-input" rows="4" required value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} placeholder="Describe the project, its features, and what makes it unique"></textarea>
           </div>
 
+          <input type="file" ref={imageInputRef} style={{ display: 'none' }} accept="image/png, image/jpeg, image/webp" onChange={e => setImageFile(e.target.files[0])} />
+          <input type="file" ref={pdfInputRef} style={{ display: 'none' }} accept="application/pdf" onChange={e => setPdfFile(e.target.files[0])} />
+
           <div>
             <label className="admin-label">Thumbnail Image / Main Cover</label>
-            <div style={{ border: '2px dashed var(--admin-border)', borderRadius: '8px', padding: '3rem', textAlign: 'center', backgroundColor: 'var(--admin-input-bg)', cursor: 'pointer', transition: 'border-color 0.2s' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '1rem' }}>☁️</span>
-              <p style={{ margin: 0, color: 'var(--admin-text-muted)' }}>Click to upload or drag and drop</p>
-              <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>Max size: 5MB. Allowed: JPG, PNG, WebP</p>
+            <div 
+              onClick={() => imageInputRef.current.click()}
+              style={{ border: imageFile ? '2px solid var(--admin-gold)' : '2px dashed var(--admin-border)', borderRadius: '8px', padding: '3rem', textAlign: 'center', backgroundColor: 'var(--admin-input-bg)', cursor: 'pointer', transition: 'border-color 0.2s' }}
+            >
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '1rem' }}>{imageFile ? '✅' : '☁️'}</span>
+              <p style={{ margin: 0, color: imageFile ? 'var(--admin-gold)' : 'var(--admin-text-muted)' }}>
+                {imageFile ? imageFile.name : 'Click to upload or drag and drop'}
+              </p>
+              {!imageFile && <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>Max size: 5MB. Allowed: JPG, PNG, WebP</p>}
             </div>
           </div>
           
           <div>
             <label className="admin-label">Interactive Flipbook (PDF)</label>
-            <div style={{ border: '2px dashed var(--admin-border)', borderRadius: '8px', padding: '2rem', textAlign: 'center', backgroundColor: 'var(--admin-input-bg)', cursor: 'pointer' }}>
-              <p style={{ margin: 0, color: 'var(--admin-text-muted)' }}>Upload PDF (Unlimited Size - Direct to Firebase)</p>
+            <div 
+              onClick={() => pdfInputRef.current.click()}
+              style={{ border: pdfFile ? '2px solid var(--admin-gold)' : '2px dashed var(--admin-border)', borderRadius: '8px', padding: '2rem', textAlign: 'center', backgroundColor: 'var(--admin-input-bg)', cursor: 'pointer' }}
+            >
+              <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '0.5rem' }}>{pdfFile ? '📄' : ''}</span>
+              <p style={{ margin: 0, color: pdfFile ? 'var(--admin-gold)' : 'var(--admin-text-muted)' }}>
+                {pdfFile ? pdfFile.name : 'Upload PDF (Unlimited Size - Direct to Firebase)'}
+              </p>
             </div>
           </div>
 
@@ -73,8 +129,10 @@ export default function NewProject() {
           </div>
 
           <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-            <a href="/admin/dashboard" className="admin-btn-outline" style={{ textDecoration: 'none', padding: '0.75rem 2rem', borderRadius: '6px' }}>Cancel</a>
-            <button type="submit" className="admin-btn">Create Project</button>
+            <a href="/admin/dashboard" className="admin-btn-outline" style={{ textDecoration: 'none', padding: '0.75rem 2rem', borderRadius: '6px', pointerEvents: loading ? 'none' : 'auto' }}>Cancel</a>
+            <button type="submit" className="admin-btn" disabled={loading} style={{ opacity: loading ? 0.7 : 1 }}>
+              {loading ? 'Subiendo Archivos...' : 'Create Project'}
+            </button>
           </div>
 
         </form>
