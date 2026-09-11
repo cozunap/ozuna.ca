@@ -5,20 +5,28 @@ import { supabase } from '../../supabase.js';
 export default function ProjectsList() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [debugError, setDebugError] = useState('');
 
   useEffect(() => {
     async function fetchProjects() {
-      const { data, error } = await supabase
-        .from('portfolio_work')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) {
-        console.error('Error fetching projects:', error);
-      } else {
-        setProjects(data || []);
+      try {
+        if (!supabase) throw new Error("Supabase client is undefined!");
+        
+        const { data, error } = await supabase
+          .from('portfolio_work')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        if (error) {
+          setDebugError(error.message || JSON.stringify(error));
+        } else {
+          setProjects(data || []);
+        }
+      } catch (err) {
+        setDebugError(err.message || String(err));
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     fetchProjects();
   }, []);
@@ -27,11 +35,15 @@ export default function ProjectsList() {
     if (!window.confirm(`¿Estás seguro de que deseas eliminar permanentemente el proyecto "${title}"?`)) return;
     
     setLoading(true);
-    const { error } = await supabase.from('portfolio_work').delete().eq('id', id);
-    if (error) {
-      alert('Error eliminando: ' + error.message);
-    } else {
-      setProjects(projects.filter(p => p.id !== id));
+    try {
+      const { error } = await supabase.from('portfolio_work').delete().eq('id', id);
+      if (error) {
+        alert('Error eliminando: ' + error.message);
+      } else {
+        setProjects(projects.filter(p => p.id !== id));
+      }
+    } catch (err) {
+      alert('Exception: ' + err.message);
     }
     setLoading(false);
   };
@@ -46,6 +58,12 @@ export default function ProjectsList() {
       </div>
 
       <div className="admin-card">
+        {debugError && (
+          <div style={{ padding: '1rem', background: '#ffebee', color: '#c62828', marginBottom: '1rem', borderRadius: '4px' }}>
+            <strong>Debug Error:</strong> {debugError}
+          </div>
+        )}
+      
         {loading ? (
           <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--admin-text-muted)' }}>
             Loading projects...
