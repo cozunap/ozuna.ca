@@ -36,7 +36,7 @@ const related = allProjects.filter(p => p.id !== project.id).slice(0, 4);
       {category && <p style="text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; color: var(--text-muted); margin-bottom: 2rem;">{category}</p>}
       
       {description && description.trim() !== '' && (
-        <p style="font-size: 1.125rem; color: var(--navy); line-height: 1.8; margin-bottom: 2.5rem; text-align: left;">{description}</p>
+        <div class="project-description" style="font-size: 1.125rem; color: var(--navy); line-height: 1.8; margin-bottom: 2.5rem; text-align: left;" set:html={description} />
       )}
       
       {/* Go to website button conditionally rendered */}

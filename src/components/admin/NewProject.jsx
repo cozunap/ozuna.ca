@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import DashboardLayout from './DashboardLayout.jsx';
 import { supabase } from '../../supabase.js';
 
