@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from './DashboardLayout.jsx';
-import { supabase } from '../../supabase';
+import { supabase } from '../../supabase.js';
 
 export default function ProjectsList() {
   const [projects, setProjects] = useState([]);

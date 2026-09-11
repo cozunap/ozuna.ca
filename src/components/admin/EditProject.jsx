@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import DashboardLayout from './DashboardLayout.jsx';
-import { supabase } from '../../supabase';
+import { supabase } from '../../supabase.js';
 
 export default function EditProject() {
   const [projectId, setProjectId] = useState(null);

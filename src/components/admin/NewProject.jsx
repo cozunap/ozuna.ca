@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import DashboardLayout from './DashboardLayout.jsx';
-import { supabase } from '../../supabase';
+import { supabase } from '../../supabase.js';
 
 export default function NewProject() {
   const [formData, setFormData] = useState({
