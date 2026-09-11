@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "dev": "astro dev",
-    "build": "astro build"
+    "build": "astro build && cp -R dist/client/* dist/"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.2.3",
