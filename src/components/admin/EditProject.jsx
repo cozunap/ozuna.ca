@@ -147,7 +147,7 @@ export default function EditProject() {
 
           <div>
             <label className="admin-label">Description *</label>
-            <textarea className="admin-input" rows="4" required value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} placeholder="Describe the project, its features, and what makes it unique"></textarea>
+            <ReactQuill theme="snow" value={formData.description} onChange={val => setFormData({...formData, description: val})} style={{ backgroundColor: 'var(--admin-input-bg)', color: 'var(--admin-text)', borderRadius: '4px' }} />
           </div>
 
           <input type="file" ref={imageInputRef} style={{ display: 'none' }} accept="image/png, image/jpeg, image/webp" onChange={e => setImageFile(e.target.files[0])} />
