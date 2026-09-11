@@ -24,26 +24,22 @@ try {
 } catch (e) {}
 ---
 <Layout title="About | Carlos Ozuna">
-  <div class="container section text-center" style="padding-top: 6rem; padding-bottom: 2rem;">
-    <h1 style="font-size: clamp(5rem, 15vw, 12rem); font-family: 'Playfair Display', serif; color: transparent; -webkit-text-stroke: 2px var(--navy); text-transform: lowercase; margin: 0; line-height: 1; letter-spacing: -0.05em; opacity: 0.2; position: relative; z-index: -1;">
-      about
-    </h1>
-    
-    <div style="margin-top: -3rem;">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto;">
-        <polyline points="6 9 12 15 18 9"></polyline>
-      </svg>
+    <section class="about-hero" style="position: relative; padding: 8rem 0; margin-bottom: 4rem; background-image: url('/assets/images/portfolio-header-bg.webp'); background-size: cover; background-position: center top;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1;"></div>
+    <div class="container" style="position: relative; z-index: 2; text-align: center;">
+      <h1 class="title-giant text-white" style="margin-bottom: 1rem;">About</h1>
+      <p class="subtitle text-white" style="margin: 0 auto; opacity: 0.9;">A little bit about who I am and what I do.</p>
     </div>
-  </div>
+  </section>
 
-  <div class="container" style="max-width: 800px; margin: 0 auto; font-size: 1.125rem; color: var(--navy); line-height: 1.8;">
+  <div class="container" style="max-width: 800px; margin: 0 auto; font-size: 1.125rem; color: var(--navy); line-height: 1.8; text-align: center;">
     
     <h3 style="font-family: 'Inter', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">Let's Create Something Great Together</h3>
     <p style="margin-bottom: 2.5rem;">{aboutData.intro}</p>
 
     <h3 style="font-family: 'Inter', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">What I Bring:</h3>
     {aboutData.whatIBring && aboutData.whatIBring.length > 0 && (
-      <ul style="margin-bottom: 2.5rem; padding-left: 1.5rem; list-style-type: disc;">
+      <ul style="margin-bottom: 2.5rem; padding-left: 0; list-style-type: none;">
         {aboutData.whatIBring.map(item => (
           <li style="margin-bottom: 0.75rem;">{item}</li>
         ))}
@@ -52,7 +48,7 @@ try {
 
     <h3 style="font-family: 'Inter', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">My Approach:</h3>
     {Content ? (
-      <div style="margin-bottom: 5rem;">
+      <div style="margin-bottom: 5rem; text-align: center;">
         <Content />
       </div>
     ) : (
