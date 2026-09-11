@@ -23,6 +23,19 @@ export default function ProjectsList() {
     fetchProjects();
   }, []);
 
+  const handleDelete = async (id, title) => {
+    if (!window.confirm(`¿Estás seguro de que deseas eliminar permanentemente el proyecto "${title}"?`)) return;
+    
+    setLoading(true);
+    const { error } = await supabase.from('portfolio_work').delete().eq('id', id);
+    if (error) {
+      alert('Error eliminando: ' + error.message);
+    } else {
+      setProjects(projects.filter(p => p.id !== id));
+    }
+    setLoading(false);
+  };
+
   return (
     <DashboardLayout activeTab="projects">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
@@ -35,7 +48,7 @@ export default function ProjectsList() {
       <div className="admin-card">
         {loading ? (
           <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--admin-text-muted)' }}>
-            Loading projects from database...
+            Loading projects...
           </div>
         ) : projects.length === 0 ? (
           <div style={{ padding: '4rem 2rem', textAlign: 'center', color: 'var(--admin-text-muted)' }}>
@@ -50,6 +63,7 @@ export default function ProjectsList() {
                 <th style={{ padding: '1rem', color: 'var(--admin-text-muted)', fontWeight: '500' }}>Category</th>
                 <th style={{ padding: '1rem', color: 'var(--admin-text-muted)', fontWeight: '500' }}>Date</th>
                 <th style={{ padding: '1rem', color: 'var(--admin-text-muted)', fontWeight: '500' }}>Assets</th>
+                <th style={{ padding: '1rem', color: 'var(--admin-text-muted)', fontWeight: '500', textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -63,8 +77,14 @@ export default function ProjectsList() {
                   <td style={{ padding: '1rem', color: 'var(--admin-text-muted)' }}>{new Date(p.created_at).toLocaleDateString()}</td>
                   <td style={{ padding: '1rem' }}>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      {p.image_url && <a href={p.image_url} target="_blank" rel="noreferrer" style={{ color: 'var(--admin-gold)', textDecoration: 'none' }}>🖼️ Image</a>}
-                      {p.pdf_url && <a href={p.pdf_url} target="_blank" rel="noreferrer" style={{ color: 'var(--admin-gold)', textDecoration: 'none' }}>📄 PDF</a>}
+                      {p.image_url && <a href={p.image_url} target="_blank" rel="noreferrer" style={{ color: 'var(--admin-gold)', textDecoration: 'none' }}>🖼️</a>}
+                      {p.pdf_url && <a href={p.pdf_url} target="_blank" rel="noreferrer" style={{ color: 'var(--admin-gold)', textDecoration: 'none' }}>📄</a>}
+                    </div>
+                  </td>
+                  <td style={{ padding: '1rem', textAlign: 'right' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                      <a href={`/admin/projects/edit?id=${p.id}`} className="admin-btn-outline" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', textDecoration: 'none' }}>Edit</a>
+                      <button onClick={() => handleDelete(p.id, p.title)} className="admin-btn-outline" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', borderColor: '#ff4444', color: '#ff4444' }}>Delete</button>
                     </div>
                   </td>
                 </tr>
