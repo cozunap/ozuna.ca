@@ -1,7 +1,8 @@
 ---
 import AdminLayout from '../../../layouts/AdminLayout.astro';
-import Placeholder from '../../../components/admin/Placeholder.jsx';
+import ProjectsList from '../../../components/admin/ProjectsList.jsx';
 ---
-<AdminLayout title="Projects">
-  <Placeholder client:load title="Projects Management" activeTab="projects" />
+
+<AdminLayout title="Projects | Carlos Ozuna Admin">
+  <ProjectsList client:load />
 </AdminLayout>
