@@ -3,5 +3,5 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
 import Dashboard from '../../components/admin/Dashboard.jsx';
 ---
 <AdminLayout title="Dashboard">
-  <Dashboard client:load />
+  <Dashboard client:only="react" />
 </AdminLayout>
