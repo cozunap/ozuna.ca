@@ -37,16 +37,9 @@ try {
     <h3 style="font-family: 'Inter', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">Let's Create Something Great Together</h3>
     <p style="margin-bottom: 2.5rem;">{aboutData.intro}</p>
 
-    <h3 style="font-family: 'Inter', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">What I Bring:</h3>
-    {aboutData.whatIBring && aboutData.whatIBring.length > 0 && (
-      <ul style="margin-bottom: 2.5rem; padding-left: 0; list-style-type: none;">
-        {aboutData.whatIBring.map(item => (
-          <li style="margin-bottom: 0.75rem;">{item}</li>
-        ))}
-      </ul>
-    )}
+    
 
-    <h3 style="font-family: 'Inter', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">My Approach:</h3>
+    
     {Content ? (
       <div style="margin-bottom: 5rem; text-align: center;">
         <Content />
