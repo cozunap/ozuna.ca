@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import JoditEditor from 'jodit-react';
+
 import DashboardLayout from './DashboardLayout.jsx';
 import { supabase } from '../../supabase.js';
 
@@ -113,7 +113,7 @@ export default function NewProject() {
 
           <div>
             <label className="admin-label">Description *</label>
-            <ReactQuill theme="snow" value={formData.description} onChange={val => setFormData({...formData, description: val})} style={{ backgroundColor: 'var(--admin-input-bg)', color: 'var(--admin-text)', borderRadius: '4px' }} />
+            <JoditEditor value={formData.description} config={{ theme: 'dark', minHeight: 200, style: { background: 'var(--admin-input-bg)', color: 'var(--admin-text)' } }} onBlur={val => setFormData({...formData, description: val})} onChange={val => setFormData({...formData, description: val})} />
           </div>
 
           <input type="file" ref={imageInputRef} style={{ display: 'none' }} accept="image/png, image/jpeg, image/webp" onChange={e => setImageFile(e.target.files[0])} />
