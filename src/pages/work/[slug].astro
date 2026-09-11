@@ -1,18 +1,28 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection, render } from 'astro:content';
+import { supabase } from '../../supabase.js';
+import { slugify } from '../../utils/slugify.js';
 
-export async function getStaticPaths() {
-  const projects = await getCollection('work');
-  return projects.map(project => ({
-    params: { slug: project.slug || project.id.replace(/\.md$/, '') },
-    props: { project, allProjects: projects },
-  }));
+const { slug } = Astro.params;
+
+// Fetch all projects to find the matching slug and get related projects
+// (Since we don't store the slug in DB, we generate it on the fly to match)
+const { data: allProjects, error } = await supabase
+  .from('portfolio_work')
+  .select('*')
+  .order('created_at', { ascending: false });
+
+if (error || !allProjects) {
+  return Astro.redirect('/404');
 }
 
-const { project, allProjects } = Astro.props;
-const { Content } = await render(project);
-const { title, category, description, image, gallery, link, pdfFile } = project.data;
+const project = allProjects.find(p => slugify(p.title) === slug);
+
+if (!project) {
+  return Astro.redirect('/404');
+}
+
+const { title, category, description, image_url, pdf_url, link } = project;
 
 // Get 4 related projects (excluding current)
 const related = allProjects.filter(p => p.id !== project.id).slice(0, 4);
@@ -24,38 +34,27 @@ const related = allProjects.filter(p => p.id !== project.id).slice(0, 4);
       <h1 class="title-giant" style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; margin-bottom: 0.5rem;">{title}</h1>
       {category && <p style="text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; color: var(--text-muted); margin-bottom: 2rem;">{category}</p>}
       
-      {description && <p style="font-size: 1.125rem; color: var(--navy); line-height: 1.8; margin-bottom: 2.5rem;">{description}</p>}
+      {description && description.trim() !== '' && (
+        <p style="font-size: 1.125rem; color: var(--navy); line-height: 1.8; margin-bottom: 2.5rem; text-align: left;">{description}</p>
+      )}
       
+      {/* Go to website button conditionally rendered */}
       {link && link.trim() !== '' && link.trim() !== '#' && (
         <a href={link} target="_blank" class="btn btn-gold" style="font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 1rem 3rem;">GO TO WEBSITE</a>
       )}
     </header>
 
-    
     <!-- PDF Flipbook -->
-    {pdfFile && (
+    {pdf_url && (
       <div class="container" style="margin-bottom: 4rem;">
         <h3 style="text-align: center; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.25rem; margin-bottom: 2rem; font-family: 'Inter', sans-serif;">Interactive Flipbook</h3>
-        <div class="_df_book" source={encodeURI(pdfFile)} id="pdf-flipbook" style="height: 600px; width: 100%;"></div>
+        <div class="_df_book" source={encodeURI(pdf_url)} id="pdf-flipbook" style="height: 600px; width: 100%;"></div>
       </div>
     )}
 
-    <!-- Gallery / Masonry Layout -->
+    <!-- Main Image -->
     <div class="container">
-      {image && <img src={image} alt={`${title} Cover`} style="width: 100%; height: auto; border-radius: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);" />}
-      
-      {gallery && gallery.length > 0 && (
-        <div class="masonry-gallery">
-          {gallery.map((img) => (
-            <img src={img} alt={`${title} Gallery Image`} loading="lazy" />
-          ))}
-        </div>
-      )}
-    </div>
-
-    <!-- Content (if any markdown text exists) -->
-    <div class="container project-content section-sm" style="max-width: 800px; margin: 0 auto; font-size: 1.125rem;">
-      <Content />
+      {image_url && <img src={image_url} alt={`${title} Cover`} style="width: 100%; height: auto; border-radius: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);" />}
     </div>
   </article>
 
@@ -67,8 +66,8 @@ const related = allProjects.filter(p => p.id !== project.id).slice(0, 4);
         
         <div class="related-grid">
           {related.map(rel => (
-            <a href={`/work/${rel.slug || rel.id.replace(/\.md$/, '')}`} class="related-card" style="display: block; overflow: hidden; border-radius: 4px; background: #fff;">
-              <img src={rel.data.image || rel.data.coverImage || '/assets/images/placeholder.jpg'} alt={rel.data.title} loading="lazy" />
+            <a href={`/work/${slugify(rel.title)}`} class="related-card" style="display: block; overflow: hidden; border-radius: 4px; background: #fff;">
+              <img src={rel.image_url || '/assets/images/placeholder.jpg'} alt={rel.title} loading="lazy" style="width: 100%; display: block;" />
             </a>
           ))}
         </div>
@@ -76,7 +75,7 @@ const related = allProjects.filter(p => p.id !== project.id).slice(0, 4);
     </section>
   )}
 
-  {pdfFile && (
+  {pdf_url && (
     <Fragment>
       <link href="https://cdn.jsdelivr.net/npm/@dearhive/dearflip-jquery-flipbook@1.7.3/dflip/css/dflip.min.css" rel="stylesheet" />
       <link href="https://cdn.jsdelivr.net/npm/@dearhive/dearflip-jquery-flipbook@1.7.3/dflip/css/themify-icons.min.css" rel="stylesheet" />

@@ -1,16 +1,27 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection, getEntry } from 'astro:content';
+import { supabase } from '../supabase.js';
+import { slugify } from '../utils/slugify.js';
 
 let projects = [];
 try {
-  const allProjects = await getCollection('work');
-  const featuredSlugs = ['roberto-clemente-foundation-booklet', 'business-cards', 'degan-tax'];
-  projects = featuredSlugs
-    .map(slug => allProjects.find(p => (p.slug || p.id.replace(/\.md$/, '')) === slug))
-    .filter(Boolean);
-  if (projects.length === 0) projects = allProjects.slice(0, 3);
-} catch (e) {}
+  const { data } = await supabase
+    .from('portfolio_work')
+    .select('*')
+    .order('created_at', { ascending: false });
+    
+  if (data) {
+    // Try to get featured first
+    projects = data.filter(p => p.featured).slice(0, 3);
+    // If not enough featured, fill with latest
+    if (projects.length < 3) {
+      const remaining = data.filter(p => !p.featured).slice(0, 3 - projects.length);
+      projects = [...projects, ...remaining];
+    }
+  }
+} catch (e) {
+  console.error("Error fetching projects", e);
+}
 
 let homeData = {
   heroTitle: "Elevating Brands",
@@ -18,13 +29,6 @@ let homeData = {
   heroDescription: "I am a graphic designer & web developer specializing in premium digital experiences, brand identity, and scalable design systems.",
   backgroundVideo: "/assets/videos/designer-working.mp4"
 };
-
-try {
-  const entry = await getEntry('pages', 'home');
-  if (entry) {
-    homeData = entry.data;
-  }
-} catch (e) {}
 ---
 <Layout title="Carlos Ozuna | Premium Design Portfolio">
   
@@ -54,12 +58,12 @@ try {
     
     <div class="gallery-grid">
       {projects.map((project) => (
-        <a href={`/work/${project.slug || project.id.replace(/\.md$/, "")}`} class="gallery-card">
+        <a href={`/work/${slugify(project.title)}`} class="gallery-card">
           <div class="gallery-image-wrap">
-            <img src={project.data.image || project.data.coverImage || '/assets/images/placeholder.jpg'} alt={project.data.title} class="gallery-image" loading="lazy" />
+            <img src={project.image_url || '/assets/images/placeholder.jpg'} alt={project.title} class="gallery-image" loading="lazy" />
           </div>
-          <h3>{project.data.title}</h3>
-          <p>{project.data.category || 'Graphic Design'}</p>
+          <h3>{project.title}</h3>
+          <p>{project.category || 'Graphic Design'}</p>
         </a>
       ))}
       {projects.length === 0 && (

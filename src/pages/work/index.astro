@@ -1,0 +1,86 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { supabase } from '../../supabase.js';
+import { slugify } from '../../utils/slugify.js';
+
+let projects = [];
+try {
+  const { data } = await supabase
+    .from('portfolio_work')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (data) projects = data;
+} catch (e) {
+  console.error("Error fetching projects", e);
+}
+
+// Get unique categories for the filter
+const categories = ['All Projects', ...new Set(projects.map(p => p.category).filter(Boolean))];
+---
+<Layout title="Work | Carlos Ozuna">
+  <section class="section" style="padding-top: 5rem;">
+    <div class="container text-center" style="margin-bottom: 4rem;">
+      <h1 class="title-giant">Portfolio</h1>
+      <p class="subtitle" style="margin: 0 auto;">A curated gallery of my latest graphic design, branding, and web development projects.</p>
+    </div>
+
+    <div class="container">
+      <div class="filter-group text-center" style="margin-bottom: 4rem;">
+        {categories.map((cat, i) => (
+          <button class={`filter-btn ${i === 0 ? 'active' : ''}`} data-filter={cat === 'All Projects' ? 'all' : slugify(cat)}>
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <div class="gallery-grid" id="portfolio-grid">
+        {projects.map((project) => (
+          <a href={`/work/${slugify(project.title)}`} class="gallery-card" data-category={slugify(project.category)}>
+            <div class="gallery-image-wrap">
+              <img src={project.image_url || '/assets/images/placeholder.jpg'} alt={project.title} class="gallery-image" loading="lazy" />
+            </div>
+            <h3>{project.title}</h3>
+            <p>{project.category || 'Graphic Design'}</p>
+          </a>
+        ))}
+        {projects.length === 0 && (
+          <p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">No projects found.</p>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('.gallery-card');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Remove active class from all
+          filterBtns.forEach(b => b.classList.remove('active'));
+          // Add active class to clicked
+          btn.classList.add('active');
+
+          const filterValue = btn.getAttribute('data-filter');
+
+          cards.forEach(card => {
+            if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+              card.style.display = 'block';
+              setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+              }, 10);
+            } else {
+              card.style.opacity = '0';
+              card.style.transform = 'translateY(10px)';
+              setTimeout(() => {
+                card.style.display = 'none';
+              }, 300);
+            }
+          });
+        });
+      });
+    });
+  </script>
+</Layout>
