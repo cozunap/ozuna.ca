@@ -15,10 +15,18 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" 
           rel="stylesheet" 
         />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="alternate icon" href="/favicon.ico" />
       </head>
       <body>
         <nav className="site-nav">
-          <a href="/" className="logo"><span>Carlos </span>Ozuna</a>
+          <a href="/" className="logo" aria-label="Carlos Ozuna Home">
+            <span className="logo-badge">O</span>
+            <span className="logo-text-group">
+              <span className="logo-title"><span>Carlos </span>Ozuna</span>
+              <span className="logo-subtitle">Design Studio</span>
+            </span>
+          </a>
           <div className="nav-links">
             <a href="/work">Work</a>
             <a href="/about">About</a>
