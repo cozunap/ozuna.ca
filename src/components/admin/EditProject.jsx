@@ -73,6 +73,11 @@ export default function EditProject() {
     setSaving(true);
     
     try {
+      let finalDescription = editorContentRef.current;
+      if (joditRef.current && joditRef.current.value !== undefined) {
+        finalDescription = joditRef.current.value;
+      }
+
       let imageUrl = existingImageUrl;
       let pdfUrl = existingPdfUrl;
 
@@ -80,12 +85,7 @@ export default function EditProject() {
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `images/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
         
-      let finalDescription = editorContentRef.current;
-      if (joditRef.current && joditRef.current.value !== undefined) {
-        finalDescription = joditRef.current.value;
-      }
-      
-      const { error } = await supabase.storage.from('portfolio').upload(fileName, imageFile, { upsert: true });
+const { error } = await supabase.storage.from('portfolio').upload(fileName, imageFile, { upsert: true });
         if (error) throw error;
         const { data: publicUrlData } = supabase.storage.from('portfolio').getPublicUrl(fileName);
         imageUrl = publicUrlData.publicUrl;

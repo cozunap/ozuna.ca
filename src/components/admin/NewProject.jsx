@@ -31,6 +31,11 @@ export default function NewProject() {
     setLoading(true);
     
     try {
+      let finalDescription = editorContentRef.current;
+      if (joditRef.current && joditRef.current.value !== undefined) {
+        finalDescription = joditRef.current.value;
+      }
+
       let imageUrl = '';
       let pdfUrl = '';
 
@@ -69,12 +74,7 @@ export default function NewProject() {
       }
 
       
-      let finalDescription = editorContentRef.current;
-      if (joditRef.current && joditRef.current.value !== undefined) {
-        finalDescription = joditRef.current.value;
-      }
-      
-      const { error } = await supabase
+const { error } = await supabase
         .from('portfolio_work')
         .insert([{
           title: formData.title,
