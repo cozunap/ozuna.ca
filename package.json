@@ -6,21 +6,24 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "preview": "astro preview",
-    "astro": "astro",
-    "dev": "astro dev",
-    "build": "astro build"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "pages:build": "npx @cloudflare/next-on-pages"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.3.1",
-    "@astrojs/react": "^6.0.4",
+    "@cloudflare/next-on-pages": "^1.13.16",
     "@supabase/supabase-js": "^2.116.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
-    "astro": "^7.2.4",
     "jodit-react": "^5.5.8",
     "marked": "^18.0.10",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "next": "^15.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.2",
+    "typescript": "7.0.2"
   }
 }
