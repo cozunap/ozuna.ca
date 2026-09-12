@@ -1,4 +1,0 @@
-backend:
-  name: github
-  repo: cozunap/ozuna.ca
-  branch: main
