@@ -46,7 +46,7 @@ export default function EditProject() {
         .single();
       
       if (error) {
-        alert('Project not found');
+        
         window.location.href = '/admin/projects';
       } else {
         editorContentRef.current = data.description || "";
@@ -126,7 +126,7 @@ const { error } = await supabase.storage.from('portfolio').upload(fileName, imag
         console.error('Webhook error:', webhookError);
       }
 
-      alert('¡Proyecto actualizado con éxito!');
+      
       window.location.href = '/admin/projects';
     } catch (error) {
       console.error('Update Error:', error);

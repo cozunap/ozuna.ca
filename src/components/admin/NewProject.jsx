@@ -99,7 +99,7 @@ const { error } = await supabase
         console.error('Webhook error:', webhookError);
       }
 
-      alert('¡Proyecto creado y archivos subidos con éxito!');
+      
       window.location.href = '/admin/dashboard';
     } catch (error) {
       console.error('Upload Error:', error);
