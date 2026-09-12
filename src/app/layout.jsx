@@ -20,12 +20,10 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <nav className="site-nav">
-          <a href="/" className="logo" aria-label="Carlos Ozuna Home">
-            <span className="logo-badge">O</span>
-            <span className="logo-text-group">
-              <span className="logo-title"><span>Carlos </span>Ozuna</span>
-              <span className="logo-subtitle">Design Studio</span>
-            </span>
+          <a href="/" className="logo" aria-label="Carlos Ozuna Portfolio">
+            <span className="logo-first">Carlos</span>
+            <span className="logo-last">Ozuna</span>
+            <span className="logo-dot">.</span>
           </a>
           <div className="nav-links">
             <a href="/work">Work</a>
