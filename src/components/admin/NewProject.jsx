@@ -18,9 +18,12 @@ export default function NewProject() {
   const [loading, setLoading] = useState(false);
   
   const imageInputRef = useRef(null);
+  const editorContentRef = useRef("");
   const pdfInputRef = useRef(null);
 
   const categories = ['Graphic Design', 'Web Design', 'Catalog', 'Branding'];
+
+  const editorConfig = React.useMemo(() => ({ theme: 'dark', minHeight: 300, buttons: ['bold', 'italic', 'underline', '|', 'ul', 'ol', '|', 'font', 'fontsize', 'brush', 'paragraph', '|', 'image', 'link', '|', 'align', 'undo', 'redo', 'fullsize'], style: { background: 'var(--admin-input-bg)', color: 'var(--admin-text)' } }), []);
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -69,7 +72,7 @@ export default function NewProject() {
         .insert([{
           title: formData.title,
           category: formData.category,
-          description: formData.description,
+          description: editorContentRef.current,
           link: formData.link,
           featured: formData.featured,
           image_url: imageUrl,
@@ -124,7 +127,7 @@ export default function NewProject() {
 
           <div>
             <label className="admin-label">Description *</label>
-            <JoditEditor value={formData.description} config={{ theme: 'dark', minHeight: 300, buttons: ['bold', 'italic', 'underline', '|', 'ul', 'ol', '|', 'font', 'fontsize', 'brush', 'paragraph', '|', 'image', 'link', '|', 'align', 'undo', 'redo', 'fullsize'], style: { background: 'var(--admin-input-bg)', color: 'var(--admin-text)' } }} onBlur={val => setFormData({...formData, description: val})} onChange={val => setFormData({...formData, description: val})} />
+            <JoditEditor value={formData.description} config={editorConfig} onBlur={val => { editorContentRef.current = val; }} onChange={newContent => { editorContentRef.current = newContent; }} />
           </div>
 
           <input type="file" ref={imageInputRef} style={{ display: 'none' }} accept="image/png, image/jpeg, image/webp" onChange={e => setImageFile(e.target.files[0])} />
