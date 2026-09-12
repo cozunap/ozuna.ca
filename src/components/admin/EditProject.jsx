@@ -24,6 +24,7 @@ export default function EditProject() {
   
   const imageInputRef = useRef(null);
   const editorContentRef = useRef("");
+  const joditRef = useRef(null);
   const pdfInputRef = useRef(null);
 
   const categories = ['Graphic Design', 'Web Design', 'Catalog', 'Branding'];
@@ -78,7 +79,13 @@ export default function EditProject() {
       if (imageFile) {
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `images/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
-        const { error } = await supabase.storage.from('portfolio').upload(fileName, imageFile, { upsert: true });
+        
+      let finalDescription = editorContentRef.current;
+      if (joditRef.current && joditRef.current.value !== undefined) {
+        finalDescription = joditRef.current.value;
+      }
+      
+      const { error } = await supabase.storage.from('portfolio').upload(fileName, imageFile, { upsert: true });
         if (error) throw error;
         const { data: publicUrlData } = supabase.storage.from('portfolio').getPublicUrl(fileName);
         imageUrl = publicUrlData.publicUrl;
@@ -98,7 +105,7 @@ export default function EditProject() {
         .update({
           title: formData.title,
           category: formData.category,
-          description: editorContentRef.current,
+          description: finalDescription,
           link: formData.link,
           featured: formData.featured,
           image_url: imageUrl,
@@ -162,7 +169,7 @@ export default function EditProject() {
 
           <div>
             <label className="admin-label">Description *</label>
-            <JoditEditor value={formData.description} config={editorConfig} onBlur={val => { editorContentRef.current = val; }} onChange={newContent => { editorContentRef.current = newContent; }} />
+            <JoditEditor ref={joditRef} value={formData.description} config={editorConfig} onBlur={val => { editorContentRef.current = val; }} onChange={newContent => { editorContentRef.current = newContent; }} />
           </div>
 
           <input type="file" ref={imageInputRef} style={{ display: 'none' }} accept="image/png, image/jpeg, image/webp" onChange={e => setImageFile(e.target.files[0])} />

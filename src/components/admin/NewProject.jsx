@@ -19,6 +19,7 @@ export default function NewProject() {
   
   const imageInputRef = useRef(null);
   const editorContentRef = useRef("");
+  const joditRef = useRef(null);
   const pdfInputRef = useRef(null);
 
   const categories = ['Graphic Design', 'Web Design', 'Catalog', 'Branding'];
@@ -67,12 +68,18 @@ export default function NewProject() {
         pdfUrl = publicUrlData.publicUrl;
       }
 
+      
+      let finalDescription = editorContentRef.current;
+      if (joditRef.current && joditRef.current.value !== undefined) {
+        finalDescription = joditRef.current.value;
+      }
+      
       const { error } = await supabase
         .from('portfolio_work')
         .insert([{
           title: formData.title,
           category: formData.category,
-          description: editorContentRef.current,
+          description: finalDescription,
           link: formData.link,
           featured: formData.featured,
           image_url: imageUrl,
@@ -127,7 +134,7 @@ export default function NewProject() {
 
           <div>
             <label className="admin-label">Description *</label>
-            <JoditEditor value={formData.description} config={editorConfig} onBlur={val => { editorContentRef.current = val; }} onChange={newContent => { editorContentRef.current = newContent; }} />
+            <JoditEditor ref={joditRef} value={formData.description} config={editorConfig} onBlur={val => { editorContentRef.current = val; }} onChange={newContent => { editorContentRef.current = newContent; }} />
           </div>
 
           <input type="file" ref={imageInputRef} style={{ display: 'none' }} accept="image/png, image/jpeg, image/webp" onChange={e => setImageFile(e.target.files[0])} />
