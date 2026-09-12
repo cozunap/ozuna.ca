@@ -10,7 +10,8 @@ export default function CategoriesList() {
     async function fetchCategories() {
       const { data, error } = await supabase
         .from('portfolio_work')
-        .select('category');
+        .select('category')
+        .neq('category', 'site_page');
       
       if (error) {
         console.error('Error fetching categories:', error);

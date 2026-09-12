@@ -10,6 +10,7 @@ async function getProjectBySlug(slug) {
     const { data: allProjects, error } = await supabase
       .from('portfolio_work')
       .select('*')
+      .neq('category', 'site_page')
       .order('created_at', { ascending: false });
 
     if (error || !allProjects) return null;

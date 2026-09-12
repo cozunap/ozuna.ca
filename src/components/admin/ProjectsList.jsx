@@ -15,6 +15,7 @@ export default function ProjectsList() {
         const { data, error } = await supabase
           .from('portfolio_work')
           .select('*')
+          .neq('category', 'site_page')
           .order('created_at', { ascending: false });
         
         if (error) {

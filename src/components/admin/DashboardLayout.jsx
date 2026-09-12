@@ -4,6 +4,7 @@ export default function DashboardLayout({ children, activeTab = 'dashboard' }) {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: '📊', path: '/admin/dashboard' },
     { id: 'projects', label: 'Projects', icon: '💼', path: '/admin/projects' },
+    { id: 'pages', label: 'Pages (Home / About)', icon: '📄', path: '/admin/pages' },
     { id: 'categories', label: 'Categories', icon: '🏷️', path: '/admin/categories' },
     { id: 'profile', label: 'Profile', icon: '👤', path: '/admin/profile' },
   ];
