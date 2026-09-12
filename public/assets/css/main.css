@@ -1,9 +1,22 @@
 :root {
-  --navy: #0d1f3c;
-  --gold: #b89a5a;
-  --white: #ffffff;
-  --bg-color: #f8fafc;
+  /* 60-30-10 COLOR SYSTEM TOKENS */
+  /* 60% Dominante: Fondos, base neutra y estructural */
+  --color-dominant: #f8fafc;
+  --color-surface: #ffffff;
+  --bg-color: var(--color-dominant);
+  --white: var(--color-surface);
+
+  /* 30% Secundario: Tipografía clave, estructura, tarjetas, bordes */
+  --color-secondary: #0d1f3c;
+  --navy: var(--color-secondary);
+  --text-primary: var(--color-secondary);
   --text-muted: #64748b;
+  --border-subtle: #e2e8f0;
+
+  /* 10% Acento: Llamadas a la acción (CTA), insignias, detalles focales */
+  --color-accent: #b89a5a;
+  --color-accent-hover: #c9a963;
+  --gold: var(--color-accent);
   
   --spacing-sm: 1rem;
   --spacing-md: 2rem;
