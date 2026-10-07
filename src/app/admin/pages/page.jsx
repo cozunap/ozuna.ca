@@ -9,6 +9,8 @@ export default function AdminPagesManager() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
+  const [cvFile, setCvFile] = useState(null);
+  const cvInputRef = React.useRef(null);
 
   // Home Page Form State
   const [homeData, setHomeData] = useState({
@@ -94,14 +96,36 @@ export default function AdminPagesManager() {
     setStatusMsg('');
 
     try {
+      let updatedAboutData = { ...aboutData };
+
+      // Upload CV file if user selected one from their computer
+      if (cvFile) {
+        const fileExt = cvFile.name.split('.').pop();
+        const fileName = `cv/carlos-ozuna-cv-${Date.now()}.${fileExt}`;
+        
+        const { error: uploadErr } = await supabase.storage
+          .from('portfolio')
+          .upload(fileName, cvFile, { upsert: true });
+
+        if (uploadErr) throw uploadErr;
+
+        const { data: publicUrlData } = supabase.storage
+          .from('portfolio')
+          .getPublicUrl(fileName);
+
+        updatedAboutData.cvLink = publicUrlData.publicUrl;
+        setAboutData(updatedAboutData);
+        setCvFile(null);
+      }
+
       const { error } = await supabase
         .from('portfolio_work')
-        .update({ description: JSON.stringify(aboutData) })
+        .update({ description: JSON.stringify(updatedAboutData) })
         .eq('title', '__page_about__')
         .eq('category', 'site_page');
 
       if (error) throw error;
-      setStatusMsg('✅ About Page guardada exitosamente y actualizada en vivo.');
+      setStatusMsg('✅ About Page y CV guardados exitosamente y actualizados en vivo.');
     } catch (err) {
       setStatusMsg('❌ Error guardando: ' + err.message);
     } finally {
@@ -359,13 +383,51 @@ export default function AdminPagesManager() {
             </div>
 
             <div>
-              <label className="admin-label">CV File URL / Path</label>
+              <label className="admin-label">Curriculum Vitae (CV) - PDF File</label>
               <input 
-                type="text" 
-                className="admin-input" 
-                value={aboutData.cvLink} 
-                onChange={e => setAboutData({ ...aboutData, cvLink: e.target.value })} 
+                type="file" 
+                ref={cvInputRef} 
+                style={{ display: 'none' }} 
+                accept="application/pdf" 
+                onChange={e => setCvFile(e.target.files?.[0] || null)} 
               />
+              
+              <div 
+                onClick={() => cvInputRef.current && cvInputRef.current.click()}
+                style={{ 
+                  border: cvFile ? '2px solid var(--admin-gold)' : '2px dashed var(--admin-border)', 
+                  borderRadius: '8px', 
+                  padding: '2rem', 
+                  textAlign: 'center', 
+                  backgroundColor: 'var(--admin-input-bg)', 
+                  cursor: 'pointer', 
+                  transition: 'border-color 0.2s' 
+                }}
+              >
+                <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.5rem' }}>
+                  {cvFile ? '📄' : '📁'}
+                </span>
+                <p style={{ margin: 0, fontWeight: '600', color: cvFile ? 'var(--admin-gold)' : 'var(--admin-text)' }}>
+                  {cvFile ? `Selected: ${cvFile.name}` : 'Click here to upload your CV from your computer (PDF)'}
+                </p>
+                <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.8rem', color: 'var(--admin-text-muted)' }}>
+                  Accepts .pdf files. Will be uploaded directly to your Supabase Storage CDN.
+                </p>
+              </div>
+
+              {aboutData.cvLink && !cvFile && (
+                <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--admin-text-muted)' }}>Current active CV:</span>
+                  <a 
+                    href={aboutData.cvLink} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    style={{ fontSize: '0.85rem', color: 'var(--admin-gold)', textDecoration: 'underline' }}
+                  >
+                    View / Download Current CV
+                  </a>
+                </div>
+              )}
             </div>
 
             <div style={{ marginTop: '1rem' }}>
