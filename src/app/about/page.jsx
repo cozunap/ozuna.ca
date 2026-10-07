@@ -48,7 +48,9 @@ export default async function AboutPage() {
         className="sticky-hero-banner" 
         style={{
           backgroundImage: "url('/assets/images/portfolio-header-bg.webp')",
-          backgroundPosition: 'center top'
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat'
         }}
       >
         <div className="sticky-hero-overlay"></div>
