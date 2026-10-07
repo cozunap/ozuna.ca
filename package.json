@@ -9,7 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "pages:build": "npx @cloudflare/next-on-pages"
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "deploy": "npx @cloudflare/next-on-pages && npx wrangler pages deploy .vercel/output/static --project-name ozuna --branch main"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.16",
