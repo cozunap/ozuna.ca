@@ -53,7 +53,7 @@ export default async function ProjectDetailPage({ params }) {
 
   return (
     <>
-      <article className="section" style={{ paddingTop: '5rem' }}>
+      <article className="section" style={{ paddingTop: '8rem' }}>
         <header className="container" style={{ textAlign: 'center', maxWidth: '900px', margin: '0 auto 4rem auto' }}>
           <h1 className="title-giant" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 700, marginBottom: '0.5rem' }}>
             {title}

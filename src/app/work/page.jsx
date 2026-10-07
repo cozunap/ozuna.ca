@@ -32,18 +32,13 @@ export default async function WorkPage() {
   return (
     <div>
       <section 
-        className="portfolio-hero" 
+        className="sticky-hero-banner" 
         style={{
-          position: 'relative',
-          padding: '8rem 0',
-          marginBottom: '4rem',
           backgroundImage: "url('/assets/images/portfolio-header-bg.webp')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
         }}
       >
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.85)', zIndex: 1 }}></div>
-        <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
+        <div className="sticky-hero-overlay"></div>
+        <div className="container sticky-hero-content">
           <h1 className="title-giant text-white" style={{ marginBottom: '1rem' }}>Portfolio</h1>
           <p className="subtitle text-white" style={{ margin: '0 auto', opacity: 0.9 }}>
             A curated gallery of my latest graphic design, branding, and web development projects.
@@ -51,11 +46,13 @@ export default async function WorkPage() {
         </div>
       </section>
 
-      <section className="section" style={{ paddingTop: 0 }}>
-        <div className="container">
-          <WorkGalleryClient projects={projects} categories={categories} />
-        </div>
-      </section>
+      <div className="page-content-wrapper">
+        <section className="section" style={{ paddingTop: '4rem' }}>
+          <div className="container">
+            <WorkGalleryClient projects={projects} categories={categories} />
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

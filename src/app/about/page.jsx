@@ -45,56 +45,54 @@ export default async function AboutPage() {
   return (
     <div>
       <section 
-        className="about-hero" 
+        className="sticky-hero-banner" 
         style={{
-          position: 'relative',
-          padding: '8rem 0',
-          marginBottom: '4rem',
           backgroundImage: "url('/assets/images/portfolio-header-bg.webp')",
-          backgroundSize: 'cover',
           backgroundPosition: 'center top'
         }}
       >
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.85)', zIndex: 1 }}></div>
-        <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
+        <div className="sticky-hero-overlay"></div>
+        <div className="container sticky-hero-content">
           <h1 className="title-giant text-white" style={{ marginBottom: '1rem' }}>{content.heroTitle}</h1>
           <p className="subtitle text-white" style={{ margin: '0 auto', opacity: 0.9 }}>{content.heroSubtitle}</p>
         </div>
       </section>
 
-      <div className="container" style={{ maxWidth: '800px', margin: '0 auto', fontSize: '1.125rem', color: 'var(--navy)', lineHeight: 1.8, textAlign: 'center' }}>
-        <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem' }}>
-          {content.headline}
-        </h3>
-        <p style={{ marginBottom: '2.5rem' }}>{content.intro}</p>
+      <div className="page-content-wrapper">
+        <div className="container" style={{ maxWidth: '800px', margin: '0 auto', padding: '5rem 5% 3rem 5%', fontSize: '1.125rem', color: 'var(--navy)', lineHeight: 1.8, textAlign: 'center' }}>
+          <h3 style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem' }}>
+            {content.headline}
+          </h3>
+          <p style={{ marginBottom: '2.5rem' }}>{content.intro}</p>
 
-        <div style={{ marginBottom: '5rem', textAlign: 'center' }}>
-          {content.body1 && (
-            <p style={{ marginBottom: '1.5rem' }}>{content.body1}</p>
-          )}
-          {content.body2 && (
-            <p style={{ marginBottom: '1.5rem' }}>{content.body2}</p>
-          )}
-          {content.body3 && (
-            <p>{content.body3}</p>
-          )}
+          <div style={{ marginBottom: '4rem', textAlign: 'center' }}>
+            {content.body1 && (
+              <p style={{ marginBottom: '1.5rem' }}>{content.body1}</p>
+            )}
+            {content.body2 && (
+              <p style={{ marginBottom: '1.5rem' }}>{content.body2}</p>
+            )}
+            {content.body3 && (
+              <p>{content.body3}</p>
+            )}
+          </div>
         </div>
-      </div>
 
-      <div className="section-sm" style={{ background: '#f1f5f9', textAlign: 'center', borderTop: '1px solid #e2e8f0' }}>
-        <div className="container">
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>{content.contactTitle}</h2>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center', maxWidth: '300px', margin: '0 auto' }}>
-            <a href={content.cvLink || '/carlos-ozuna-cv.pdf'} download className="btn btn-outline" style={{ width: '100%', borderColor: 'var(--navy)' }}>
-              Download My CV
-            </a>
-            <a href="/work" className="btn btn-outline" style={{ width: '100%', borderColor: 'var(--navy)' }}>
-              See Carlos Ozuna's Work
-            </a>
-            <a href={`mailto:${content.contactEmail || 'contact@ozuna.ca'}`} className="btn btn-gold" style={{ width: '100%' }}>
-              Contact Me
-            </a>
+        <div className="section-sm" style={{ background: '#f1f5f9', textAlign: 'center', borderTop: '1px solid #e2e8f0' }}>
+          <div className="container">
+            <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>{content.contactTitle}</h2>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center', maxWidth: '300px', margin: '0 auto' }}>
+              <a href={content.cvLink || '/carlos-ozuna-cv.pdf'} download className="btn btn-outline" style={{ width: '100%', borderColor: 'var(--navy)' }}>
+                Download My CV
+              </a>
+              <a href="/work" className="btn btn-outline" style={{ width: '100%', borderColor: 'var(--navy)' }}>
+                See Carlos Ozuna's Work
+              </a>
+              <a href={`mailto:${content.contactEmail || 'contact@ozuna.ca'}`} className="btn btn-gold" style={{ width: '100%' }}>
+                Contact Me
+              </a>
+            </div>
           </div>
         </div>
       </div>
