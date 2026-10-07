@@ -34,11 +34,6 @@ export default function RootLayout({ children }) {
         <main>
           {children}
         </main>
-
-        <footer className="site-footer">
-          <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Let's create something beautiful.</h2>
-          <p>&copy; {new Date().getFullYear()} Carlos Ozuna. All rights reserved.</p>
-        </footer>
       </body>
     </html>
   );

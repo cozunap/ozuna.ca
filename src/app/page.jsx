@@ -85,35 +85,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      <section className="section container">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
-          <h2 className="title-section" style={{ margin: 0 }}>{content.sectionTitle || 'Selected Works'}</h2>
-          <a href="/work" style={{ color: 'var(--charcoal)', fontWeight: 600, fontSize: '1rem', letterSpacing: '0.02em', borderBottom: '1px solid var(--charcoal)', paddingBottom: '2px' }}>
-            View all works &rarr;
-          </a>
-        </div>
-        
-        <div className="gallery-grid">
-          {projects.map((project) => (
-            <a key={project.id} href={`/work/${slugify(project.title)}`} className="gallery-card">
-              <div className="gallery-image-wrap">
-                <img 
-                  src={project.image_url || '/assets/images/placeholder.jpg'} 
-                  alt={project.title} 
-                  className="gallery-image" 
-                  loading="lazy" 
-                />
-              </div>
-              <h3>{project.title}</h3>
-              <p>{project.category || 'Graphic Design'}</p>
-            </a>
-          ))}
-          {projects.length === 0 && (
-            <p style={{ color: 'var(--text-muted)', gridColumn: '1/-1' }}>No projects added yet.</p>
-          )}
-        </div>
-      </section>
     </div>
   );
 }
