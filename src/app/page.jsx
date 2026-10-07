@@ -74,7 +74,7 @@ export default async function HomePage() {
         <div className="container hero-content text-center">
           <h1 className="title-giant text-white">
             {content.heroTitleLine1} <br />
-            <span style={{ color: 'var(--gold)', fontStyle: 'italic' }}>{content.heroTitleLine2}</span>
+            <span style={{ color: 'rgba(255, 255, 255, 0.85)', fontStyle: 'italic', fontWeight: 300 }}>{content.heroTitleLine2}</span>
           </h1>
           <p className="subtitle text-white" style={{ margin: '0 auto 3rem auto', opacity: 0.9 }}>
             {content.heroSubtitle}
@@ -89,7 +89,7 @@ export default async function HomePage() {
       <section className="section container">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
           <h2 className="title-section" style={{ margin: 0 }}>{content.sectionTitle || 'Selected Works'}</h2>
-          <a href="/work" style={{ color: 'var(--gold)', fontWeight: 600, fontSize: '1.1rem' }}>
+          <a href="/work" style={{ color: 'var(--charcoal)', fontWeight: 600, fontSize: '1rem', letterSpacing: '0.02em', borderBottom: '1px solid var(--charcoal)', paddingBottom: '2px' }}>
             View all works &rarr;
           </a>
         </div>
