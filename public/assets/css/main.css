@@ -424,3 +424,202 @@ a { text-decoration: none; color: inherit; }
 .ql-editor {
   color: var(--admin-text) !important;
 }
+
+/* ABOUT ME - EXACT OZUNA.CA/ABOUT-ME/ STYLING */
+.about-content-section {
+  padding: 6rem 0 7rem 0;
+}
+.about-container {
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-header-titles {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.about-outline-title {
+  font-family: 'Raleway', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 4.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--charcoal);
+  margin: 0;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+  letter-spacing: 0.05em;
+}
+.about-watermark-title {
+  font-family: 'Raleway', sans-serif;
+  font-size: clamp(5.5rem, 13vw, 8.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: rgba(37, 37, 37, 0.05);
+  margin: -60px 0 0 0;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+  user-select: none;
+  letter-spacing: 0.04em;
+}
+@media (max-width: 600px) {
+  .about-watermark-title {
+    margin-top: -35px;
+  }
+}
+
+.about-down-icon-wrap {
+  margin: 1.5rem auto 3rem auto;
+  text-align: center;
+}
+.about-down-icon {
+  display: inline-block;
+  color: var(--charcoal);
+  animation: aboutMoveUpDown 2s ease infinite;
+  transition: color 0.3s ease;
+}
+.about-down-icon:hover {
+  color: #ff1d25;
+}
+.about-down-icon svg {
+  width: 50px;
+  height: 50px;
+}
+@keyframes aboutMoveUpDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(12px); }
+  100% { transform: translateY(0); }
+}
+
+.about-text-body {
+  font-family: 'Raleway', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 2em;
+  letter-spacing: 1.5px;
+  color: #1e2025;
+  text-align: center;
+}
+.about-lead-intro {
+  margin-bottom: 2rem;
+}
+.about-lead-intro strong {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--charcoal);
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+.about-subheading-bold {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--charcoal);
+  margin: 2rem 0 1rem 0;
+}
+.about-skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 2.5rem auto;
+  max-width: 720px;
+  text-align: center;
+}
+.about-skills-list li {
+  margin-bottom: 1rem;
+  line-height: 1.85em;
+  position: relative;
+  padding: 0 1rem;
+}
+.about-approach-para {
+  margin: 2.5rem 0 1.5rem 0;
+}
+.about-approach-para strong {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--charcoal);
+}
+.about-closing-para {
+  margin-bottom: 1.5rem;
+}
+.about-thanks-para {
+  font-weight: 600;
+  color: var(--charcoal);
+  margin-bottom: 3.5rem;
+}
+
+.about-emblem-wrap {
+  margin: 4rem auto 3.5rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-image: url('/assets/images/favico.svg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 70px auto;
+  min-height: 200px;
+}
+.about-emblem-badge {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.rotating-text-path {
+  animation: spinTextPath 22s linear infinite;
+}
+@keyframes spinTextPath {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.about-emblem-center-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--charcoal);
+}
+
+.about-contact-block {
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+.about-contact-heading {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.35rem);
+  font-weight: 400;
+  text-transform: capitalize;
+  color: var(--charcoal);
+  margin-bottom: 2rem;
+}
+.about-contact-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+.about-contact-links-list li a {
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: capitalize;
+  line-height: 2em;
+  color: var(--charcoal);
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+.about-contact-links-list li a:hover {
+  color: #ff1d25;
+  border-bottom-color: #ff1d25;
+}
