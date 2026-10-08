@@ -6,16 +6,12 @@ import { useLanguage } from '../lib/i18n/LanguageContext.jsx';
 
 export default function SiteHeader() {
   const pathname = usePathname();
-  const { lang, setLang, t, isFr } = useLanguage();
+  const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // On project detail pages (/work/something), the background is white/light, so we use dark charcoal text.
   // On home (/), work (/work), and about (/about), there is a dark hero banner, so white text is used.
   const isLightPage = pathname && pathname.startsWith('/work/') && pathname !== '/work';
-
-  const toggleLanguage = () => {
-    setLang(isFr ? 'en' : 'fr');
-  };
 
   return (
     <header className={`site-nav-header ${isLightPage ? 'nav-dark-text' : ''}`}>
@@ -27,42 +23,16 @@ export default function SiteHeader() {
           <span className="logo-dot">.</span>
         </a>
 
-        {/* DESKTOP NAV LINKS & LANGUAGE TOGGLE */}
+        {/* DESKTOP NAV LINKS (PURE AUTOMATIC BROWSER DETECTION, NO SELECTOR BUTTON) */}
         <div className="nav-desktop-actions">
           <div className="nav-links">
             <a href="/work">{t.nav.work}</a>
             <a href="/about">{t.nav.about}</a>
           </div>
-
-          {/* ELEGANT CANADIAN FRENCH / ENGLISH TOGGLE */}
-          <div className="lang-switcher-wrap">
-            <button
-              type="button"
-              onClick={toggleLanguage}
-              className={`lang-switch-btn ${isLightPage ? 'lang-switch-dark' : 'lang-switch-light'}`}
-              aria-label={t.nav.ariaToggleLang}
-              title={isFr ? 'English' : 'Français canadien'}
-            >
-              <span className={`lang-pill ${!isFr ? 'active' : ''}`}>EN</span>
-              <span className="lang-divider">/</span>
-              <span className={`lang-pill ${isFr ? 'active' : ''}`}>FR</span>
-            </button>
-          </div>
         </div>
 
-        {/* MOBILE ACTIONS: LANGUAGE PILL + HAMBURGER */}
+        {/* MOBILE ACTIONS (HAMBURGER TOGGLE) */}
         <div className="nav-mobile-actions">
-          <button
-            type="button"
-            onClick={toggleLanguage}
-            className={`lang-switch-btn ${isLightPage ? 'lang-switch-dark' : 'lang-switch-light'}`}
-            aria-label={t.nav.ariaToggleLang}
-          >
-            <span className={`lang-pill ${!isFr ? 'active' : ''}`}>EN</span>
-            <span className="lang-divider">/</span>
-            <span className={`lang-pill ${isFr ? 'active' : ''}`}>FR</span>
-          </button>
-
           <button
             type="button"
             className="mobile-hamburger-btn"

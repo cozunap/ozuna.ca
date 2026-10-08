@@ -21,36 +21,28 @@ export function middleware(request) {
     return NextResponse.next();
   }
 
-  // 1. Check if user already has an explicit preference in cookies
-  const cookieLang = request.cookies.get('ozuna_preferred_lang')?.value;
-
+  // Pure browser detection: Read Accept-Language header sent by the client's browser
+  const acceptLanguage = request.headers.get('accept-language') || '';
   let detectedLang = 'en';
 
-  if (cookieLang === 'fr' || cookieLang === 'en') {
-    detectedLang = cookieLang;
-  } else {
-    // 2. Read Accept-Language header from browser
-    const acceptLanguage = request.headers.get('accept-language') || '';
-    // E.g. "fr-CA,fr;q=0.9,en-US;q=0.8,en;q=0.7"
-    if (acceptLanguage) {
-      const preferred = acceptLanguage.split(',')[0].trim().toLowerCase();
-      if (preferred.startsWith('fr')) {
-        detectedLang = 'fr';
-      }
+  if (acceptLanguage) {
+    // Check if any preferred language is French (e.g. "fr-CA", "fr-FR", "fr")
+    const languages = acceptLanguage.split(',').map((item) => item.trim().toLowerCase());
+    const isFrench = languages.some((l) => l.startsWith('fr'));
+    if (isFrench) {
+      detectedLang = 'fr';
     }
   }
 
   const response = NextResponse.next();
   response.headers.set('x-ozuna-lang', detectedLang);
 
-  // If cookie is not set yet, set it so client and server remain synchronized
-  if (!cookieLang) {
-    response.cookies.set('ozuna_preferred_lang', detectedLang, {
-      path: '/',
-      maxAge: 31536000,
-      sameSite: 'lax',
-    });
-  }
+  // Keep cookie in sync with detected browser language
+  response.cookies.set('ozuna_preferred_lang', detectedLang, {
+    path: '/',
+    maxAge: 31536000,
+    sameSite: 'lax',
+  });
 
   return response;
 }
