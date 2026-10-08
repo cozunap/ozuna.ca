@@ -7,6 +7,7 @@ export const metadata = {
 
 import SiteHeader from '../components/SiteHeader.jsx';
 import SiteFooter from '../components/SiteFooter.jsx';
+import BackToTop from '../components/BackToTop.jsx';
 import { LanguageProvider } from '../lib/i18n/LanguageContext.jsx';
 
 export default function RootLayout({ children }) {
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
           </main>
 
           <SiteFooter />
+          <BackToTop />
         </LanguageProvider>
       </body>
     </html>

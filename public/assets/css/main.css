@@ -233,16 +233,26 @@ a, button {
 }
 
 /* ========================================================
-   NAVIGATION & BILINGUAL LANGUAGE SWITCHER (EN / FR-CA)
+   NAVIGATION: STICKY BLURRED HEADER
 ======================================================== */
 .site-nav-header {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   background: transparent;
-  z-index: 1000;
+  z-index: 10000;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* STICKY ACTIVE STATE ON SCROLL */
+.site-nav-header.nav-is-sticky {
+  background: rgba(13, 15, 19, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
 }
 
 .site-nav-inner {
@@ -252,6 +262,11 @@ a, button {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: padding 0.3s ease;
+}
+
+.site-nav-header.nav-is-sticky .site-nav-inner {
+  padding: 0.95rem 4%;
 }
 
 .nav-desktop-actions {
@@ -317,55 +332,17 @@ a, button {
   opacity: 0.85;
 }
 
-/* ELEGANT BILINGUAL PILL SWITCHER */
-.lang-switcher-wrap {
-  display: inline-flex;
-  align-items: center;
-}
-
-.lang-switch-btn {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  color: #ffffff;
-  padding: 0.35rem 0.75rem;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  transition: all 0.25s ease;
-}
-
-.lang-switch-btn:hover {
-  border-color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.lang-switch-btn .lang-pill {
-  opacity: 0.45;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.lang-switch-btn .lang-pill.active {
-  opacity: 1;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.lang-switch-btn .lang-divider {
-  opacity: 0.3;
-  font-size: 0.7rem;
-}
-
 /* LIGHT THEME HEADER OVERRIDES (FOR /work/[slug]) */
 .site-nav-header.nav-dark-text {
   border-bottom: 1px solid rgba(55, 58, 71, 0.12);
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.site-nav-header.nav-dark-text.nav-is-sticky {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
 }
 
 .nav-dark-text .logo,
@@ -384,20 +361,6 @@ a, button {
 .nav-dark-text .nav-links a:hover {
   color: #000000 !important;
   opacity: 0.7;
-}
-
-.nav-dark-text .lang-switch-btn {
-  border-color: rgba(55, 58, 71, 0.3);
-  color: var(--charcoal);
-}
-
-.nav-dark-text .lang-switch-btn:hover {
-  border-color: var(--charcoal);
-  background: rgba(55, 58, 71, 0.05);
-}
-
-.nav-dark-text .lang-switch-btn .lang-pill.active {
-  color: var(--charcoal);
 }
 
 /* MOBILE ACTIONS */
@@ -470,6 +433,57 @@ a, button {
   }
   .nav-mobile-actions {
     display: flex;
+  }
+}
+
+/* ========================================================
+   BACK TO TOP BUTTON (PREMIUM SQUARE RALPH LAUREN STYLE)
+======================================================== */
+.back-to-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  background-color: #0d0f13;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9999;
+  border-radius: 0 !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: luxuryFadeUp 0.4s ease both;
+}
+
+.back-to-top-btn:hover {
+  background-color: var(--color-gold, #b89a5a);
+  border-color: var(--color-gold, #b89a5a);
+  color: #ffffff;
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
+}
+
+.back-to-top-icon {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: transform 0.25s ease;
+}
+
+.back-to-top-btn:hover .back-to-top-icon {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .back-to-top-btn {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    width: 42px;
+    height: 42px;
   }
 }
 

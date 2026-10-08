@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '../lib/i18n/LanguageContext.jsx';
 
@@ -8,13 +8,27 @@ export default function SiteHeader() {
   const pathname = usePathname();
   const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 40) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   // On project detail pages (/work/something), the background is white/light, so we use dark charcoal text.
   // On home (/), work (/work), and about (/about), there is a dark hero banner, so white text is used.
   const isLightPage = pathname && pathname.startsWith('/work/') && pathname !== '/work';
 
   return (
-    <header className={`site-nav-header ${isLightPage ? 'nav-dark-text' : ''}`}>
+    <header className={`site-nav-header ${isLightPage ? 'nav-dark-text' : ''} ${isScrolled ? 'nav-is-sticky' : ''}`}>
       <nav className="site-nav-inner">
         {/* LOGO */}
         <a href="/" className="logo" aria-label="Carlos Ozuna Portfolio">
@@ -23,7 +37,7 @@ export default function SiteHeader() {
           <span className="logo-dot">.</span>
         </a>
 
-        {/* DESKTOP NAV LINKS (PURE AUTOMATIC BROWSER DETECTION, NO SELECTOR BUTTON) */}
+        {/* DESKTOP NAV LINKS */}
         <div className="nav-desktop-actions">
           <div className="nav-links">
             <a href="/work">{t.nav.work}</a>
