@@ -582,34 +582,52 @@ a, button {
   margin-bottom: 3.5rem;
   flex-wrap: wrap;
 }
+/* EDITORIAL CATEGORY FILTER TABS (TEXT ONLY, NO STROKE/BOX, ACTIVE BORDER UNDERLINE) */
+.filter-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 0.5rem;
+}
+
 .filter-btn {
-  background: transparent;
-  border: 1px solid #d1d5db;
-  padding: 0.75rem 2rem;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  padding: 0.75rem 0.25rem !important;
   border-radius: 0 !important;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--charcoal);
-  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-  box-shadow: none;
+  letter-spacing: 0.16em;
+  color: #71717a;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: none !important;
+  position: relative;
+  outline: none;
 }
+
 .filter-btn:hover {
-  background: #f1f5f9;
-  border-color: var(--charcoal);
   color: var(--charcoal);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid rgba(25, 27, 34, 0.3) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
+
 .filter-btn.active {
-  background: var(--charcoal);
-  color: #ffffff;
-  border-color: var(--charcoal);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.2);
+  color: var(--charcoal) !important;
+  font-weight: 700;
+  border-bottom: 2px solid var(--charcoal) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 

@@ -24,19 +24,11 @@ export default function WorkGalleryClient({ projects, categories }) {
 
   return (
     <>
-      <div 
-        className="filter-group text-center" 
-        style={{ 
-          marginBottom: '4rem', 
-          display: 'flex', 
-          justifyContent: 'center', 
-          gap: '0.75rem', 
-          flexWrap: 'wrap' 
-        }}
-      >
+      <div className="filter-group">
         {categoryFilters.map((cat) => (
           <button
             key={cat.key}
+            type="button"
             className={`filter-btn ${selectedCategoryKey === cat.key ? 'active' : ''}`}
             onClick={() => setSelectedCategoryKey(cat.key)}
           >
