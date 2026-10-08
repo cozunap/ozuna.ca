@@ -15,22 +15,31 @@ export function LanguageProvider({ children }) {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // 100% Automatic Browser Language Detection Technology
-    // No language selector in browser UI.
+    // Clean up any stale cookies that might have forced French during testing
+    try {
+      document.cookie = 'ozuna_preferred_lang=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      localStorage.removeItem('ozuna_preferred_lang');
+    } catch (e) {
+      // ignore
+    }
+
+    // 100% Strict Primary Browser Language Detection
+    // Inspect user's primary languages in ordered preference:
     let detected = 'en';
 
     if (typeof navigator !== 'undefined') {
-      const browserLangs = (navigator.languages && navigator.languages.length > 0)
-        ? navigator.languages
-        : [navigator.language || navigator.userLanguage];
+      const primaryLang = (
+        (navigator.languages && navigator.languages[0]) ||
+        navigator.language ||
+        navigator.userLanguage ||
+        ''
+      ).toLowerCase();
 
-      const isFrenchBrowser = browserLangs.some((l) => {
-        if (!l) return false;
-        return l.toLowerCase().startsWith('fr');
-      });
-
-      if (isFrenchBrowser) {
+      // Only activate French if the user's PRIMARY (top-ranked) language starts with 'fr'
+      if (primaryLang.startsWith('fr')) {
         detected = 'fr';
+      } else {
+        detected = 'en';
       }
     }
 
