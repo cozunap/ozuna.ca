@@ -9,10 +9,10 @@ export default function SiteFooter() {
   return (
     <footer className="site-footer" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
       <div className="container" style={{ maxWidth: '1400px', margin: '0 auto', textAlign: 'center' }}>
-        <p style={{ margin: '0 0 0.5rem 0', letterSpacing: '0.04em', fontSize: '0.95rem', opacity: 0.9 }}>
+        <p style={{ margin: '0 0 0.35rem 0', letterSpacing: '0.04em', fontSize: '10px', opacity: 0.85 }}>
           {t.footer.rights}
         </p>
-        <p style={{ margin: 0, fontSize: '0.8rem', opacity: 0.6, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+        <p style={{ margin: 0, fontSize: '10px', opacity: 0.6, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
           {t.footer.basedIn}
         </p>
       </div>

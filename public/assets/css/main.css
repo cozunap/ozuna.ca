@@ -491,12 +491,13 @@ a, button {
 .site-footer { 
   background: #0d0f13; 
   color: var(--white); 
-  padding: 4rem 5%; 
+  padding: 3rem 5%; 
   text-align: center; 
 }
 .site-footer p { 
   color: rgba(255,255,255,0.7); 
-  font-size: 0.95rem; 
+  font-size: 10px !important; 
+  line-height: 1.6;
 }
 
 /* HERO VIDEO */
