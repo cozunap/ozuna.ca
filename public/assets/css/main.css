@@ -31,7 +31,7 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--charcoal);
 a { text-decoration: none; color: inherit; }
 
 /* LAYOUT */
-.container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+.container { max-width: 1400px; margin: 0 auto; padding: 0 4%; }
 .section { padding: var(--spacing-xl) 0; }
 .section-sm { padding: var(--spacing-lg) 0; }
 

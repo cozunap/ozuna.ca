@@ -36,8 +36,8 @@ export default function ProjectGalleryView({ images, title }) {
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: 'clamp(1rem, 2.5vw, 2rem)',
-          maxWidth: '1280px',
+          gap: 'clamp(1rem, 2.5vw, 2.5rem)',
+          maxWidth: '1400px',
           margin: '0 auto',
           width: '100%'
         }}

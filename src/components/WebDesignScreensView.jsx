@@ -21,7 +21,7 @@ export default function WebDesignScreensView({ screens, title, coverImage }) {
 
   return (
     <div className="web-screens-showcase" style={{ margin: '3.5rem 0' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '3.5rem', maxWidth: '1100px', margin: '0 auto' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3.5rem', maxWidth: '1350px', margin: '0 auto' }}>
         {allScreens.map((screenSrc, idx) => (
           <div 
             key={`${screenSrc}-${idx}`}
