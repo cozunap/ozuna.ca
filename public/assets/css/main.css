@@ -520,7 +520,7 @@ a, button {
 .hero-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(55, 58, 71, 0.78); /* #373A47 overlay */
+  background: rgba(55, 58, 71, 0.90); /* #373A47 90% overlay */
   z-index: 2;
 }
 .hero-content {
@@ -555,7 +555,7 @@ a, button {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(55, 58, 71, 0.9); /* #373A47 90% overlay */
+  background: rgba(55, 58, 71, 0.90); /* #373A47 90% overlay */
   z-index: 2;
 }
 
