@@ -18,37 +18,62 @@ export function LanguageProvider({ children }) {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // 1. Check user explicit preference stored in localStorage or cookie
     let preferred = null;
+
+    // 1. Check cookie first (synced with server middleware detection)
     try {
-      preferred = localStorage.getItem(LANGUAGE_COOKIE);
+      const match = document.cookie.match(new RegExp('(^|;\\s*)' + LANGUAGE_COOKIE + '=([^;]*)'));
+      if (match && (match[2] === 'fr' || match[2] === 'en')) {
+        preferred = match[2];
+      }
     } catch (e) {
       // ignore
     }
 
+    // 2. Check localStorage
     if (!preferred) {
-      // 2. Read browser language detection (French or Canadian French)
-      // Browsers in Quebec/Canada typically supply 'fr-CA', 'fr', or 'fr-FR'
-      if (typeof navigator !== 'undefined') {
-        const browserLangs = navigator.languages || [navigator.language || navigator.userLanguage];
-        const isFrenchBrowser = browserLangs.some((l) => {
-          if (!l) return false;
-          const clean = l.toLowerCase();
-          return clean.startsWith('fr');
-        });
-
-        if (isFrenchBrowser) {
-          preferred = 'fr';
+      try {
+        const stored = localStorage.getItem(LANGUAGE_COOKIE);
+        if (stored === 'fr' || stored === 'en') {
+          preferred = stored;
         }
+      } catch (e) {
+        // ignore
       }
     }
 
-    if (preferred === 'fr' || preferred === 'en') {
-      setLangState(preferred);
-      document.documentElement.lang = preferred === 'fr' ? 'fr-CA' : 'en';
-    } else {
-      setLangState('en');
-      document.documentElement.lang = 'en';
+    // 3. Read navigator browser language detection (Canadian French / French priority)
+    // If the browser primary or preferred language starts with 'fr' (e.g. fr-CA, fr-FR, fr),
+    // default directly to FR.
+    if (!preferred && typeof navigator !== 'undefined') {
+      const browserLangs = navigator.languages && navigator.languages.length > 0
+        ? navigator.languages
+        : [navigator.language || navigator.userLanguage];
+
+      // Check the user's primary languages
+      const isFrenchBrowser = browserLangs.some((l) => {
+        if (!l) return false;
+        return l.toLowerCase().startsWith('fr');
+      });
+
+      if (isFrenchBrowser) {
+        preferred = 'fr';
+      }
+    }
+
+    // Apply resolved language or fallback to English
+    const finalLang = preferred === 'fr' ? 'fr' : 'en';
+    setLangState(finalLang);
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = finalLang === 'fr' ? 'fr-CA' : 'en';
+      // Persist so subsequent page navigations are instant
+      try {
+        localStorage.setItem(LANGUAGE_COOKIE, finalLang);
+        document.cookie = `${LANGUAGE_COOKIE}=${finalLang}; path=/; max-age=31536000; SameSite=Lax`;
+      } catch (e) {
+        // ignore
+      }
     }
 
     setIsInitialized(true);
