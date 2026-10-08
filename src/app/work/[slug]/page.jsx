@@ -40,6 +40,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
+import ProjectGalleryView from '../../../components/ProjectGalleryView.jsx';
+import FlipbookViewer from '../../../components/FlipbookViewer.jsx';
+
 export default async function ProjectDetailPage({ params }) {
   const { slug } = await params;
   const result = await getProjectBySlug(slug);
@@ -51,52 +54,88 @@ export default async function ProjectDetailPage({ params }) {
   const { project, related } = result;
   const { title, category, description, image_url, pdf_url, link } = project;
 
+  // Check if description contains gallery JSON
+  let parsedDescription = description || '';
+  let galleryImages = [];
+
+  try {
+    if (description && (description.trim().startsWith('{') || description.trim().startsWith('['))) {
+      const parsed = JSON.parse(description);
+      if (parsed.gallery && Array.isArray(parsed.gallery)) {
+        galleryImages = parsed.gallery;
+        parsedDescription = parsed.text || '';
+      } else if (Array.isArray(parsed)) {
+        galleryImages = parsed;
+        parsedDescription = '';
+      }
+    }
+  } catch (e) {
+    // Standard text or html description
+  }
+
+  const isWebDesign = category === 'Web Design';
+
   return (
     <>
       <article className="section" style={{ paddingTop: '8rem' }}>
-        <header className="container" style={{ textAlign: 'center', maxWidth: '900px', margin: '0 auto 4rem auto' }}>
+        <header className="container" style={{ textAlign: 'center', maxWidth: '900px', margin: '0 auto 3.5rem auto' }}>
           <h1 className="title-giant" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 700, marginBottom: '0.5rem' }}>
             {title}
           </h1>
           {category && (
-            <p style={{ textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '2rem' }}>
+            <p style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '2rem' }}>
               {category}
             </p>
           )}
 
-          {description && description.trim() !== '' && (
+          {parsedDescription && parsedDescription.trim() !== '' && (
             <div 
               className="project-description" 
-              style={{ fontSize: '1.125rem', color: 'var(--navy)', lineHeight: 1.8, marginBottom: '2.5rem', textAlign: 'left' }}
-              dangerouslySetInnerHTML={{ __html: description }}
+              style={{ fontSize: '1.125rem', color: 'var(--charcoal)', lineHeight: 1.8, marginBottom: '2.5rem', textAlign: 'center', maxWidth: '750px', margin: '0 auto 2.5rem auto' }}
+              dangerouslySetInnerHTML={{ __html: parsedDescription }}
             />
           )}
 
           {link && link.trim() !== '' && link.trim() !== '#' && (
-            <a href={link} target="_blank" rel="noopener noreferrer" className="btn btn-gold" style={{ fontSize: '0.9rem', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '1rem 3rem' }}>
-              GO TO WEBSITE
-            </a>
+            <div style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
+              <a 
+                href={link} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="btn btn-gold" 
+                style={{ fontSize: '0.9rem', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '1rem 3rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+              >
+                <span>GO TO WEBSITE</span>
+                <span>↗</span>
+              </a>
+            </div>
           )}
         </header>
 
+        {/* INTERACTIVE PDF / FLIPBOOK VIEWER */}
         {pdf_url && (
-          <div className="container" style={{ marginBottom: '4rem' }}>
-            <h3 style={{ textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '1.25rem', marginBottom: '2rem', fontFamily: "'Inter', sans-serif" }}>
-              Interactive Flipbook
-            </h3>
-            <div className="_df_book" source={encodeURI(pdf_url)} id="pdf-flipbook" style={{ height: '600px', width: '100%' }}></div>
+          <div className="container">
+            <FlipbookViewer pdfUrl={pdf_url} title={title} />
           </div>
         )}
 
-        <div className="container">
-          {image_url && (
+        {/* MULTI-IMAGE GALLERY (e.g. Business Cards, Flyers) */}
+        {galleryImages.length > 0 && (
+          <div className="container">
+            <ProjectGalleryView images={galleryImages} title={title} />
+          </div>
+        )}
+
+        {/* MAIN COVER IMAGE (when not already a multi-image gallery or if featured cover is present) */}
+        {image_url && galleryImages.length === 0 && !pdf_url && (
+          <div className="container" style={{ textAlign: 'center' }}>
             <img 
               src={image_url} 
               alt={`${title} Cover`} 
-              style={{ width: '100%', height: 'auto', borderRadius: '4px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }} 
+              style={{ width: '100%', maxWidth: isWebDesign ? '1100px' : '900px', height: 'auto', borderRadius: '6px', boxShadow: '0 8px 30px rgba(0,0,0,0.06)' }} 
             />
-          )}
-        </div>
+          </div>
+        )}
       </article>
 
       {related.length > 0 && (
