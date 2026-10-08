@@ -9,10 +9,10 @@ export default function WebDesignScreensView({ screens, title, coverImage }) {
   const allScreens = React.useMemo(() => {
     let list = [];
     if (coverImage && !screens.includes(coverImage)) {
-      list.push({ src: coverImage, label: 'Main Overview / Hero' });
+      list.push(coverImage);
     }
-    screens.forEach((src, idx) => {
-      list.push({ src, label: `Screen ${idx + 1}` });
+    screens.forEach((src) => {
+      if (!list.includes(src)) list.push(src);
     });
     return list;
   }, [screens, coverImage]);
@@ -21,19 +21,10 @@ export default function WebDesignScreensView({ screens, title, coverImage }) {
 
   return (
     <div className="web-screens-showcase" style={{ margin: '3.5rem 0' }}>
-      <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-        <h3 style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: '1.25rem', fontFamily: "'Inter', sans-serif", color: 'var(--charcoal)', marginBottom: '0.5rem' }}>
-          Website Pages & UI Screens
-        </h3>
-        <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0 }}>
-          Scroll through all responsive pages designed for this platform. Click any screen to zoom.
-        </p>
-      </div>
-
       <div style={{ display: 'flex', flexDirection: 'column', gap: '3.5rem', maxWidth: '1100px', margin: '0 auto' }}>
-        {allScreens.map((item, idx) => (
+        {allScreens.map((screenSrc, idx) => (
           <div 
-            key={`${item.src}-${idx}`}
+            key={`${screenSrc}-${idx}`}
             className="web-screen-device-mockup"
             style={{
               background: '#fff',
@@ -60,11 +51,9 @@ export default function WebDesignScreensView({ screens, title, coverImage }) {
                 <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e', display: 'inline-block' }} />
                 <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27c93f', display: 'inline-block' }} />
               </div>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-                {item.label}
-              </span>
+              
               <button 
-                onClick={() => setActiveModalImg(item.src)}
+                onClick={() => setActiveModalImg(screenSrc)}
                 style={{
                   background: 'transparent',
                   border: 'none',
@@ -81,12 +70,12 @@ export default function WebDesignScreensView({ screens, title, coverImage }) {
 
             {/* SCREENSHOT IMAGE */}
             <div 
-              onClick={() => setActiveModalImg(item.src)}
+              onClick={() => setActiveModalImg(screenSrc)}
               style={{ cursor: 'zoom-in', background: '#f1f5f9', overflow: 'hidden' }}
             >
               <img 
-                src={item.src} 
-                alt={`${title} - ${item.label}`}
+                src={screenSrc} 
+                alt={title}
                 loading="lazy"
                 style={{
                   width: '100%',
