@@ -665,3 +665,37 @@ body.light-nav .site-nav .nav-links a:hover,
     gap: 1.25rem !important;
   }
 }
+
+/* ========================================================
+   GLOBAL DESIGN MANDATE: SHARP SQUARE CORNERS EVERYWHERE
+   (NO ROUNDED CORNERS ON ANY ELEMENT)
+======================================================== */
+*,
+*::before,
+*::after,
+.btn,
+.btn-gold,
+.btn-outline,
+.portfolio-card,
+.portfolio-img-wrap,
+.portfolio-card img,
+.gallery-card,
+.gallery-card-clean,
+.gallery-card-clean img,
+.web-screen-device-mockup,
+.pdf-catalog-container,
+.pdf-catalog-container iframe,
+.related-card,
+.related-card img,
+.admin-card,
+.admin-input,
+.admin-btn,
+.admin-btn-outline,
+input,
+select,
+textarea,
+button,
+img {
+  border-radius: 0 !important;
+}
+

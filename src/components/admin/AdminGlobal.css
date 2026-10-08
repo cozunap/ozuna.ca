@@ -24,7 +24,7 @@ body.admin-mode {
   color: var(--admin-bg);
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: 6px;
+  border-radius: 0px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -51,7 +51,7 @@ body.admin-mode {
   padding: 0.875rem 1rem;
   background-color: var(--admin-input-bg);
   border: 1px solid var(--admin-border);
-  border-radius: 6px;
+  border-radius: 0px;
   color: var(--admin-text);
   font-family: 'Inter', sans-serif;
   outline: none;
@@ -71,6 +71,10 @@ body.admin-mode {
 .admin-card {
   background-color: var(--admin-card);
   border: 1px solid var(--admin-border);
-  border-radius: 12px;
+  border-radius: 0px;
   padding: 1.5rem;
+}
+
+*, *::before, *::after {
+  border-radius: 0 !important;
 }
