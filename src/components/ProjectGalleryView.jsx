@@ -30,46 +30,98 @@ export default function ProjectGalleryView({ images, title }) {
 
   return (
     <div className="project-gallery-container" style={{ margin: '3rem 0', width: '100%' }}>
-      {/* 2-COLUMN MASONRY - EACH BOX WRAPS IMAGE TIGHTLY WITHOUT EXTRA WHITE SPACE */}
+      {/* TRUE 2-COLUMN INTERLEAVED MASONRY - IMAGES FIT EXACTLY WITH ZERO LETTERBOXING / WHITESPACE */}
       <div 
-        className="gallery-two-col-grid"
+        className="masonry-gallery-wrapper"
         style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          width: '100%'
+          width: '100%',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 550px), 1fr))',
+          gap: '2rem',
+          alignItems: 'start'
         }}
       >
-        {images.map((imgSrc, idx) => (
-          <div 
-            key={`${imgSrc}-${idx}`}
-            onClick={() => setActiveModalIndex(idx)}
-            className="gallery-card-clean"
-            style={{
-              cursor: 'zoom-in',
-              overflow: 'hidden',
-              background: '#fff',
-              border: '1px solid #e2e8f0',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
-              transition: 'transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s cubic-bezier(.4,0,.2,1)',
-              padding: 0,
-              lineHeight: 0
-            }}
-          >
-            <img 
-              src={imgSrc} 
-              alt=""
-              loading="lazy"
-              style={{
-                width: '100%',
-                height: 'auto',
-                display: 'block',
-                margin: 0,
-                padding: 0,
-                transition: 'transform 0.35s ease'
-              }}
-            />
-          </div>
-        ))}
+        {/* COLUMN 1 (EVEN INDICES) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', width: '100%' }}>
+          {images.map((imgSrc, idx) => {
+            if (idx % 2 !== 0) return null;
+            return (
+              <div 
+                key={`${imgSrc}-${idx}`}
+                onClick={() => setActiveModalIndex(idx)}
+                className="gallery-card-clean"
+                style={{
+                  cursor: 'zoom-in',
+                  overflow: 'hidden',
+                  background: '#ffffff',
+                  border: '1px solid #e2e8f0',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                  transition: 'transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s cubic-bezier(.4,0,.2,1)',
+                  padding: 0,
+                  margin: 0,
+                  lineHeight: 0,
+                  width: '100%'
+                }}
+              >
+                <img 
+                  src={imgSrc} 
+                  alt=""
+                  loading="lazy"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    display: 'block',
+                    margin: 0,
+                    padding: 0,
+                    transition: 'transform 0.35s ease'
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* COLUMN 2 (ODD INDICES) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', width: '100%' }}>
+          {images.map((imgSrc, idx) => {
+            if (idx % 2 === 0) return null;
+            return (
+              <div 
+                key={`${imgSrc}-${idx}`}
+                onClick={() => setActiveModalIndex(idx)}
+                className="gallery-card-clean"
+                style={{
+                  cursor: 'zoom-in',
+                  overflow: 'hidden',
+                  background: '#ffffff',
+                  border: '1px solid #e2e8f0',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                  transition: 'transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s cubic-bezier(.4,0,.2,1)',
+                  padding: 0,
+                  margin: 0,
+                  lineHeight: 0,
+                  width: '100%'
+                }}
+              >
+                <img 
+                  src={imgSrc} 
+                  alt=""
+                  loading="lazy"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    display: 'block',
+                    margin: 0,
+                    padding: 0,
+                    transition: 'transform 0.35s ease'
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* LIGHTBOX SLIDER MODAL WITH ARROWS */}
