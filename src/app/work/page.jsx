@@ -27,7 +27,7 @@ async function getAllProjects() {
 
 export default async function WorkPage() {
   const projects = await getAllProjects();
-  const categories = ['All Projects', ...new Set(projects.map(p => p.category).filter(Boolean))];
+  const categories = ['All Projects', 'Graphic Design', 'Web Design'];
 
   return (
     <div>

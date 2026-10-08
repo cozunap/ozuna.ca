@@ -27,7 +27,7 @@ export default function EditProject() {
   const joditRef = useRef(null);
   const pdfInputRef = useRef(null);
 
-  const categories = ['Graphic Design', 'Web Design', 'Catalog', 'Branding'];
+  const categories = ['Graphic Design', 'Web Design'];
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);

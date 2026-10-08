@@ -22,7 +22,7 @@ export default function NewProject() {
   const joditRef = useRef(null);
   const pdfInputRef = useRef(null);
 
-  const categories = ['Graphic Design', 'Web Design', 'Catalog', 'Branding'];
+  const categories = ['Graphic Design', 'Web Design'];
 
   const editorConfig = React.useMemo(() => ({ theme: 'dark', minHeight: 300, buttons: ['bold', 'italic', 'underline', '|', 'ul', 'ol', '|', 'font', 'fontsize', 'brush', 'paragraph', '|', 'image', 'link', '|', 'align', 'undo', 'redo', 'fullsize'], style: { background: 'var(--admin-input-bg)', color: 'var(--admin-text)' } }), []);
 
