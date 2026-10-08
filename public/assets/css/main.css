@@ -735,20 +735,31 @@ body.light-nav .site-nav .nav-links a:hover,
   border-bottom-color: #ff1d25;
 }
 
-/* TWO COLUMN GALLERY (STRICT 2 COLUMNS) */
+/* TWO COLUMN MASONRY GALLERY (BOX WRAPS EXACTLY TO IMAGE) */
 .gallery-two-col-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 2rem !important;
+  column-count: 2 !important;
+  column-gap: 2rem !important;
   width: 100% !important;
+}
+
+.gallery-card-clean {
+  break-inside: avoid !important;
+  margin-bottom: 2rem !important;
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
 }
 
 @media (max-width: 640px) {
   .gallery-two-col-grid {
-    grid-template-columns: 1fr !important;
-    gap: 1.25rem !important;
+    column-count: 1 !important;
+    column-gap: 0 !important;
+  }
+  .gallery-card-clean {
+    margin-bottom: 1.25rem !important;
   }
 }
+
 
 /* ========================================================
    GLOBAL DESIGN MANDATE: SHARP SQUARE CORNERS EVERYWHERE

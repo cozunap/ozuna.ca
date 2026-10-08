@@ -30,13 +30,10 @@ export default function ProjectGalleryView({ images, title }) {
 
   return (
     <div className="project-gallery-container" style={{ margin: '3rem 0', width: '100%' }}>
-      {/* STRICT 2-COLUMN GRID - PURE IMAGES ONLY, NO TEXT OR NUMBERS */}
+      {/* 2-COLUMN MASONRY - EACH BOX WRAPS IMAGE TIGHTLY WITHOUT EXTRA WHITE SPACE */}
       <div 
         className="gallery-two-col-grid"
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: 'clamp(1rem, 2.5vw, 2.5rem)',
           maxWidth: '1400px',
           margin: '0 auto',
           width: '100%'
@@ -49,16 +46,13 @@ export default function ProjectGalleryView({ images, title }) {
             className="gallery-card-clean"
             style={{
               cursor: 'zoom-in',
-              borderRadius: '8px',
               overflow: 'hidden',
               background: '#fff',
               border: '1px solid #e2e8f0',
               boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
               transition: 'transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s cubic-bezier(.4,0,.2,1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 0
+              padding: 0,
+              lineHeight: 0
             }}
           >
             <img 
@@ -69,6 +63,8 @@ export default function ProjectGalleryView({ images, title }) {
                 width: '100%',
                 height: 'auto',
                 display: 'block',
+                margin: 0,
+                padding: 0,
                 transition: 'transform 0.35s ease'
               }}
             />
