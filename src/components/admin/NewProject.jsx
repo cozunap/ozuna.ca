@@ -156,15 +156,6 @@ export default function NewProject() {
 
       if (error) throw error;
 
-      // Trigger Cloudflare Pages Rebuild
-      try {
-        await fetch('https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/352756e4-f117-4ab1-9f96-9294f927e1d8', {
-          method: 'POST',
-          mode: 'no-cors'
-        });
-      } catch (webhookError) {
-        console.error('Webhook error:', webhookError);
-      }
 
       window.location.href = '/admin/dashboard';
     } catch (error) {
