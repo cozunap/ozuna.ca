@@ -650,3 +650,18 @@ body.light-nav .site-nav .nav-links a:hover,
   color: #ff1d25;
   border-bottom-color: #ff1d25;
 }
+
+/* TWO COLUMN GALLERY (STRICT 2 COLUMNS) */
+.gallery-two-col-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 2rem !important;
+  width: 100% !important;
+}
+
+@media (max-width: 640px) {
+  .gallery-two-col-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+}

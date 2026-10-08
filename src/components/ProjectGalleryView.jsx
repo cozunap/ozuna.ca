@@ -29,154 +29,129 @@ export default function ProjectGalleryView({ images, title }) {
   }, [activeModalIndex]);
 
   return (
-    <div className="project-gallery-container" style={{ margin: '4rem 0' }}>
-      {/* 2 COLUMNS GRID */}
+    <div className="project-gallery-container" style={{ margin: '3rem 0', width: '100%' }}>
+      {/* STRICT 2-COLUMN GRID - PURE IMAGES ONLY, NO TEXT OR NUMBERS */}
       <div 
-        className="project-gallery-grid-2col" 
+        className="gallery-two-col-grid"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '2rem',
-          maxWidth: '1200px',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: 'clamp(1rem, 2.5vw, 2rem)',
+          maxWidth: '1280px',
           margin: '0 auto',
-          alignItems: 'stretch'
+          width: '100%'
         }}
       >
         {images.map((imgSrc, idx) => (
           <div 
             key={`${imgSrc}-${idx}`}
             onClick={() => setActiveModalIndex(idx)}
-            className="gallery-card"
+            className="gallery-card-clean"
             style={{
               cursor: 'zoom-in',
               borderRadius: '8px',
               overflow: 'hidden',
               background: '#fff',
-              border: '1px solid rgba(0,0,0,0.08)',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+              border: '1px solid #e2e8f0',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
               transition: 'transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s cubic-bezier(.4,0,.2,1)',
-              position: 'relative'
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0
             }}
           >
-            <div style={{ position: 'relative', width: '100%', paddingTop: '65%', overflow: 'hidden', background: '#f8fafc' }}>
-              <img 
-                src={imgSrc} 
-                alt={`${title} #${idx + 1}`}
-                loading="lazy"
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  padding: '0.75rem',
-                  transition: 'transform 0.35s ease'
-                }}
-              />
-            </div>
-            <div style={{ padding: '0.85rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #f1f5f9' }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)' }}>
-                {idx + 1} / {images.length}
-              </span>
-              <span style={{ fontSize: '0.8rem', color: 'var(--gold, #b89a5a)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                View Fullscreen 🔍
-              </span>
-            </div>
+            <img 
+              src={imgSrc} 
+              alt=""
+              loading="lazy"
+              style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block',
+                transition: 'transform 0.35s ease'
+              }}
+            />
           </div>
         ))}
       </div>
 
-      {/* LIGHTBOX MODAL WITH PREV / NEXT ARROWS */}
+      {/* LIGHTBOX SLIDER MODAL WITH ARROWS */}
       {activeModalIndex !== null && (
         <div 
           onClick={() => setActiveModalIndex(null)}
           style={{
             position: 'fixed',
             inset: 0,
-            backgroundColor: 'rgba(15, 17, 23, 0.96)',
-            backdropFilter: 'blur(10px)',
+            backgroundColor: 'rgba(10, 12, 16, 0.96)',
+            backdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            zIndex: 99999,
-            padding: '2rem',
+            zIndex: 999999,
+            padding: '1.5rem',
             userSelect: 'none'
           }}
         >
-          {/* TOP BAR / COUNTER & CLOSE */}
-          <div 
+          {/* CLOSE BUTTON */}
+          <button 
+            onClick={() => setActiveModalIndex(null)}
+            aria-label="Close modal"
             style={{
               position: 'absolute',
               top: '1.5rem',
-              left: '2rem',
               right: '2rem',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              background: 'rgba(255,255,255,0.12)',
+              border: 'none',
               color: '#fff',
-              zIndex: 100000
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              borderRadius: '50%',
+              width: '46px',
+              height: '46px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000000,
+              transition: 'background 0.2s ease'
             }}
           >
-            <div style={{ fontSize: '1rem', fontWeight: 600, color: '#e2e8f0', letterSpacing: '0.05em' }}>
-              {activeModalIndex + 1} / {images.length} • {title}
-            </div>
+            ✕
+          </button>
 
-            <button 
-              onClick={() => setActiveModalIndex(null)}
-              aria-label="Close modal"
-              style={{
-                background: 'rgba(255,255,255,0.15)',
-                border: 'none',
-                color: '#fff',
-                fontSize: '1.25rem',
-                cursor: 'pointer',
-                borderRadius: '50%',
-                width: '42px',
-                height: '42px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'background 0.2s ease'
-              }}
-            >
-              ✕
-            </button>
-          </div>
-
-          {/* PREVIOUS ARROW BUTTON */}
+          {/* PREVIOUS SLIDE ARROW */}
           <button 
             onClick={handlePrev}
             aria-label="Previous image"
             style={{
               position: 'absolute',
-              left: '2rem',
+              left: 'clamp(1rem, 3vw, 2.5rem)',
               top: '50%',
               transform: 'translateY(-50%)',
-              background: 'rgba(255,255,255,0.15)',
+              background: 'rgba(255,255,255,0.14)',
               border: 'none',
               color: '#fff',
-              fontSize: '2rem',
-              width: '56px',
-              height: '56px',
+              fontSize: '2.5rem',
+              width: '60px',
+              height: '60px',
               borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              zIndex: 100000,
+              zIndex: 1000000,
               transition: 'background 0.2s ease, transform 0.2s ease'
             }}
           >
             ‹
           </button>
 
-          {/* ACTIVE IMAGE */}
+          {/* ACTIVE SLIDE IMAGE */}
           <div 
             onClick={(e) => e.stopPropagation()} 
             style={{ 
-              maxWidth: '85vw', 
-              maxHeight: '80vh', 
+              maxWidth: '88vw', 
+              maxHeight: '88vh', 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center' 
@@ -184,38 +159,38 @@ export default function ProjectGalleryView({ images, title }) {
           >
             <img 
               src={images[activeModalIndex]} 
-              alt={`${title} #${activeModalIndex + 1}`}
+              alt=""
               style={{
-                maxWidth: '85vw',
-                maxHeight: '80vh',
+                maxWidth: '88vw',
+                maxHeight: '88vh',
                 objectFit: 'contain',
-                borderRadius: '8px',
-                boxShadow: '0 20px 50px rgba(0,0,0,0.6)'
+                borderRadius: '6px',
+                boxShadow: '0 25px 60px rgba(0,0,0,0.7)'
               }}
             />
           </div>
 
-          {/* NEXT ARROW BUTTON */}
+          {/* NEXT SLIDE ARROW */}
           <button 
             onClick={handleNext}
             aria-label="Next image"
             style={{
               position: 'absolute',
-              right: '2rem',
+              right: 'clamp(1rem, 3vw, 2.5rem)',
               top: '50%',
               transform: 'translateY(-50%)',
-              background: 'rgba(255,255,255,0.15)',
+              background: 'rgba(255,255,255,0.14)',
               border: 'none',
               color: '#fff',
-              fontSize: '2rem',
-              width: '56px',
-              height: '56px',
+              fontSize: '2.5rem',
+              width: '60px',
+              height: '60px',
               borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              zIndex: 100000,
+              zIndex: 1000000,
               transition: 'background 0.2s ease, transform 0.2s ease'
             }}
           >
