@@ -5,6 +5,8 @@ export const metadata = {
   description: 'Graphic designer & web developer specializing in premium digital experiences, brand identity, and scalable design systems.',
 };
 
+import SiteHeader from '../components/SiteHeader.jsx';
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -19,17 +21,7 @@ export default function RootLayout({ children }) {
         <link rel="alternate icon" href="/favicon.ico" />
       </head>
       <body>
-        <nav className="site-nav">
-          <a href="/" className="logo" aria-label="Carlos Ozuna Portfolio">
-            <span className="logo-first">Carlos</span>
-            <span className="logo-last">Ozuna</span>
-            <span className="logo-dot">.</span>
-          </a>
-          <div className="nav-links">
-            <a href="/work">Work</a>
-            <a href="/about">About</a>
-          </div>
-        </nav>
+        <SiteHeader />
 
         <main>
           {children}

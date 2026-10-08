@@ -218,6 +218,33 @@ a { text-decoration: none; color: inherit; }
   opacity: 0.85;
 }
 
+/* NAV ON LIGHT PAGES (e.g. Project Details /work/[slug]) */
+body.light-nav .site-nav,
+.site-nav.nav-dark-text,
+article.section ~ .site-nav {
+  border-bottom: 1px solid rgba(55, 58, 71, 0.1);
+}
+body.light-nav .site-nav .logo,
+body.light-nav .site-nav .logo-first,
+body.light-nav .site-nav .logo-last,
+body.light-nav .site-nav .logo-dot,
+.nav-dark-text .logo,
+.nav-dark-text .logo-first,
+.nav-dark-text .logo-last,
+.nav-dark-text .logo-dot {
+  color: var(--charcoal) !important;
+  text-shadow: none !important;
+}
+body.light-nav .site-nav .nav-links a,
+.nav-dark-text .nav-links a {
+  color: var(--charcoal) !important;
+  text-shadow: none !important;
+}
+body.light-nav .site-nav .nav-links a:hover,
+.nav-dark-text .nav-links a:hover {
+  color: var(--color-accent-hover) !important;
+}
+
 /* FOOTER */
 .site-footer { background: var(--charcoal); color: var(--white); padding: 5rem 5%; text-align: center; }
 .site-footer p { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
