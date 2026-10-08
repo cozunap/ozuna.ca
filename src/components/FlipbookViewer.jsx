@@ -2,8 +2,29 @@
 
 import React, { useState, useEffect } from 'react';
 
-export default function FlipbookViewer({ pdfUrl, title }) {
+export default function FlipbookViewer({ pdfUrl, pdfs, title }) {
   const [isFullscreenModal, setIsFullscreenModal] = useState(false);
+  const [activePdfIndex, setActivePdfIndex] = useState(0);
+
+  // Normalize list of PDFs
+  const pdfList = React.useMemo(() => {
+    let list = [];
+    if (Array.isArray(pdfs) && pdfs.length > 0) {
+      list = pdfs.filter(Boolean);
+    } else if (pdfUrl) {
+      if (typeof pdfUrl === 'string' && (pdfUrl.startsWith('[') || pdfUrl.includes(','))) {
+        try {
+          const parsed = JSON.parse(pdfUrl);
+          if (Array.isArray(parsed)) list = parsed;
+        } catch {
+          list = pdfUrl.split(',').map(s => s.trim()).filter(Boolean);
+        }
+      } else {
+        list = [pdfUrl];
+      }
+    }
+    return list;
+  }, [pdfUrl, pdfs]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -15,15 +36,16 @@ export default function FlipbookViewer({ pdfUrl, title }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isFullscreenModal]);
 
-  if (!pdfUrl) return null;
+  if (pdfList.length === 0) return null;
+
+  const currentPdf = pdfList[activePdfIndex] || pdfList[0];
 
   // Clean and prepare PDF URL parameters for optimal fit
-  const embeddedSrc = `${pdfUrl}#view=FitH&toolbar=1&navpanes=1&scrollbar=1`;
-  const fullscreenSrc = `${pdfUrl}#view=Fit&toolbar=1&navpanes=1&scrollbar=1`;
+  const embeddedSrc = `${currentPdf}#view=FitH&toolbar=1&navpanes=1&scrollbar=1`;
+  const fullscreenSrc = `${currentPdf}#view=Fit&toolbar=1&navpanes=1&scrollbar=1`;
 
-  const handleOpenWindow = (e) => {
-    // Open full browser window/tab with #view=Fit so it scales to full 100% height
-    window.open(`${pdfUrl}#view=Fit`, '_blank', 'noopener,noreferrer');
+  const handleOpenWindow = () => {
+    window.open(`${currentPdf}#view=Fit`, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -33,8 +55,33 @@ export default function FlipbookViewer({ pdfUrl, title }) {
           Interactive Catalog / Booklet
         </h3>
         <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0 }}>
-          View full publication or expand to full screen below.
+          {pdfList.length > 1 ? `Viewing document ${activePdfIndex + 1} of ${pdfList.length}` : 'View full publication or expand to full screen below.'}
         </p>
+
+        {pdfList.length > 1 && (
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '1.25rem', flexWrap: 'wrap' }}>
+            {pdfList.map((doc, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setActivePdfIndex(idx)}
+                style={{
+                  padding: '0.5rem 1.25rem',
+                  fontSize: '0.85rem',
+                  borderRadius: '30px',
+                  border: activePdfIndex === idx ? '2px solid var(--gold, #b89a5a)' : '1px solid #cbd5e1',
+                  background: activePdfIndex === idx ? 'var(--gold, #b89a5a)' : '#fff',
+                  color: activePdfIndex === idx ? '#fff' : 'var(--charcoal)',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                Vol. {idx + 1} / Part {idx + 1}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* IN-PAGE EMBEDDED VIEWER */}

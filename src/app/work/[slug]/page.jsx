@@ -55,16 +55,22 @@ export default async function ProjectDetailPage({ params }) {
   const { project, related } = result;
   const { title, category, description, image_url, pdf_url, link } = project;
 
-  // Check if description contains gallery / screens JSON
+  // Check if description contains gallery / screens / pdfs JSON
   let parsedDescription = description || '';
   let galleryImages = [];
+  let pdfDocuments = [];
 
   try {
     if (description && (description.trim().startsWith('{') || description.trim().startsWith('['))) {
       const parsed = JSON.parse(description);
       if (parsed.gallery && Array.isArray(parsed.gallery)) {
         galleryImages = parsed.gallery;
-        parsedDescription = parsed.text || '';
+      }
+      if (parsed.pdfs && Array.isArray(parsed.pdfs)) {
+        pdfDocuments = parsed.pdfs;
+      }
+      if (parsed.text !== undefined) {
+        parsedDescription = parsed.text;
       } else if (Array.isArray(parsed)) {
         galleryImages = parsed;
         parsedDescription = '';
@@ -72,6 +78,23 @@ export default async function ProjectDetailPage({ params }) {
     }
   } catch (e) {
     // Standard text or html description
+  }
+
+  // Also parse pdf_url if it contains multiple URLs
+  if (pdf_url) {
+    if (pdf_url.startsWith('[') || pdf_url.includes(',')) {
+      try {
+        const parsedPdfs = JSON.parse(pdf_url);
+        if (Array.isArray(parsedPdfs)) {
+          pdfDocuments = [...new Set([...pdfDocuments, ...parsedPdfs])];
+        }
+      } catch {
+        const splitPdfs = pdf_url.split(',').map(s => s.trim()).filter(Boolean);
+        pdfDocuments = [...new Set([...pdfDocuments, ...splitPdfs])];
+      }
+    } else if (!pdfDocuments.includes(pdf_url)) {
+      pdfDocuments.unshift(pdf_url);
+    }
   }
 
   const isWebDesign = category === 'Web Design';
@@ -114,14 +137,14 @@ export default async function ProjectDetailPage({ params }) {
         </header>
 
         {/* INTERACTIVE PDF / FLIPBOOK VIEWER */}
-        {pdf_url && (
+        {(pdfDocuments.length > 0 || pdf_url) && (
           <div className="container">
-            <FlipbookViewer pdfUrl={pdf_url} title={title} />
+            <FlipbookViewer pdfUrl={pdf_url} pdfs={pdfDocuments} title={title} />
           </div>
         )}
 
         {/* WEB DESIGN MULTI-SCREEN SHOWCASE */}
-        {isWebDesign && (galleryImages.length > 0 || image_url) && !pdf_url && (
+        {isWebDesign && (galleryImages.length > 0 || image_url) && (
           <div className="container">
             <WebDesignScreensView screens={galleryImages} title={title} coverImage={image_url} />
           </div>
@@ -135,7 +158,7 @@ export default async function ProjectDetailPage({ params }) {
         )}
 
         {/* SINGLE COVER IMAGE (for standard Graphic Design items without multi-gallery) */}
-        {!isWebDesign && image_url && galleryImages.length === 0 && !pdf_url && (
+        {!isWebDesign && image_url && galleryImages.length === 0 && pdfDocuments.length === 0 && !pdf_url && (
           <div className="container" style={{ textAlign: 'center' }}>
             <img 
               src={image_url} 

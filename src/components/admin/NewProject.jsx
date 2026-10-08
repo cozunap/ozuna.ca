@@ -17,7 +17,7 @@ export default function NewProject() {
   
   const [projectType, setProjectType] = useState('standard'); // 'standard', 'gallery', 'pdf'
   const [imageFile, setImageFile] = useState(null);
-  const [pdfFile, setPdfFile] = useState(null);
+  const [pdfFiles, setPdfFiles] = useState([]);
   const [galleryFiles, setGalleryFiles] = useState([]);
   const [uploadedGalleryUrls, setUploadedGalleryUrls] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -49,8 +49,15 @@ export default function NewProject() {
     setGalleryFiles(prev => prev.filter((_, i) => i !== index));
   };
 
-  const removeUploadedUrl = (index) => {
-    setUploadedGalleryUrls(prev => prev.filter((_, i) => i !== index));
+  const handlePdfSelect = (e) => {
+    if (e.target.files) {
+      const selected = Array.from(e.target.files);
+      setPdfFiles(prev => [...prev, ...selected]);
+    }
+  };
+
+  const removePdfFile = (index) => {
+    setPdfFiles(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSave = async (e) => {
@@ -65,7 +72,7 @@ export default function NewProject() {
       }
 
       let imageUrl = '';
-      let pdfUrl = '';
+      let finalPdfUrls = [];
 
       // Upload Cover Image
       if (imageFile) {
@@ -86,31 +93,34 @@ export default function NewProject() {
         imageUrl = publicUrlData.publicUrl;
       }
 
-      // Upload PDF if any
-      if (pdfFile) {
-        setUploadProgress('Subiendo folleto / catálogo PDF...');
-        const fileExt = pdfFile.name.split('.').pop();
-        const fileName = `pdfs/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
-        
-        const { error } = await supabase.storage
-          .from('portfolio')
-          .upload(fileName, pdfFile, { upsert: true });
-
-        if (error) throw error;
-        
-        const { data: publicUrlData } = supabase.storage
-          .from('portfolio')
-          .getPublicUrl(fileName);
+      // Upload one or multiple PDFs
+      if (pdfFiles.length > 0) {
+        for (let i = 0; i < pdfFiles.length; i++) {
+          const file = pdfFiles[i];
+          setUploadProgress(`Subiendo catálogo PDF (${i + 1}/${pdfFiles.length})...`);
+          const fileExt = file.name.split('.').pop();
+          const fileName = `pdfs/${Date.now()}_${i}_${Math.random().toString(36).substring(7)}.${fileExt}`;
           
-        pdfUrl = publicUrlData.publicUrl;
+          const { error } = await supabase.storage
+            .from('portfolio')
+            .upload(fileName, file, { upsert: true });
+
+          if (error) throw error;
+          
+          const { data: publicUrlData } = supabase.storage
+            .from('portfolio')
+            .getPublicUrl(fileName);
+            
+          finalPdfUrls.push(publicUrlData.publicUrl);
+        }
       }
 
-      // Upload multi-image gallery files
+      // Upload multi-image gallery files (for Web Design screens or Graphic Galleries)
       let finalGalleryUrls = [...uploadedGalleryUrls];
       if (galleryFiles.length > 0) {
         for (let i = 0; i < galleryFiles.length; i++) {
           const file = galleryFiles[i];
-          setUploadProgress(`Subiendo galería (${i + 1}/${galleryFiles.length})...`);
+          setUploadProgress(`Subiendo imágenes (${i + 1}/${galleryFiles.length})...`);
           const fileExt = file.name.split('.').pop();
           const fileName = `gallery/${Date.now()}_${i}_${Math.random().toString(36).substring(7)}.${fileExt}`;
           
@@ -128,18 +138,20 @@ export default function NewProject() {
         }
       }
 
-      // If project has gallery images, format description as structured JSON payload
-      if (finalGalleryUrls.length > 0) {
+      // If project has gallery images or multiple PDFs, format description as structured JSON payload
+      if (finalGalleryUrls.length > 0 || finalPdfUrls.length > 1) {
         const payload = {
           text: finalDescription,
-          gallery: finalGalleryUrls
+          gallery: finalGalleryUrls,
+          pdfs: finalPdfUrls
         };
         finalDescription = JSON.stringify(payload);
-        // Use first gallery item as cover if no cover was uploaded
         if (!imageUrl && finalGalleryUrls.length > 0) {
           imageUrl = finalGalleryUrls[0];
         }
       }
+
+      const primaryPdfUrl = finalPdfUrls.length > 0 ? finalPdfUrls[0] : '';
 
       setUploadProgress('Guardando en base de datos...');
       const { error } = await supabase
@@ -151,11 +163,10 @@ export default function NewProject() {
           link: formData.link,
           featured: formData.featured,
           image_url: imageUrl,
-          pdf_url: pdfUrl
+          pdf_url: primaryPdfUrl
         }]);
 
       if (error) throw error;
-
 
       window.location.href = '/admin/dashboard';
     } catch (error) {
@@ -289,7 +300,7 @@ export default function NewProject() {
 
           {/* HIDDEN INPUTS */}
           <input type="file" ref={imageInputRef} style={{ display: 'none' }} accept="image/png, image/jpeg, image/webp" onChange={e => setImageFile(e.target.files[0])} />
-          <input type="file" ref={pdfInputRef} style={{ display: 'none' }} accept="application/pdf" onChange={e => setPdfFile(e.target.files[0])} />
+          <input type="file" ref={pdfInputRef} style={{ display: 'none' }} accept="application/pdf" multiple onChange={handlePdfSelect} />
           <input type="file" ref={galleryInputRef} style={{ display: 'none' }} accept="image/png, image/jpeg, image/webp" multiple onChange={handleGallerySelect} />
 
           {/* MAIN COVER IMAGE */}
@@ -307,11 +318,22 @@ export default function NewProject() {
             </div>
           </div>
 
-          {/* MULTI-IMAGE GALLERY UPLOADER (if gallery mode is active or enabled) */}
-          {projectType === 'gallery' && (
+          {/* MULTI-PAGE / MULTI-IMAGE GALLERY UPLOADER (Available for Web Design pages & Multi-Image galleries) */}
+          {(projectType === 'gallery' || projectType === 'standard' || formData.category === 'Web Design') && (
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                <label className="admin-label" style={{ margin: 0 }}>Gallery Images ({galleryFiles.length} selected)</label>
+                <div>
+                  <label className="admin-label" style={{ margin: 0 }}>
+                    {formData.category === 'Web Design' || projectType === 'standard' 
+                      ? `Website Pages & UI Screens (${galleryFiles.length} selected)` 
+                      : `Gallery Images (${galleryFiles.length} selected)`}
+                  </label>
+                  <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>
+                    {formData.category === 'Web Design' || projectType === 'standard' 
+                      ? 'Upload multiple website screens (Home, About, Services, Checkout, etc.) displayed in browser mockups' 
+                      : 'Upload multiple images (all business cards, flyers, etc.) displayed in interactive gallery'}
+                  </p>
+                </div>
                 <button 
                   type="button" 
                   onClick={() => galleryInputRef.current.click()}
@@ -326,9 +348,13 @@ export default function NewProject() {
                 onClick={() => galleryInputRef.current.click()}
                 style={{ border: galleryFiles.length > 0 ? '2px solid var(--admin-gold)' : '2px dashed var(--admin-border)', borderRadius: '8px', padding: '2rem', textAlign: 'center', backgroundColor: 'var(--admin-input-bg)', cursor: 'pointer' }}
               >
-                <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.5rem' }}>🖼️</span>
+                <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.5rem' }}>
+                  {formData.category === 'Web Design' || projectType === 'standard' ? '🖥️' : '🖼️'}
+                </span>
                 <p style={{ margin: 0, fontWeight: 500, color: 'var(--admin-text)' }}>
-                  Click to select multiple images (e.g. all 30+ business card photos at once)
+                  {formData.category === 'Web Design' || projectType === 'standard' 
+                    ? 'Click to select multiple website page screens / mockups' 
+                    : 'Click to select multiple images (e.g. all 30+ business card photos at once)'}
                 </p>
               </div>
 
@@ -353,19 +379,54 @@ export default function NewProject() {
             </div>
           )}
 
-          {/* PDF CATALOG UPLOADER */}
+          {/* MULTI-PDF CATALOG UPLOADER */}
           {projectType === 'pdf' && (
             <div>
-              <label className="admin-label">Interactive Booklet / Catalog (PDF File)</label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                <div>
+                  <label className="admin-label" style={{ margin: 0 }}>
+                    Interactive Booklet / Catalog (PDF Documents - {pdfFiles.length} selected)
+                  </label>
+                  <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>
+                    Upload one or multiple PDF documents (catalogs, brochures, volume 1, volume 2)
+                  </p>
+                </div>
+                <button 
+                  type="button" 
+                  onClick={() => pdfInputRef.current.click()}
+                  className="admin-btn-outline"
+                  style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}
+                >
+                  + Add PDF
+                </button>
+              </div>
+
               <div 
                 onClick={() => pdfInputRef.current.click()}
-                style={{ border: pdfFile ? '2px solid var(--admin-gold)' : '2px dashed var(--admin-border)', borderRadius: '8px', padding: '2rem', textAlign: 'center', backgroundColor: 'var(--admin-input-bg)', cursor: 'pointer' }}
+                style={{ border: pdfFiles.length > 0 ? '2px solid var(--admin-gold)' : '2px dashed var(--admin-border)', borderRadius: '8px', padding: '2rem', textAlign: 'center', backgroundColor: 'var(--admin-input-bg)', cursor: 'pointer' }}
               >
-                <span style={{ fontSize: '1.75rem', display: 'block', marginBottom: '0.5rem' }}>{pdfFile ? '📄' : '📁'}</span>
-                <p style={{ margin: 0, fontWeight: 500, color: pdfFile ? 'var(--admin-gold)' : 'var(--admin-text)' }}>
-                  {pdfFile ? pdfFile.name : 'Upload PDF (Up to 50MB) - Enables Interactive Viewer'}
+                <span style={{ fontSize: '1.75rem', display: 'block', marginBottom: '0.5rem' }}>📖</span>
+                <p style={{ margin: 0, fontWeight: 500, color: pdfFiles.length > 0 ? 'var(--admin-gold)' : 'var(--admin-text)' }}>
+                  {pdfFiles.length > 0 ? `${pdfFiles.length} PDF file(s) selected` : 'Upload PDF(s) (Up to 50MB each) - Enables Interactive Viewer'}
                 </p>
               </div>
+
+              {pdfFiles.length > 0 && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
+                  {pdfFiles.map((file, idx) => (
+                    <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#222', padding: '0.5rem 1rem', borderRadius: '6px', border: '1px solid var(--admin-gold)' }}>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--admin-text)' }}>📄 {file.name}</span>
+                      <button 
+                        type="button" 
+                        onClick={() => removePdfFile(idx)}
+                        style={{ background: '#e74c3c', color: '#fff', border: 'none', borderRadius: '4px', fontSize: '0.7rem', padding: '0.2rem 0.5rem', cursor: 'pointer' }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
