@@ -421,20 +421,21 @@ export default function EditProject() {
                 </div>
               )}
 
-              {/* EXISTING GALLERY IMAGES */}
+              {/* EXISTING GALLERY IMAGES (2 COLUMNS) */}
               {existingGalleryUrls.length > 0 && (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: '0.75rem', marginBottom: '1rem', marginTop: '0.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginBottom: '1rem', marginTop: '0.75rem' }}>
                   {existingGalleryUrls.map((url, idx) => (
-                    <div key={idx} style={{ position: 'relative', border: '1px solid var(--admin-border)', borderRadius: '6px', overflow: 'hidden', background: '#111' }}>
-                      <img src={url} alt={`Screen/item ${idx + 1}`} style={{ width: '100%', height: '70px', objectFit: 'cover', display: 'block' }} />
-                      <div style={{ padding: '0.2rem 0.4rem', fontSize: '0.65rem', color: '#94a3b8', background: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        Screen {idx + 1}
+                    <div key={idx} style={{ position: 'relative', border: '1px solid var(--admin-border)', borderRadius: '8px', overflow: 'hidden', background: '#111' }}>
+                      <img src={url} alt={`Item ${idx + 1}`} style={{ width: '100%', height: '140px', objectFit: 'contain', background: '#1a1a1a', display: 'block', padding: '0.5rem' }} />
+                      <div style={{ padding: '0.4rem 0.75rem', fontSize: '0.75rem', color: '#cbd5e1', background: '#1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span>Item {idx + 1} of {existingGalleryUrls.length}</span>
+                        <a href={url} target="_blank" rel="noreferrer" style={{ color: 'var(--admin-gold)', textDecoration: 'none', fontSize: '0.7rem' }}>Preview ↗</a>
                       </div>
                       <button 
                         type="button" 
                         onClick={() => removeExistingGalleryUrl(idx)}
-                        style={{ position: 'absolute', top: '2px', right: '2px', background: 'rgba(231,76,60,0.9)', color: '#fff', border: 'none', borderRadius: '50%', width: '20px', height: '20px', fontSize: '0.7rem', cursor: 'pointer', lineHeight: '20px', textAlign: 'center', padding: 0 }}
-                        title="Delete screen"
+                        style={{ position: 'absolute', top: '6px', right: '6px', background: 'rgba(231,76,60,0.9)', color: '#fff', border: 'none', borderRadius: '50%', width: '24px', height: '24px', fontSize: '0.8rem', cursor: 'pointer', lineHeight: '24px', textAlign: 'center', padding: 0 }}
+                        title="Remove item"
                       >
                         ✕
                       </button>
@@ -443,20 +444,20 @@ export default function EditProject() {
                 </div>
               )}
 
-              {/* NEW UPLOAD SELECTED */}
+              {/* NEW UPLOAD SELECTED (2 COLUMNS) */}
               {galleryFiles.length > 0 && (
                 <div style={{ borderTop: '1px dashed var(--admin-border)', paddingTop: '0.75rem', marginTop: '0.75rem' }}>
                   <p style={{ fontSize: '0.8rem', color: 'var(--admin-gold)', marginBottom: '0.5rem' }}>New images to be uploaded:</p>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: '0.75rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
                     {galleryFiles.map((file, idx) => (
-                      <div key={idx} style={{ position: 'relative', border: '1px solid var(--admin-gold)', borderRadius: '6px', padding: '0.5rem', background: '#222', textAlign: 'center' }}>
-                        <span style={{ fontSize: '0.7rem', display: 'block', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: 'var(--admin-text)' }}>
-                          {file.name}
+                      <div key={idx} style={{ position: 'relative', border: '1px solid var(--admin-gold)', borderRadius: '6px', padding: '0.75rem', background: '#222', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontSize: '0.75rem', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: 'var(--admin-text)', maxWidth: '75%' }}>
+                          📷 {file.name}
                         </span>
                         <button 
                           type="button" 
                           onClick={() => removeNewGalleryFile(idx)}
-                          style={{ marginTop: '0.25rem', background: '#e74c3c', color: '#fff', border: 'none', borderRadius: '4px', fontSize: '0.65rem', padding: '0.2rem 0.4rem', cursor: 'pointer' }}
+                          style={{ background: '#e74c3c', color: '#fff', border: 'none', borderRadius: '4px', fontSize: '0.7rem', padding: '0.25rem 0.5rem', cursor: 'pointer' }}
                         >
                           Remove
                         </button>

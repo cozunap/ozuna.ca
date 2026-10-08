@@ -359,16 +359,16 @@ export default function NewProject() {
               </div>
 
               {galleryFiles.length > 0 && (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: '0.75rem', marginTop: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', marginTop: '1rem' }}>
                   {galleryFiles.map((file, idx) => (
-                    <div key={idx} style={{ position: 'relative', border: '1px solid var(--admin-border)', borderRadius: '6px', padding: '0.5rem', background: '#222', textAlign: 'center' }}>
-                      <span style={{ fontSize: '0.75rem', display: 'block', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: 'var(--admin-text-muted)' }}>
-                        {file.name}
+                    <div key={idx} style={{ position: 'relative', border: '1px solid var(--admin-gold)', borderRadius: '6px', padding: '0.75rem', background: '#222', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.75rem', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: 'var(--admin-text)', maxWidth: '75%' }}>
+                        📷 {file.name}
                       </span>
                       <button 
                         type="button" 
                         onClick={() => removeGalleryFile(idx)}
-                        style={{ marginTop: '0.25rem', background: '#e74c3c', color: '#fff', border: 'none', borderRadius: '4px', fontSize: '0.7rem', padding: '0.2rem 0.4rem', cursor: 'pointer' }}
+                        style={{ background: '#e74c3c', color: '#fff', border: 'none', borderRadius: '4px', fontSize: '0.7rem', padding: '0.25rem 0.5rem', cursor: 'pointer' }}
                       >
                         Remove
                       </button>
