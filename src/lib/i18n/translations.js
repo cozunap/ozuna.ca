@@ -75,7 +75,7 @@ export const translations = {
       emblemText: "PORTFOLIO OF CARLOS OZUNA • PORTFOLIO OF CARLOS OZUNA • "
     },
     footer: {
-      rights: `© ${new Date().getFullYear()} Carlos Ozuna. Tous droits réservés / All rights reserved. Montréal, Canada.`,
+      rights: `© ${new Date().getFullYear()} Carlos Ozuna. All rights reserved. Montreal, Canada.`,
       basedIn: 'Based in Montreal, Canada'
     }
   },
