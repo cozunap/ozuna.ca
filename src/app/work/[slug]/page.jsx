@@ -42,6 +42,7 @@ export async function generateMetadata({ params }) {
 
 import ProjectGalleryView from '../../../components/ProjectGalleryView.jsx';
 import FlipbookViewer from '../../../components/FlipbookViewer.jsx';
+import WebDesignScreensView from '../../../components/WebDesignScreensView.jsx';
 
 export default async function ProjectDetailPage({ params }) {
   const { slug } = await params;
@@ -54,7 +55,7 @@ export default async function ProjectDetailPage({ params }) {
   const { project, related } = result;
   const { title, category, description, image_url, pdf_url, link } = project;
 
-  // Check if description contains gallery JSON
+  // Check if description contains gallery / screens JSON
   let parsedDescription = description || '';
   let galleryImages = [];
 
@@ -119,20 +120,27 @@ export default async function ProjectDetailPage({ params }) {
           </div>
         )}
 
-        {/* MULTI-IMAGE GALLERY (e.g. Business Cards, Flyers) */}
-        {galleryImages.length > 0 && (
+        {/* WEB DESIGN MULTI-SCREEN SHOWCASE */}
+        {isWebDesign && (galleryImages.length > 0 || image_url) && !pdf_url && (
+          <div className="container">
+            <WebDesignScreensView screens={galleryImages} title={title} coverImage={image_url} />
+          </div>
+        )}
+
+        {/* MULTI-IMAGE GALLERY (e.g. Business Cards, Flyers, Graphic Design) */}
+        {!isWebDesign && galleryImages.length > 0 && (
           <div className="container">
             <ProjectGalleryView images={galleryImages} title={title} />
           </div>
         )}
 
-        {/* MAIN COVER IMAGE (when not already a multi-image gallery or if featured cover is present) */}
-        {image_url && galleryImages.length === 0 && !pdf_url && (
+        {/* SINGLE COVER IMAGE (for standard Graphic Design items without multi-gallery) */}
+        {!isWebDesign && image_url && galleryImages.length === 0 && !pdf_url && (
           <div className="container" style={{ textAlign: 'center' }}>
             <img 
               src={image_url} 
               alt={`${title} Cover`} 
-              style={{ width: '100%', maxWidth: isWebDesign ? '1100px' : '900px', height: 'auto', borderRadius: '6px', boxShadow: '0 8px 30px rgba(0,0,0,0.06)' }} 
+              style={{ width: '100%', maxWidth: '900px', height: 'auto', borderRadius: '6px', boxShadow: '0 8px 30px rgba(0,0,0,0.06)' }} 
             />
           </div>
         )}
