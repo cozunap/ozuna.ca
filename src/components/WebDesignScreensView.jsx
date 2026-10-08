@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useLanguage } from '../lib/i18n/LanguageContext.jsx';
 
 export default function WebDesignScreensView({ screens, title, coverImage }) {
+  const { t } = useLanguage();
   const [activeModalImg, setActiveModalImg] = useState(null);
 
   // Combine cover image and subsequent screens if both exist and cover isn't already in screens
@@ -64,7 +66,7 @@ export default function WebDesignScreensView({ screens, title, coverImage }) {
                   letterSpacing: '0.05em'
                 }}
               >
-                Expand 🔍
+                {t.work.expand}
               </button>
             </div>
 

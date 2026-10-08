@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../lib/i18n/LanguageContext.jsx';
 
 export default function FlipbookViewer({ pdfUrl, pdfs, title }) {
+  const { t, isFr } = useLanguage();
   const [isFullscreenModal, setIsFullscreenModal] = useState(false);
   const [activePdfIndex, setActivePdfIndex] = useState(0);
 
@@ -52,10 +54,10 @@ export default function FlipbookViewer({ pdfUrl, pdfs, title }) {
     <div className="pdf-catalog-container" style={{ margin: '3.5rem 0' }}>
       <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
         <h3 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '1.25rem', fontFamily: "'Inter', sans-serif", color: 'var(--charcoal)', marginBottom: '0.5rem' }}>
-          Interactive Catalog / Booklet
+          {t.work.interactiveCatalog}
         </h3>
         <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0 }}>
-          {pdfList.length > 1 ? `Viewing document ${activePdfIndex + 1} of ${pdfList.length}` : 'View full publication or expand to full screen below.'}
+          {pdfList.length > 1 ? t.work.viewingDoc(activePdfIndex + 1, pdfList.length) : t.work.viewFullPub}
         </p>
 
         {pdfList.length > 1 && (
@@ -68,7 +70,6 @@ export default function FlipbookViewer({ pdfUrl, pdfs, title }) {
                 style={{
                   padding: '0.5rem 1.25rem',
                   fontSize: '0.85rem',
-                  borderRadius: '30px',
                   border: activePdfIndex === idx ? '2px solid var(--gold, #b89a5a)' : '1px solid #cbd5e1',
                   background: activePdfIndex === idx ? 'var(--gold, #b89a5a)' : '#fff',
                   color: activePdfIndex === idx ? '#fff' : 'var(--charcoal)',
@@ -77,7 +78,7 @@ export default function FlipbookViewer({ pdfUrl, pdfs, title }) {
                   transition: 'all 0.2s ease'
                 }}
               >
-                Vol. {idx + 1} / Part {idx + 1}
+                {isFr ? `Partie ${idx + 1}` : `Vol. ${idx + 1}`}
               </button>
             ))}
           </div>
@@ -89,7 +90,6 @@ export default function FlipbookViewer({ pdfUrl, pdfs, title }) {
         style={{
           width: '100%',
           height: '780px',
-          borderRadius: '8px',
           overflow: 'hidden',
           boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
           border: '1px solid #e2e8f0',
@@ -114,7 +114,7 @@ export default function FlipbookViewer({ pdfUrl, pdfs, title }) {
           className="btn btn-gold"
           style={{ fontSize: '0.85rem', letterSpacing: '0.08em', padding: '0.85rem 2rem', cursor: 'pointer' }}
         >
-          Expand Fullscreen Modal ⛶
+          {isFr ? 'Plein écran ⛶' : 'Fullscreen ⛶'}
         </button>
 
         <button 
@@ -123,16 +123,16 @@ export default function FlipbookViewer({ pdfUrl, pdfs, title }) {
           className="btn btn-outline"
           style={{ fontSize: '0.85rem', letterSpacing: '0.08em', padding: '0.85rem 2rem', borderColor: 'var(--charcoal)', cursor: 'pointer' }}
         >
-          Open PDF in New Window ↗
+          {t.work.openInNewTab}
         </button>
 
         <a 
-          href={pdfUrl} 
+          href={currentPdf} 
           download 
           className="btn btn-outline"
           style={{ fontSize: '0.85rem', letterSpacing: '0.08em', padding: '0.85rem 2rem', borderColor: 'var(--charcoal)' }}
         >
-          Download PDF ⬇
+          {isFr ? 'Télécharger le PDF ⬇' : 'Download PDF ⬇'}
         </a>
       </div>
 
@@ -167,17 +167,19 @@ export default function FlipbookViewer({ pdfUrl, pdfs, title }) {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <span style={{ fontWeight: 600, fontSize: '1rem' }}>{title}</span>
-              <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>• Full Document View</span>
+              <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>
+                • {isFr ? 'Affichage intégral du document' : 'Full Document View'}
+              </span>
             </div>
             
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <a 
-                href={pdfUrl} 
+                href={currentPdf} 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 style={{ color: '#fff', fontSize: '0.85rem', opacity: 0.8, textDecoration: 'underline' }}
               >
-                Open in Browser Tab ↗
+                {t.work.openInNewTab}
               </a>
               <button 
                 type="button"
@@ -186,14 +188,14 @@ export default function FlipbookViewer({ pdfUrl, pdfs, title }) {
                   background: 'rgba(255,255,255,0.15)',
                   border: 'none',
                   color: '#fff',
-                  borderRadius: '4px',
+                  borderRadius: '0',
                   padding: '0.4rem 1rem',
                   fontSize: '0.9rem',
                   cursor: 'pointer',
                   fontWeight: 600
                 }}
               >
-                Close (ESC) ✕
+                {isFr ? 'Fermer (Échap) ✕' : 'Close (ESC) ✕'}
               </button>
             </div>
           </div>

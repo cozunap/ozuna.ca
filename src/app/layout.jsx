@@ -1,11 +1,13 @@
 import '../../public/assets/css/main.css';
 
 export const metadata = {
-  title: 'Carlos Ozuna | Premium Design Portfolio',
-  description: 'Graphic designer & web developer specializing in premium digital experiences, brand identity, and scalable design systems.',
+  title: 'Carlos Ozuna | Senior Graphic Designer & Web Developer',
+  description: 'Senior graphic designer & web developer based in Montreal, Canada specializing in premium digital experiences, brand identity, and scalable design systems.',
 };
 
 import SiteHeader from '../components/SiteHeader.jsx';
+import SiteFooter from '../components/SiteFooter.jsx';
+import { LanguageProvider } from '../lib/i18n/LanguageContext.jsx';
 
 export default function RootLayout({ children }) {
   return (
@@ -21,11 +23,15 @@ export default function RootLayout({ children }) {
         <link rel="alternate icon" href="/favicon.ico" />
       </head>
       <body>
-        <SiteHeader />
+        <LanguageProvider>
+          <SiteHeader />
 
-        <main>
-          {children}
-        </main>
+          <main>
+            {children}
+          </main>
+
+          <SiteFooter />
+        </LanguageProvider>
       </body>
     </html>
   );
