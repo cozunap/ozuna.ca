@@ -1,1 +1,0 @@
-var r={},p=(a,l,s)=>(r.__chunk_8671=(n,t,c)=>{"use strict";function o(e){return e?e.toString().toLowerCase().replace(/\s+/g,"-").replace(/[^\w\-]+/g,"").replace(/\-\-+/g,"-").replace(/^-+/,"").replace(/-+$/,""):""}c.d(t,{Y:()=>o})},r);export{p as __getNamedExports};
