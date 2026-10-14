@@ -7,11 +7,11 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npx @cloudflare/next-on-pages",
+    "build": "npx @cloudflare/next-on-pages && node scripts/patch-worker.mjs",
     "build:next": "next build",
     "start": "next start",
-    "pages:build": "npx @cloudflare/next-on-pages",
-    "deploy": "npx @cloudflare/next-on-pages && npx wrangler pages deploy .vercel/output/static --project-name ozuna --branch main"
+    "pages:build": "npx @cloudflare/next-on-pages && node scripts/patch-worker.mjs",
+    "deploy": "npx @cloudflare/next-on-pages && node scripts/patch-worker.mjs && npx wrangler pages deploy .vercel/output/static --project-name ozuna --branch main"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.16",
