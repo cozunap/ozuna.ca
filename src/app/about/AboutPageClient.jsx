@@ -21,7 +21,9 @@ export default function AboutPageClient({ content }) {
   const downloadCv = isFr ? t.about.downloadCv : "Download my CV.";
   const seeWork = isFr ? t.about.seeWork : "See Carlos Ozuna's work";
   const contactMe = isFr ? t.about.contactMe : "contact me";
-  const emblemText = isFr ? t.about.emblemText : t.en.about.emblemText;
+  const emblemText = isFr 
+    ? (t.about.emblemText || "PORTFOLIO DE CARLOS OZUNA • MONTRÉAL CANADA • ") 
+    : (t.about.emblemText || "PORTFOLIO OF CARLOS OZUNA • PORTFOLIO OF CARLOS OZUNA • ");
 
   return (
     <div className="about-original-page">
@@ -101,15 +103,23 @@ export default function AboutPageClient({ content }) {
             {/* CIRCULAR BADGE / BRAND EMBLEM */}
             <div className="about-emblem-wrap">
               <div className="about-emblem-badge">
-                <svg className="rotating-text-path" viewBox="0 0 300 300" width="180" height="180">
-                  <path id="circlePath" fill="none" d="M 150, 150 m -100, 0 a 100,100 0 1,1 200,0 a 100,100 0 1,1 -200,0" />
-                  <text fill="var(--charcoal)" fontSize="13" letterSpacing="3" fontWeight="700">
+                <svg className="rotating-text-path" viewBox="0 0 300 300" width="220" height="220">
+                  <path id="circlePath" fill="none" d="M 150, 150 m -108, 0 a 108,108 0 1,1 216,0 a 108,108 0 1,1 -216,0" />
+                  <text fill="var(--charcoal)" fontSize="15" letterSpacing="4" fontWeight="800" fontFamily="'Archivo Black', 'Arial Black', sans-serif">
                     <textPath href="#circlePath" startOffset="0%">
                       {emblemText}
                     </textPath>
                   </text>
                 </svg>
-                <div className="about-emblem-center-dot"></div>
+                <div className="about-emblem-cq-logo">
+                  <img 
+                    src="/assets/images/cq-brand-logo.svg" 
+                    alt="Carlos Ozuna CQ Logo" 
+                    width="110" 
+                    height="110"
+                    style={{ display: 'block', width: '110px', height: 'auto' }}
+                  />
+                </div>
               </div>
             </div>
 

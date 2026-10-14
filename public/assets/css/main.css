@@ -863,38 +863,39 @@ a, button {
 }
 
 .about-emblem-wrap {
-  margin: 4rem auto 3.5rem auto;
+  margin: 4.5rem auto 3.5rem auto;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  background-image: url('/assets/images/favico.svg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: 70px auto;
-  min-height: 200px;
+  min-height: 240px;
 }
 .about-emblem-badge {
   position: relative;
-  width: 180px;
-  height: 180px;
+  width: 220px;
+  height: 220px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .rotating-text-path {
-  animation: spinTextPath 22s linear infinite;
+  animation: spinTextPath 25s linear infinite;
+  display: block;
+  transform-origin: center center;
 }
 @keyframes spinTextPath {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-.about-emblem-center-dot {
+.about-emblem-cq-logo {
   position: absolute;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--charcoal);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
 
 .about-contact-block {
