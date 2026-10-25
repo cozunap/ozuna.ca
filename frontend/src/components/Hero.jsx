@@ -87,12 +87,6 @@ export default function Hero({ data, heroVideo }) {
           </Link>
         </motion.div>
       </div>
-
-      {/* Down Scroll Indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-60">
-        <span className="text-[10px] tracking-widest uppercase text-slate-400">Scroll Down</span>
-        <div className="w-1 h-6 rounded-full bg-accent animate-pulse" />
-      </div>
     </section>
   );
 }

@@ -7,92 +7,14 @@ import PortfolioGrid from './components/PortfolioGrid';
 import Footer from './components/Footer';
 import Login from './admin/Login';
 import AdminDashboard from './admin/AdminDashboard';
-import { Mail, MapPin, Send, CheckCircle2, Award, Sparkles, Download, ExternalLink } from 'lucide-react';
+import { Mail, MapPin, Send, CheckCircle2, Download, ExternalLink } from 'lucide-react';
 
 // 1. Home Page View
-function HomePage({ settings, pages, portfolio }) {
+function HomePage({ settings, pages }) {
   const homePage = pages.find((p) => p.slug === 'home');
   const heroSection = homePage?.sections?.find((s) => s.id === 'hero');
 
-  return (
-    <>
-      <Hero data={heroSection} heroVideo={settings?.heroVideo} />
-
-      {/* Intro Bio Highlight */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-subtle">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
-          <div className="lg:col-span-2 space-y-4">
-            <span className="text-accent font-bold text-xs uppercase tracking-widest flex items-center gap-2">
-              <Sparkles size={14} /> Creative Discipline & Experience
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black font-heading uppercase text-white leading-tight">
-              20+ Years Delivering High-Impact Visual Communication
-            </h2>
-            <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
-              Based in Laval, Canada, I specialize in crafting bespoke corporate brand identities, full-stack web platforms, large-format vehicle graphics, and premium print collateral that resonate deeply with target audiences.
-            </p>
-          </div>
-
-          <div className="bg-card border border-subtle rounded-3xl p-6 sm:p-8 space-y-4">
-            <div className="flex items-center gap-3 text-accent">
-              <Award size={24} />
-              <span className="font-bold text-sm uppercase tracking-wider text-white">Full-Service Scope</span>
-            </div>
-            <ul className="space-y-2.5 text-xs sm:text-sm text-slate-300">
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                Art Direction & Corporate Identity
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                Modern Responsive Web Development
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                Fleet Commercial Vehicle Graphics
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                Pre-Press & Packaging Production
-              </li>
-            </ul>
-            <div className="pt-2">
-              <Link to="/about-me" className="text-xs font-bold text-accent uppercase tracking-wider hover:underline">
-                Read Full Biography &rarr;
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Portfolio Grid */}
-      <PortfolioGrid items={portfolio} />
-
-      {/* Contact Quick Action Banner */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-card via-card to-surface border border-accent/30 rounded-3xl p-8 sm:p-14 text-center space-y-6 relative overflow-hidden">
-          <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
-          <h2 className="text-3xl sm:text-5xl font-black font-heading text-white uppercase tracking-tight">
-            Have a Project in Mind?
-          </h2>
-          <p className="text-slate-300 max-w-2xl mx-auto text-sm sm:text-base">
-            Whether launching a new company brand, designing a scalable web platform, or wrapping a commercial fleet, let’s build something unforgettable.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            <Link to="/contact" className="btn-accent px-8 py-3.5 rounded-xl font-bold uppercase tracking-wider text-xs sm:text-sm">
-              Start a Conversation
-            </Link>
-            <a
-              href="mailto:carlos@ozuna.ca"
-              className="bg-surface hover:bg-card text-white border border-subtle px-8 py-3.5 rounded-xl font-bold uppercase tracking-wider text-xs sm:text-sm transition-colors"
-            >
-              carlos@ozuna.ca
-            </a>
-          </div>
-        </div>
-      </section>
-    </>
-  );
+  return <Hero data={heroSection} heroVideo={settings?.heroVideo} />;
 }
 
 // 2. About Me Page View
@@ -392,7 +314,7 @@ export default function App() {
               <Navigation />
               <main className="flex-1">
                 <Routes>
-                  <Route path="/" element={<HomePage settings={settings} pages={pages} portfolio={portfolio} />} />
+                  <Route path="/" element={<HomePage settings={settings} pages={pages} />} />
                   <Route path="/about-me" element={<AboutPage pages={pages} />} />
                   <Route path="/work" element={<WorkPage portfolio={portfolio} />} />
                   <Route path="/contact" element={<ContactPage />} />
