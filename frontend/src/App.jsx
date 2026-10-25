@@ -167,8 +167,8 @@ function AboutPage() {
               />
             </defs>
             <text
-              className="font-archivo text-[14px] sm:text-[15px] font-medium fill-[#011437] uppercase tracking-[3px]"
-              style={{ wordSpacing: '-4px' }}
+              className="text-[14px] sm:text-[15px] fill-[#011437] uppercase tracking-[3px]"
+              style={{ fontFamily: '"Archivo Black", sans-serif', wordSpacing: '-4px' }}
             >
               <textPath href="#circlePath" startOffset="0%">
                 PORTFOLIO OF CARLOS OZUNA • PORTFOLIO OF CARLOS OZUNA •
@@ -187,7 +187,10 @@ function AboutPage() {
 
       {/* Contact Carlos Ozuna Heading & Link List (elementor-element-c7a461d & 141b523) */}
       <section className="text-center pt-[2%] pb-20 space-y-4 font-raleway">
-        <h2 className="font-archivo text-[26px] sm:text-[33px] font-normal text-[#011437] capitalize tracking-normal">
+        <h2
+          className="text-[28px] sm:text-[33px] text-[#011437] capitalize tracking-normal"
+          style={{ fontFamily: '"Archivo Black", sans-serif' }}
+        >
           Contact Carlos Ozuna
         </h2>
         <ul className="space-y-1.5 text-[14px] sm:text-[16px] font-medium leading-[2em] text-[#011437]">

@@ -1,3 +1,4 @@
+@import './fonts.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,6 +8,22 @@
   --color-secondary-30: #111111;
   --color-accent-10: #ff1d25;
   --color-accent-glow: rgba(255, 29, 37, 0.4);
+
+  /* Elementor typography tokens matching ozuna.ca kit-5 */
+  --e-global-typography-primary-font-family: "Archivo Black", sans-serif;
+  --e-global-typography-primary-font-size: 40px;
+  --e-global-typography-primary-font-weight: 500;
+  --e-global-typography-secondary-font-family: "Archivo Black", sans-serif;
+  --e-global-typography-secondary-font-size: 30px;
+  --e-global-typography-secondary-font-weight: 500;
+  --e-global-typography-text-font-family: "Raleway", sans-serif;
+  --e-global-typography-text-font-size: 14px;
+  --e-global-typography-text-font-weight: 400;
+  --e-global-typography-text-letter-spacing: 2px;
+  --e-global-typography-accent-font-family: "Raleway", sans-serif;
+  --e-global-typography-accent-font-size: 16px;
+  --e-global-typography-accent-font-weight: 800;
+  --e-global-typography-accent-letter-spacing: 2px;
 }
 
 html {
@@ -16,9 +33,11 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Raleway', 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Raleway', sans-serif;
   color: #011437;
   background-color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @keyframes moveUpDown {

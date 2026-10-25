@@ -27,65 +27,36 @@ export default function Hero({ data, heroVideo }) {
         <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/50 to-black pointer-events-none" />
       </div>
 
-      {/* Hero Content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 pb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="inline-block px-4 py-1.5 rounded-full border border-accent/40 bg-accent/10 text-accent font-semibold text-xs tracking-widest uppercase mb-6"
+      {/* Hero Content matching ozuna.ca elementor-11 */}
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 pb-16 flex flex-col items-center justify-center">
+        {/* Animated Main Heading (elementor-element-cf6323b) */}
+        <h1
+          className="text-[30px] sm:text-[40px] text-white uppercase tracking-[2px] leading-tight select-none animate-moveUpDown drop-shadow-lg"
+          style={{ fontFamily: '"Archivo Black", sans-serif', fontWeight: 400 }}
         >
-          Carlos Ozuna Portfolio
-        </motion.div>
+          Welcome to
+          <br />
+          <span style={{ color: '#F29611', fontWeight: 900 }}>Carlos Ozuna's</span> portfolio
+        </h1>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="text-4xl sm:text-6xl md:text-7xl font-black font-heading tracking-tight text-white uppercase leading-none drop-shadow-2xl"
-        >
-          {title.split("CARLOS OZUNA").map((part, i, arr) => (
-            <React.Fragment key={i}>
-              {part}
-              {i < arr.length - 1 && <span className="text-accent">CARLOS OZUNA</span>}
-            </React.Fragment>
-          ))}
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 text-sm sm:text-lg md:text-xl font-medium tracking-widest text-slate-300 uppercase max-w-2xl mx-auto"
-        >
-          {subtitle}
-        </motion.p>
-
-        {/* Dual Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
-        >
+        {/* Action Buttons matching ozuna.ca elementor-element-a216577 & ce8460d */}
+        <div className="mt-8 flex flex-row items-center justify-center gap-3 sm:gap-4 font-raleway">
           <a
             href={cvUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto btn-accent px-8 py-4 rounded-xl font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2"
+            className="bg-[#ff1d25] hover:bg-[#a40404] text-white font-bold text-[12px] uppercase leading-[2em] tracking-[1px] px-6 sm:px-8 py-1 sm:py-1.5 rounded-full shadow-md transition-all animate-moveUpDown inline-block"
           >
-            <Download size={18} />
             Download CV
           </a>
 
           <Link
             to="/work"
-            className="w-full sm:w-auto bg-card hover:bg-cardHover text-white border border-subtle hover:border-slate-400 px-8 py-4 rounded-xl font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2 transition-all"
+            className="bg-[#ff1d25] hover:bg-[#a40404] text-white font-bold text-[12px] uppercase leading-[2em] tracking-[1px] px-6 sm:px-8 py-1 sm:py-1.5 rounded-full shadow-md transition-all animate-moveUpDown inline-block"
           >
-            Go To Portfolio
-            <ArrowRight size={18} />
+            go to portfolio
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

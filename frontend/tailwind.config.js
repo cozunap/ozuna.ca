@@ -20,10 +20,10 @@ export default {
         subtle: '#334155'
       },
       fontFamily: {
-        heading: ['"Archivo Black"', 'Montserrat', 'sans-serif'],
+        heading: ['"Archivo Black"', 'Raleway', 'sans-serif'],
         archivo: ['"Archivo Black"', 'sans-serif'],
         raleway: ['Raleway', 'sans-serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Raleway', 'sans-serif'],
       }
     },
   },
