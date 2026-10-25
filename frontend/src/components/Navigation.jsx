@@ -15,6 +15,8 @@ export default function Navigation() {
     { name: 'Contact', href: '/contact' }
   ];
 
+  const isHome = location.pathname === '/';
+
   const isActive = (path) => {
     if (path === '/' && location.pathname === '/') return true;
     if (path !== '/' && location.pathname.startsWith(path)) return true;
@@ -22,7 +24,13 @@ export default function Navigation() {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 glass-nav">
+    <header
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        isHome
+          ? 'bg-transparent border-b border-transparent shadow-none'
+          : 'glass-nav bg-[#020202]/90 backdrop-blur-md border-b border-subtle/50'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-2 group">
@@ -64,7 +72,11 @@ export default function Navigation() {
               rel="noopener noreferrer"
               title="Carlos Ozuna on Behance"
               aria-label="Carlos Ozuna on Behance"
-              className="text-slate-400 hover:text-white p-2 rounded-lg bg-surface border border-subtle hover:border-[#0057ff] transition-all flex items-center justify-center group"
+              className={`p-2 rounded-lg border transition-all flex items-center justify-center group ${
+                isHome
+                  ? 'text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border-white/15 hover:border-[#0057ff]'
+                  : 'text-slate-400 hover:text-white bg-surface border-subtle hover:border-[#0057ff]'
+              }`}
             >
               <BehanceIcon className="w-5 h-5 transition-transform group-hover:scale-110 group-hover:text-[#0057ff]" />
             </a>
@@ -80,7 +92,11 @@ export default function Navigation() {
             rel="noopener noreferrer"
             title="Carlos Ozuna on Behance"
             aria-label="Carlos Ozuna on Behance"
-            className="text-slate-400 hover:text-white p-2 rounded-lg bg-surface border border-subtle"
+            className={`p-2 rounded-lg border ${
+              isHome
+                ? 'text-white/80 hover:text-white bg-white/5 border-white/15'
+                : 'text-slate-400 hover:text-white bg-surface border-subtle'
+            }`}
           >
             <BehanceIcon className="w-5 h-5" />
           </a>
