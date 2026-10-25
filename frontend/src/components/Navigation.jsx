@@ -17,6 +17,8 @@ export default function Navigation() {
 
   const isHome = location.pathname === '/';
   const isAbout = location.pathname === '/about-me';
+  const isWork = location.pathname.startsWith('/work');
+  const isRedHeader = isAbout || isWork;
 
   const isActive = (path) => {
     if (path === '/' && location.pathname === '/') return true;
@@ -27,7 +29,7 @@ export default function Navigation() {
   return (
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isAbout
+        isRedHeader
           ? 'bg-[#ff1d25] border-b border-red-700/30 shadow-md text-white'
           : isHome
           ? 'bg-transparent border-b border-transparent shadow-none'
@@ -47,24 +49,32 @@ export default function Navigation() {
             }}
           />
           <span className="hidden text-2xl font-black tracking-tight text-white font-heading">
-            C<span className={isAbout ? 'text-black' : 'text-accent'}>OZUNA</span>
+            C<span className={isRedHeader ? 'text-black' : 'text-accent'}>OZUNA</span>
           </span>
         </Link>
 
         {/* Desktop Nav Items */}
         <nav className="hidden md:flex items-center gap-5 font-raleway">
-          {isAbout ? (
+          {isRedHeader ? (
             <>
               <Link
                 to="/about-me"
-                className="text-[14px] font-black text-[#020202] uppercase tracking-[0.5px]"
+                className={`text-[14px] uppercase tracking-[0.5px] transition-colors ${
+                  isAbout
+                    ? 'font-black text-[#020202]'
+                    : 'font-extrabold text-white hover:text-black'
+                }`}
               >
                 About
               </Link>
               <span className="text-white/60 font-light">|</span>
               <Link
                 to="/work"
-                className="text-[14px] font-extrabold text-white hover:text-black uppercase tracking-[0.5px] transition-colors"
+                className={`text-[14px] uppercase tracking-[0.5px] transition-colors ${
+                  isWork
+                    ? 'font-black text-[#020202]'
+                    : 'font-extrabold text-white hover:text-black'
+                }`}
               >
                 Work
               </Link>
@@ -131,7 +141,7 @@ export default function Navigation() {
             title="Carlos Ozuna on Behance"
             aria-label="Carlos Ozuna on Behance"
             className={`p-2 rounded-lg border ${
-              isAbout
+              isRedHeader
                 ? 'text-white bg-white/10 border-white/25'
                 : 'text-white/80 hover:text-white bg-white/5 border-white/15'
             }`}
@@ -143,7 +153,7 @@ export default function Navigation() {
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={`p-2 rounded-lg border focus:outline-none ${
-              isAbout
+              isRedHeader
                 ? 'text-white bg-white/10 border-white/25'
                 : 'text-slate-300 hover:text-white bg-card border-subtle'
             }`}
@@ -158,7 +168,7 @@ export default function Navigation() {
       {mobileMenuOpen && (
         <div
           className={`md:hidden border-b px-4 pt-3 pb-6 space-y-3 font-raleway ${
-            isAbout
+            isRedHeader
               ? 'bg-[#ff1d25] border-white/20 text-white'
               : 'bg-[#020202] border-white/10 text-white'
           }`}
@@ -168,8 +178,8 @@ export default function Navigation() {
             onClick={() => setMobileMenuOpen(false)}
             className={`block px-3 py-2 rounded-md text-[14px] font-extrabold uppercase tracking-[0.5px] ${
               isActive('/about-me')
-                ? isAbout ? 'text-black bg-white/20' : 'text-accent'
-                : isAbout ? 'text-white hover:text-black' : 'text-slate-200 hover:text-white'
+                ? isRedHeader ? 'text-black bg-white/20' : 'text-accent'
+                : isRedHeader ? 'text-white hover:text-black' : 'text-slate-200 hover:text-white'
             }`}
           >
             About
@@ -179,8 +189,8 @@ export default function Navigation() {
             onClick={() => setMobileMenuOpen(false)}
             className={`block px-3 py-2 rounded-md text-[14px] font-extrabold uppercase tracking-[0.5px] ${
               isActive('/work')
-                ? isAbout ? 'text-black bg-white/20' : 'text-accent'
-                : isAbout ? 'text-white hover:text-black' : 'text-slate-200 hover:text-white'
+                ? isRedHeader ? 'text-black bg-white/20' : 'text-accent'
+                : isRedHeader ? 'text-white hover:text-black' : 'text-slate-200 hover:text-white'
             }`}
           >
             Work
@@ -190,10 +200,10 @@ export default function Navigation() {
             target="_blank"
             rel="noopener noreferrer"
             className={`flex items-center gap-3 px-3 py-2 text-[14px] font-extrabold uppercase tracking-[0.5px] rounded-md ${
-              isAbout ? 'text-white hover:text-black' : 'text-slate-200 hover:text-white'
+              isRedHeader ? 'text-white hover:text-black' : 'text-slate-200 hover:text-white'
             }`}
           >
-            <BehanceIcon className={`w-5 h-5 ${isAbout ? 'text-white' : 'text-accent'}`} />
+            <BehanceIcon className={`w-5 h-5 ${isRedHeader ? 'text-white' : 'text-accent'}`} />
             <span>Behance Portfolio &rarr;</span>
           </a>
         </div>

@@ -360,10 +360,10 @@ function AboutPage() {
   );
 }
 
-// 3. Work Page View
+// 3. Work Page View (1:1 replica of https://ozuna.ca/work/)
 function WorkPage({ portfolio }) {
   return (
-    <div className="bg-[#020202] text-white min-h-screen pt-28 pb-16">
+    <div className="bg-white min-h-screen pt-20">
       <PortfolioGrid items={portfolio} />
     </div>
   );

@@ -1,0 +1,107 @@
+[
+  {
+    "id": "work-1",
+    "title": "AJS Mechanical",
+    "category": "Web Design",
+    "href": "https://ozuna.ca/ajs-mechanical/",
+    "image": "/images/ajsmechanical-net.jpg"
+  },
+  {
+    "id": "work-2",
+    "title": "Business Cards",
+    "category": "Graphic Design",
+    "href": "https://ozuna.ca/business-cards/",
+    "image": "/images/jacinta.jpg"
+  },
+  {
+    "id": "work-3",
+    "title": "Cross Way Driving School",
+    "category": "Graphic Design",
+    "href": "https://ozuna.ca/cross-way-driving-school/",
+    "image": "/images/carro.jpg"
+  },
+  {
+    "id": "work-4",
+    "title": "Degan Tax",
+    "category": "Graphic Design",
+    "href": "https://ozuna.ca/degan-tax/",
+    "image": "/images/Bus-Advertising.jpg"
+  },
+  {
+    "id": "work-5",
+    "title": "Degan Tax Web Design",
+    "category": "Web Design",
+    "href": "https://ozuna.ca/degan-tax-web-design/",
+    "image": "/images/degantax-scaled-1.jpg"
+  },
+  {
+    "id": "work-6",
+    "title": "Jacinthe Coiffure Studio",
+    "category": "Web Design",
+    "href": "https://ozuna.ca/jacinthe-coiffure-studio/",
+    "image": "/images/jacinthecoiffurestudio.jpg"
+  },
+  {
+    "id": "work-7",
+    "title": "Over All HVAC NJ",
+    "category": "Web Design",
+    "href": "https://ozuna.ca/over-all-hvac-nj/",
+    "image": "/images/overallhvacnj-home-scaled.jpg"
+  },
+  {
+    "id": "work-8",
+    "title": "PostCards",
+    "category": "Graphic Design",
+    "href": "https://ozuna.ca/postcards/",
+    "image": "/images/pennzoil-9.jpg"
+  },
+  {
+    "id": "work-9",
+    "title": "Promotional Flyers",
+    "category": "Graphic Design",
+    "href": "https://ozuna.ca/promotional-flyers/",
+    "image": "/images/Celebrating-Life.jpg"
+  },
+  {
+    "id": "work-10",
+    "title": "Refried Beans",
+    "category": "Graphic Design",
+    "href": "https://ozuna.ca/refried-beans/",
+    "image": "/images/menu-cover.jpg"
+  },
+  {
+    "id": "work-11",
+    "title": "Reseind",
+    "category": "Graphic Design",
+    "href": "https://ozuna.ca/reseind/",
+    "image": "/images/bcmockup-scaled.jpg"
+  },
+  {
+    "id": "work-12",
+    "title": "Roberto Clemente Foundation Booklet",
+    "category": "Graphic Design",
+    "href": "https://ozuna.ca/roberto-clemente-foundation-booklet/",
+    "image": "/images/Roberto-Clemente-Booklet-1.jpg"
+  },
+  {
+    "id": "work-13",
+    "title": "Roberto Clemente Invitations",
+    "category": "Graphic Design",
+    "href": "https://ozuna.ca/roberto-clemente-invitations/",
+    "image": "/images/Sponsorship-RSVP-Card-8x6-1.jpg"
+  },
+  {
+    "id": "work-14",
+    "title": "Sannico Sports",
+    "category": "Graphic Design",
+    "href": "https://ozuna.ca/primo-sports/",
+    "image": "/images/Children-Shoe-Box-Template.webp"
+  },
+  {
+    "id": "work-15",
+    "title": "Tu Voz Amiga",
+    "category": "Web Design",
+    "href": "https://ozuna.ca/tu-voz-amiga/",
+    "image": "/images/tuvozamiga.jpg"
+  }
+]
