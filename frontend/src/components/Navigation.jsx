@@ -79,7 +79,16 @@ export default function Navigation() {
                 Work
               </Link>
 
-              <div className="flex items-center pl-3">
+              {/* Authentic Contact Me Button on Red Header */}
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-contact-modal'))}
+                className="ml-2 px-4 py-2 border border-white text-white hover:bg-white hover:text-[#ff1d25] font-raleway font-bold text-xs uppercase tracking-wider rounded transition-colors focus:outline-none cursor-pointer"
+              >
+                Contact Me
+              </button>
+
+              <div className="flex items-center pl-2">
                 <a
                   href="https://www.behance.net/cozuna"
                   target="_blank"
@@ -115,7 +124,16 @@ export default function Navigation() {
                 Work
               </Link>
 
-              <div className="flex items-center pl-3">
+              {/* Contact Me Button on Home/Transparent Header */}
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-contact-modal'))}
+                className="ml-2 px-4 py-2 border border-white/80 hover:border-white text-white hover:bg-white hover:text-black font-raleway font-bold text-xs uppercase tracking-wider rounded transition-colors focus:outline-none cursor-pointer"
+              >
+                Contact Me
+              </button>
+
+              <div className="flex items-center pl-2">
                 <a
                   href="https://www.behance.net/cozuna"
                   target="_blank"
@@ -195,6 +213,18 @@ export default function Navigation() {
           >
             Work
           </Link>
+          <button
+            type="button"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              window.dispatchEvent(new CustomEvent('open-contact-modal'));
+            }}
+            className={`w-full text-left block px-3 py-2 rounded-md text-[14px] font-extrabold uppercase tracking-[0.5px] ${
+              isRedHeader ? 'text-white hover:text-black hover:bg-white/10' : 'text-slate-200 hover:text-white'
+            }`}
+          >
+            Contact Me
+          </button>
           <a
             href="https://www.behance.net/cozuna"
             target="_blank"

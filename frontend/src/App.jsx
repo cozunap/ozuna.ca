@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import PortfolioGrid from './components/PortfolioGrid';
 import Footer from './components/Footer';
+import ContactModal from './components/ContactModal';
 import Login from './admin/Login';
 import AdminDashboard from './admin/AdminDashboard';
 import { Mail, MapPin, Send, CheckCircle2, Download, ExternalLink, X } from 'lucide-react';
@@ -18,53 +19,6 @@ function HomePage({ settings, pages }) {
 
 // 2. About Me Page View (1:1 replica of https://ozuna.ca/about-me/)
 function AboutPage() {
-  const [contactModalOpen, setContactModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ firstName: '', lastName: '', phone: '', email: '', message: '' });
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const handleOpenModal = () => setContactModalOpen(true);
-    window.addEventListener('open-contact-modal', handleOpenModal);
-    if (window.location.hash === '#contact') setContactModalOpen(true);
-    const handleHash = () => {
-      if (window.location.hash === '#contact') setContactModalOpen(true);
-    };
-    window.addEventListener('hashchange', handleHash);
-    return () => {
-      window.removeEventListener('open-contact-modal', handleOpenModal);
-      window.removeEventListener('hashchange', handleHash);
-    };
-  }, []);
-
-  const handleModalSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setError('');
-
-    try {
-      const res = await fetch('/api/content/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: `${formData.firstName} ${formData.lastName}`.trim(),
-          email: formData.email,
-          phone: formData.phone,
-          message: formData.message
-        })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to submit message');
-
-      setSubmitted(true);
-      setFormData({ firstName: '', lastName: '', phone: '', email: '', message: '' });
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   return (
     <div className="bg-white min-h-screen text-[#011437] font-raleway pt-20 pb-16 selection:bg-[#ff1d25] selection:text-white">
@@ -215,7 +169,7 @@ function AboutPage() {
           <li>
             <button
               type="button"
-              onClick={() => setContactModalOpen(true)}
+              onClick={() => window.dispatchEvent(new CustomEvent('open-contact-modal'))}
               className="hover:text-[#ff1d25] transition-colors inline-block capitalize cursor-pointer font-medium"
             >
               contact me
@@ -223,139 +177,6 @@ function AboutPage() {
           </li>
         </ul>
       </section>
-
-      {/* Interactive Contact Popup Modal (1:1 replica of Elementor Popup 907) */}
-      {contactModalOpen && (
-        <div id="contact-popup-modal" className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white rounded-2xl p-6 sm:p-8 max-w-lg w-full relative shadow-2xl border border-gray-100 text-[#011437] font-raleway">
-            <button
-              type="button"
-              onClick={() => { setContactModalOpen(false); setSubmitted(false); }}
-              className="absolute top-4 right-4 text-gray-400 hover:text-[#011437] p-1.5 rounded-full hover:bg-gray-100 transition-colors"
-              aria-label="Close modal"
-            >
-              <X size={22} />
-            </button>
-
-            {submitted ? (
-              <div className="py-8 text-center space-y-4">
-                <div className="w-16 h-16 bg-green-500/10 text-green-600 rounded-full flex items-center justify-center mx-auto">
-                  <CheckCircle2 size={36} />
-                </div>
-                <h3 className="text-2xl font-bold font-archivo text-[#011437] uppercase">
-                  Thank You!
-                </h3>
-                <p className="text-sm text-gray-600">
-                  Your message has been sent to Carlos Ozuna. We'll be in touch shortly!
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setContactModalOpen(false)}
-                  className="px-6 py-2.5 bg-[#ff1d25] text-white rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#e0121a] transition-all"
-                >
-                  Close
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleModalSubmit} className="space-y-4 pt-2">
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl sm:text-3xl font-bold font-archivo text-[#011437] tracking-tight">
-                    Contact Me Today!
-                  </h3>
-                  <p className="text-xs text-gray-500 tracking-wider uppercase mt-1">
-                    Send a direct inquiry to Carlos
-                  </p>
-                </div>
-
-                {error && (
-                  <div className="p-3 rounded-lg bg-red-50 text-red-600 text-xs font-semibold">
-                    {error}
-                  </div>
-                )}
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">
-                      Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.firstName}
-                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                      placeholder="First name"
-                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-[#011437] focus:outline-none focus:border-[#ff1d25] transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">
-                      Last Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.lastName}
-                      onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                      placeholder="Last name"
-                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-[#011437] focus:outline-none focus:border-[#ff1d25] transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">
-                      Phone
-                    </label>
-                    <input
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="438-000-0000"
-                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-[#011437] focus:outline-none focus:border-[#ff1d25] transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="email@example.com"
-                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-[#011437] focus:outline-none focus:border-[#ff1d25] transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">
-                    Message *
-                  </label>
-                  <textarea
-                    rows={3}
-                    required
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Your project inquiry or question..."
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-[#011437] focus:outline-none focus:border-[#ff1d25] transition-colors"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full py-3.5 bg-[#ff1d25] hover:bg-[#e0121a] text-white text-xs font-bold uppercase tracking-[2px] rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 mt-2 cursor-pointer"
-                >
-                  {submitting ? 'Sending...' : 'ContaCT ME NOW!'}
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -369,188 +190,44 @@ function WorkPage({ portfolio }) {
   );
 }
 
-// 4. Contact Page View
-function ContactPage() {
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState('');
+// 4. Contact Route -> triggers Contact Me Pop-Up Modal
+function ContactRedirect() {
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setError('');
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('open-contact-modal'));
+    navigate('/work', { replace: true });
+  }, [navigate]);
 
-    try {
-      const res = await fetch('/api/content/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to submit form');
-
-      setSubmitted(true);
-      setFormData({ name: '', email: '', phone: '', message: '' });
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <div className="bg-[#020202] text-white min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-        <span className="text-accent font-bold text-xs uppercase tracking-widest">Get In Touch</span>
-        <h1 className="text-4xl sm:text-6xl font-black font-heading uppercase text-white tracking-tight">
-          Let’s Collaborate
-        </h1>
-        <p className="text-slate-300 text-sm sm:text-base">
-          Have an upcoming project, design inquiry, or opportunity? Send a message and let's bring it to reality.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-        {/* Info Column */}
-        <div className="space-y-6">
-          <div className="bg-card border border-subtle rounded-3xl p-6 space-y-4">
-            <h3 className="text-base font-bold font-heading uppercase text-white">Direct Contacts</h3>
-            <div className="space-y-3 text-sm text-slate-300">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-surface border border-subtle text-accent">
-                  <Mail size={18} />
-                </div>
-                <div>
-                  <span className="block text-[11px] text-muted uppercase font-bold">Email Address</span>
-                  <a href="mailto:carlos@ozuna.ca" className="hover:text-accent font-medium">carlos@ozuna.ca</a>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-surface border border-subtle text-accent">
-                  <MapPin size={18} />
-                </div>
-                <div>
-                  <span className="block text-[11px] text-muted uppercase font-bold">Location</span>
-                  <span>Laval, QC, Canada</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-card border border-subtle rounded-3xl p-6">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-slate-300 mb-2">Availability</h4>
-            <p className="text-xs text-muted leading-relaxed">
-              Available for contract work, agency freelance sprints, and full-time senior design / front-end engineering roles.
-            </p>
-          </div>
-        </div>
-
-        {/* Form Column */}
-        <div className="md:col-span-2 bg-card border border-subtle rounded-3xl p-8 sm:p-10 shadow-xl">
-          {submitted ? (
-            <div className="py-12 text-center space-y-4">
-              <div className="w-16 h-16 bg-accent/10 border border-accent/30 text-accent rounded-full flex items-center justify-center mx-auto">
-                <CheckCircle2 size={36} />
-              </div>
-              <h3 className="text-2xl font-bold font-heading text-white uppercase">Message Sent Successfully!</h3>
-              <p className="text-sm text-slate-300 max-w-md mx-auto">
-                Thank you for reaching out. Carlos will review your inquiry and get back to you promptly.
-              </p>
-              <button
-                onClick={() => setSubmitted(false)}
-                className="btn-accent px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider mt-4"
-              >
-                Send Another Message
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {error && (
-                <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-semibold">
-                  {error}
-                </div>
-              )}
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                    Your Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 bg-surface border border-subtle rounded-xl text-white text-sm focus:outline-none focus:border-accent"
-                    placeholder="Jane Doe"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 bg-surface border border-subtle rounded-xl text-white text-sm focus:outline-none focus:border-accent"
-                    placeholder="jane@company.com"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                  Phone Number (Optional)
-                </label>
-                <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface border border-subtle rounded-xl text-white text-sm focus:outline-none focus:border-accent"
-                  placeholder="+1 (514) 000-0000"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-                  Project Details / Message *
-                </label>
-                <textarea
-                  rows={4}
-                  required
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface border border-subtle rounded-xl text-white text-sm focus:outline-none focus:border-accent"
-                  placeholder="Describe your vision, timeline, and goals..."
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={submitting}
-                className="btn-accent w-full py-4 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                <Send size={16} />
-                {submitting ? 'Sending Message...' : 'Submit Message'}
-              </button>
-            </form>
-          )}
-        </div>
-      </div>
-    </div>
-  </div>
-);
+  return <div className="bg-white min-h-screen pt-20" />;
 }
 
 // Main Layout for public pages (hides footer on home page hero)
 function MainLayout({ settings, pages, portfolio }) {
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpen = () => setContactModalOpen(true);
+    window.addEventListener('open-contact-modal', handleOpen);
+
+    if (location.pathname === '/contact' || location.hash === '#contact') {
+      setContactModalOpen(true);
+    }
+
+    const handleHash = () => {
+      if (window.location.hash === '#contact') {
+        setContactModalOpen(true);
+      }
+    };
+    window.addEventListener('hashchange', handleHash);
+
+    return () => {
+      window.removeEventListener('open-contact-modal', handleOpen);
+      window.removeEventListener('hashchange', handleHash);
+    };
+  }, [location]);
 
   return (
     <>
@@ -560,10 +237,16 @@ function MainLayout({ settings, pages, portfolio }) {
           <Route path="/" element={<HomePage settings={settings} pages={pages} />} />
           <Route path="/about-me" element={<AboutPage pages={pages} />} />
           <Route path="/work" element={<WorkPage portfolio={portfolio} />} />
-          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/contact" element={<ContactRedirect />} />
         </Routes>
       </main>
       {!isHome && <Footer />}
+
+      {/* Global Authentic "Contact Me" Pop-Up Form Modal */}
+      <ContactModal
+        isOpen={contactModalOpen}
+        onClose={() => setContactModalOpen(false)}
+      />
     </>
   );
 }
