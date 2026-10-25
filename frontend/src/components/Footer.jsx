@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUp, ExternalLink } from 'lucide-react';
+import BehanceIcon from './icons/BehanceIcon';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -58,9 +59,11 @@ export default function Footer() {
                   href="https://www.behance.net/cozuna"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-slate-400 hover:text-accent flex items-center gap-1.5 transition-colors"
+                  className="text-slate-400 hover:text-white hover:text-[#0057ff] flex items-center gap-2 transition-colors group"
                 >
-                  Behance Portfolio <ExternalLink size={13} />
+                  <BehanceIcon className="w-4 h-4 transition-transform group-hover:scale-110" />
+                  <span>Behance Portfolio</span>
+                  <ExternalLink size={12} className="opacity-60" />
                 </a>
               </li>
               <li>

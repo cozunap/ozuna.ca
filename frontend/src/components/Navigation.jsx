@@ -1,7 +1,8 @@
 // src/components/Navigation.jsx
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ExternalLink, ShieldCheck } from 'lucide-react';
+import { Menu, X, ShieldCheck } from 'lucide-react';
+import BehanceIcon from './icons/BehanceIcon';
 
 export default function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -55,32 +56,54 @@ export default function Navigation() {
             </Link>
           ))}
 
+          <div className="flex items-center gap-3 pl-4 border-l border-subtle/60">
+            {/* Behance Social Media Logo */}
+            <a
+              href="https://www.behance.net/cozuna"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Carlos Ozuna on Behance"
+              aria-label="Carlos Ozuna on Behance"
+              className="text-slate-400 hover:text-white p-2 rounded-lg bg-surface border border-subtle hover:border-[#0057ff] transition-all flex items-center justify-center group"
+            >
+              <BehanceIcon className="w-5 h-5 transition-transform group-hover:scale-110 group-hover:text-[#0057ff]" />
+            </a>
+
+            {/* CMS Admin Dashboard */}
+            <Link
+              to="/admin"
+              title="CMS Admin Dashboard"
+              aria-label="CMS Admin Dashboard"
+              className="text-slate-400 hover:text-white p-2 rounded-lg bg-surface border border-subtle hover:border-accent transition-all flex items-center justify-center"
+            >
+              <ShieldCheck size={18} />
+            </Link>
+          </div>
+        </nav>
+
+        {/* Mobile Action Buttons */}
+        <div className="flex md:hidden items-center gap-2.5">
+          {/* Mobile Behance Logo */}
           <a
             href="https://www.behance.net/cozuna"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-semibold uppercase tracking-wider text-slate-300 hover:text-white flex items-center gap-1"
+            title="Carlos Ozuna on Behance"
+            aria-label="Carlos Ozuna on Behance"
+            className="text-slate-400 hover:text-white p-2 rounded-lg bg-surface border border-subtle"
           >
-            Behance <ExternalLink size={14} />
+            <BehanceIcon className="w-5 h-5" />
           </a>
 
           <Link
             to="/admin"
             title="CMS Admin Dashboard"
-            className="text-slate-400 hover:text-white p-2 rounded-lg bg-surface border border-subtle hover:border-accent transition-all"
-          >
-            <ShieldCheck size={18} />
-          </Link>
-        </nav>
-
-        {/* Mobile Hamburger Button */}
-        <div className="flex md:hidden items-center gap-3">
-          <Link
-            to="/admin"
+            aria-label="CMS Admin Dashboard"
             className="text-slate-400 p-2 rounded-lg bg-surface border border-subtle"
           >
             <ShieldCheck size={18} />
           </Link>
+
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -113,9 +136,10 @@ export default function Navigation() {
             href="https://www.behance.net/cozuna"
             target="_blank"
             rel="noopener noreferrer"
-            className="block px-3 py-2 text-slate-300 hover:text-white text-base font-semibold uppercase"
+            className="flex items-center gap-3 px-3 py-2 text-slate-300 hover:text-white text-base font-semibold uppercase hover:bg-surface rounded-md"
           >
-            Behance &rarr;
+            <BehanceIcon className="w-5 h-5 text-accent" />
+            <span>Behance Portfolio &rarr;</span>
           </a>
         </div>
       )}
