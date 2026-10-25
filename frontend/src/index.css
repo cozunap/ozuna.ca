@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-dominant-60: #020202;
+  --color-secondary-30: #111111;
+  --color-accent-10: #ff1d25;
+  --color-accent-glow: rgba(255, 29, 37, 0.4);
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-dominant-60);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #f8fafc;
+  background-color: var(--color-dominant-60);
+}
+
+/* Glassmorphism navigation */
+.glass-nav {
+  background: rgba(2, 2, 2, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Red Glow Buttons & Accents */
+.btn-accent {
+  background-color: #ff1d25;
+  color: #ffffff;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(255, 29, 37, 0.35);
+}
+
+.btn-accent:hover {
+  background-color: #e0121a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 29, 37, 0.5);
+}
+
+/* Card Hover Lift */
+.portfolio-card {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.portfolio-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 29, 37, 0.15);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff1d25;
+}
