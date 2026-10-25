@@ -1,7 +1,7 @@
 // src/components/Navigation.jsx
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ShieldCheck } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import BehanceIcon from './icons/BehanceIcon';
 
 export default function Navigation() {
@@ -68,16 +68,6 @@ export default function Navigation() {
             >
               <BehanceIcon className="w-5 h-5 transition-transform group-hover:scale-110 group-hover:text-[#0057ff]" />
             </a>
-
-            {/* CMS Admin Dashboard */}
-            <Link
-              to="/admin"
-              title="CMS Admin Dashboard"
-              aria-label="CMS Admin Dashboard"
-              className="text-slate-400 hover:text-white p-2 rounded-lg bg-surface border border-subtle hover:border-accent transition-all flex items-center justify-center"
-            >
-              <ShieldCheck size={18} />
-            </Link>
           </div>
         </nav>
 
@@ -94,15 +84,6 @@ export default function Navigation() {
           >
             <BehanceIcon className="w-5 h-5" />
           </a>
-
-          <Link
-            to="/admin"
-            title="CMS Admin Dashboard"
-            aria-label="CMS Admin Dashboard"
-            className="text-slate-400 p-2 rounded-lg bg-surface border border-subtle"
-          >
-            <ShieldCheck size={18} />
-          </Link>
 
           <button
             type="button"
