@@ -65,13 +65,6 @@ export default function Navigation() {
           </a>
 
           <Link
-            to="/contact"
-            className="btn-accent px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest"
-          >
-            Contact Me
-          </Link>
-
-          <Link
             to="/admin"
             title="CMS Admin Dashboard"
             className="text-slate-400 hover:text-white p-2 rounded-lg bg-surface border border-subtle hover:border-accent transition-all"
@@ -124,13 +117,6 @@ export default function Navigation() {
           >
             Behance &rarr;
           </a>
-          <Link
-            to="/contact"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block w-full text-center btn-accent py-3 rounded-xl font-bold uppercase tracking-wider text-sm mt-4"
-          >
-            Contact Me
-          </Link>
         </div>
       )}
     </header>
