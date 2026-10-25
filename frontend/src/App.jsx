@@ -1,13 +1,12 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import PortfolioGrid from './components/PortfolioGrid';
 import Footer from './components/Footer';
 import Login from './admin/Login';
 import AdminDashboard from './admin/AdminDashboard';
-import { Mail, MapPin, Send, CheckCircle2, Download, ExternalLink } from 'lucide-react';
+import { Mail, MapPin, Send, CheckCircle2, Download, ExternalLink, X } from 'lucide-react';
 
 // 1. Home Page View
 function HomePage({ settings, pages }) {
@@ -17,63 +16,343 @@ function HomePage({ settings, pages }) {
   return <Hero data={heroSection} heroVideo={settings?.heroVideo} />;
 }
 
-// 2. About Me Page View
-function AboutPage({ pages }) {
-  const page = pages.find((p) => p.slug === 'about-me');
-  const bio = page?.sections?.find((s) => s.id === 'about-hero');
-  const skills = page?.sections?.find((s) => s.id === 'skills');
+// 2. About Me Page View (1:1 replica of https://ozuna.ca/about-me/)
+function AboutPage() {
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', phone: '', email: '', message: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const handleOpenModal = () => setContactModalOpen(true);
+    window.addEventListener('open-contact-modal', handleOpenModal);
+    if (window.location.hash === '#contact') setContactModalOpen(true);
+    const handleHash = () => {
+      if (window.location.hash === '#contact') setContactModalOpen(true);
+    };
+    window.addEventListener('hashchange', handleHash);
+    return () => {
+      window.removeEventListener('open-contact-modal', handleOpenModal);
+      window.removeEventListener('hashchange', handleHash);
+    };
+  }, []);
+
+  const handleModalSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/content/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: `${formData.firstName} ${formData.lastName}`.trim(),
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to submit message');
+
+      setSubmitted(true);
+      setFormData({ firstName: '', lastName: '', phone: '', email: '', message: '' });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
-    <div className="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-16">
-      {/* Header */}
-      <div className="space-y-4">
-        <span className="text-accent font-bold text-xs uppercase tracking-widest flex items-center gap-2">
-          Biography & Background
-        </span>
-        <h1 className="text-4xl sm:text-6xl font-black font-heading uppercase text-white tracking-tight">
-          About Carlos Ozuna
+    <div className="bg-white min-h-screen text-[#011437] font-raleway pt-20 pb-16 selection:bg-[#ff1d25] selection:text-white">
+      {/* Title Watermark & Outlined Header */}
+      <section className="pt-12 sm:pt-20 pb-4 text-center relative overflow-hidden">
+        {/* Lowercase Outlined Foreground Title: about (elementor-element-4eeaee2) */}
+        <h1
+          className="font-raleway text-[48px] sm:text-[60px] font-black tracking-tight text-center leading-none lowercase relative z-10"
+          style={{
+            WebkitTextStroke: '1px #011437',
+            color: 'transparent'
+          }}
+        >
+          about
         </h1>
-        <p className="text-lg text-slate-300 max-w-2xl leading-relaxed">
-          {bio?.paragraph || "Hi there! I'm a graphic designer with 20+ years of experience crafting visuals for brands, print media, agencies, and digital platforms."}
-        </p>
-      </div>
 
-      {/* Grid Features */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-card border border-subtle rounded-3xl p-8 space-y-4">
-          <h3 className="text-xl font-bold font-heading text-white uppercase">My Philosophy</h3>
-          <p className="text-sm text-slate-300 leading-relaxed">
+        {/* Large Faint Watermark: about (elementor-element-4c4fede) */}
+        <div
+          className="font-raleway text-[76px] sm:text-[100px] font-black uppercase tracking-wider text-center leading-none select-none -mt-[56px] sm:-mt-[90px]"
+          style={{ color: 'rgba(37, 37, 37, 0.05)' }}
+        >
+          about
+        </div>
+
+        {/* Downward Bouncing Chevron Arrow Icon (elementor-element-04ae8c1) */}
+        <div className="pt-2 flex justify-center">
+          <a
+            href="#Down"
+            className="text-[#011437] hover:text-[#ff1d25] transition-colors p-2 inline-block animate-moveUpDown"
+            aria-label="Scroll to content"
+          >
+            <svg
+              className="w-[55px] h-[55px] sm:w-[75px] sm:h-[75px]"
+              viewBox="0 0 612 792"
+              fill="currentColor"
+            >
+              <path d="M304.8,477.3c12.2-12.3,23.5-23.7,34.8-35c47.1-47.1,94.3-94.2,141.4-141.3c1.1-1.1,2.3-2.3,3.6-3.3 c3.3-2.4,7.5-2.1,10.2,0.8c2.7,2.8,3,7.1,0.6,10.3c-0.9,1.2-2,2.2-3.1,3.3c-58.9,58.8-117.8,117.7-176.7,176.5 c-1.4,1.4-2.8,2.9-4.2,4.3c-4,4-8.4,4-12.5-0.1c-13.7-13.7-27.3-27.5-41-41.2c-46.1-46.2-92.2-92.4-138.3-138.5 c-1.1-1.1-2.4-2.3-3.3-3.6c-2.2-3.2-1.7-7.3,1-9.9c2.6-2.6,7-3,10-0.8c1.2,0.9,2.2,2,3.3,3.1c57,57,113.9,114.1,170.9,171.2 C302.6,474.1,303.5,475.6,304.8,477.3z" />
+            </svg>
+          </a>
+        </div>
+      </section>
+
+      {/* Main Copy Section (elementor-element-e6bf42a) */}
+      <section
+        id="about-content"
+        className="max-w-[760px] mx-auto px-6 py-6 space-y-6 text-[14px] leading-[2em] tracking-[2px] text-[#011437] font-raleway font-normal"
+      >
+        <div>
+          <strong className="block text-[14px] font-bold text-[#011437] mb-1">
+            Let’s Create Something Great Together
+          </strong>
+          <p>
+            Hi there! I’m a graphic designer with 20+ years of experience crafting visuals for brands, print media, agencies, and digital platforms. I thrive on collaboration, and my favourite part of the job is turning ideas into designs that truly connect with people.
+          </p>
+        </div>
+
+        <div>
+          <strong className="block text-[14px] font-bold text-[#011437] mb-1">
+            What I Bring:
+          </strong>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>Mastery of Adobe tools (Photoshop, InDesign, Illustrator, WordPress y CSS3) to create polished, versatile work.</li>
+            <li>A deep understanding of print and digital design—from magazines and promotional materials to social campaigns and email marketing.</li>
+            <li>A humble, team-first mindset: I listen closely, adapt quickly, and believe feedback makes every project stronger.</li>
+            <li>Fluent communication in English, French, and Spanish, which helps me collaborate smoothly across cultures.</li>
+          </ul>
+        </div>
+
+        <div>
+          <strong className="block text-[14px] font-bold text-[#011437] mb-1">
+            My Approach:
+          </strong>
+          <p>
             Over the years, I’ve learned that great design starts with empathy. I ask questions, respect deadlines, and keep things simple and purposeful. Whether it’s a logo, a brochure, or a digital ad, my goal is to deliver work that feels both meaningful and effortless.
           </p>
-          <div className="pt-4">
+        </div>
+
+        <p>
+          If you’re looking for a professional graphic designer who loves design (and is excited by well-chosen typography or an engaging layout!), let’s talk. I’m open to full-time, freelance, or contract positions where I can contribute, learn, and grow with a caring team.
+        </p>
+
+        <p>
+          Thanks for your time—I’d be honoured to help bring your company to the next level.
+        </p>
+      </section>
+
+      {/* Centered CQ Emblem with Circular Rotating Text Path (elementor-element-ef91366 & d023a62) */}
+      <section id="Down" className="pt-[6%] pb-[6%] flex flex-col items-center justify-center relative">
+        <div className="relative flex items-center justify-center w-[280px] h-[280px] sm:w-[350px] sm:h-[350px]">
+          {/* Rotating SVG Circular Text Path */}
+          <svg
+            viewBox="0 0 320 320"
+            className="absolute inset-0 w-full h-full pointer-events-none animate-[spin_30s_linear_infinite]"
+          >
+            <defs>
+              <path
+                id="circlePath"
+                d="M 160, 160 m -115, 0 a 115,115 0 1,1 230,0 a 115,115 0 1,1 -230,0"
+                fill="none"
+              />
+            </defs>
+            <text
+              className="font-archivo text-[14px] sm:text-[15px] font-medium fill-[#011437] uppercase tracking-[3px]"
+              style={{ wordSpacing: '-4px' }}
+            >
+              <textPath href="#circlePath" startOffset="0%">
+                PORTFOLIO OF CARLOS OZUNA • PORTFOLIO OF CARLOS OZUNA •
+              </textPath>
+            </text>
+          </svg>
+
+          {/* Centered Emblem Logo */}
+          <img
+            src="/images/COzuna-favico.svg"
+            alt="Carlos Ozuna - CQ Web Design Graphic Design Printing"
+            className="w-[120px] sm:w-[150px] h-auto object-contain relative z-10 hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      </section>
+
+      {/* Contact Carlos Ozuna Heading & Link List (elementor-element-c7a461d & 141b523) */}
+      <section className="text-center pt-[2%] pb-20 space-y-4 font-raleway">
+        <h2 className="font-archivo text-[26px] sm:text-[33px] font-normal text-[#011437] capitalize tracking-normal">
+          Contact Carlos Ozuna
+        </h2>
+        <ul className="space-y-1.5 text-[14px] sm:text-[16px] font-medium leading-[2em] text-[#011437]">
+          <li>
             <a
               href="/downloads/CV.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-accent inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider"
+              className="hover:text-[#ff1d25] transition-colors inline-block capitalize"
             >
-              <Download size={16} /> Download Curriculum Vitae
+              Download my CV.
             </a>
+          </li>
+          <li>
+            <Link
+              to="/work"
+              className="hover:text-[#ff1d25] transition-colors inline-block capitalize"
+            >
+              See Carlos Ozuna's work
+            </Link>
+          </li>
+          <li>
+            <button
+              type="button"
+              onClick={() => setContactModalOpen(true)}
+              className="hover:text-[#ff1d25] transition-colors inline-block capitalize cursor-pointer font-medium"
+            >
+              contact me
+            </button>
+          </li>
+        </ul>
+      </section>
+
+      {/* Interactive Contact Popup Modal (1:1 replica of Elementor Popup 907) */}
+      {contactModalOpen && (
+        <div id="contact-popup-modal" className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-2xl p-6 sm:p-8 max-w-lg w-full relative shadow-2xl border border-gray-100 text-[#011437] font-raleway">
+            <button
+              type="button"
+              onClick={() => { setContactModalOpen(false); setSubmitted(false); }}
+              className="absolute top-4 right-4 text-gray-400 hover:text-[#011437] p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+              aria-label="Close modal"
+            >
+              <X size={22} />
+            </button>
+
+            {submitted ? (
+              <div className="py-8 text-center space-y-4">
+                <div className="w-16 h-16 bg-green-500/10 text-green-600 rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle2 size={36} />
+                </div>
+                <h3 className="text-2xl font-bold font-archivo text-[#011437] uppercase">
+                  Thank You!
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Your message has been sent to Carlos Ozuna. We'll be in touch shortly!
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setContactModalOpen(false)}
+                  className="px-6 py-2.5 bg-[#ff1d25] text-white rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#e0121a] transition-all"
+                >
+                  Close
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleModalSubmit} className="space-y-4 pt-2">
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl sm:text-3xl font-bold font-archivo text-[#011437] tracking-tight">
+                    Contact Me Today!
+                  </h3>
+                  <p className="text-xs text-gray-500 tracking-wider uppercase mt-1">
+                    Send a direct inquiry to Carlos
+                  </p>
+                </div>
+
+                {error && (
+                  <div className="p-3 rounded-lg bg-red-50 text-red-600 text-xs font-semibold">
+                    {error}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">
+                      Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.firstName}
+                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                      placeholder="First name"
+                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-[#011437] focus:outline-none focus:border-[#ff1d25] transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">
+                      Last Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.lastName}
+                      onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                      placeholder="Last name"
+                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-[#011437] focus:outline-none focus:border-[#ff1d25] transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">
+                      Phone
+                    </label>
+                    <input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="438-000-0000"
+                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-[#011437] focus:outline-none focus:border-[#ff1d25] transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="email@example.com"
+                      className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-[#011437] focus:outline-none focus:border-[#ff1d25] transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-700 mb-1">
+                    Message *
+                  </label>
+                  <textarea
+                    rows={3}
+                    required
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="Your project inquiry or question..."
+                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-[#011437] focus:outline-none focus:border-[#ff1d25] transition-colors"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full py-3.5 bg-[#ff1d25] hover:bg-[#e0121a] text-white text-xs font-bold uppercase tracking-[2px] rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 mt-2 cursor-pointer"
+                >
+                  {submitting ? 'Sending...' : 'ContaCT ME NOW!'}
+                </button>
+              </form>
+            )}
           </div>
         </div>
-
-        <div className="bg-card border border-subtle rounded-3xl p-8 space-y-4">
-          <h3 className="text-xl font-bold font-heading text-white uppercase">What I Bring</h3>
-          <ul className="space-y-3 text-sm text-slate-300">
-            {(skills?.items || [
-              'Mastery of Adobe Creative Cloud (Photoshop, InDesign, Illustrator, Premiere)',
-              'Modern Web Development (WordPress, CSS3, React, Tailwind CSS)',
-              'Large Format Print, Vehicle Wraps & Digital Signage Production',
-              'Fluent multilingual communication in English, French, and Spanish'
-            ]).map((item, idx) => (
-              <li key={idx} className="flex items-start gap-2.5">
-                <span className="w-2 h-2 rounded-full bg-accent mt-1.5 shrink-0" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -81,7 +360,7 @@ function AboutPage({ pages }) {
 // 3. Work Page View
 function WorkPage({ portfolio }) {
   return (
-    <div className="pt-28 pb-16">
+    <div className="bg-[#020202] text-white min-h-screen pt-28 pb-16">
       <PortfolioGrid items={portfolio} />
     </div>
   );
@@ -118,8 +397,9 @@ function ContactPage() {
   };
 
   return (
-    <div className="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-      <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+    <div className="bg-[#020202] text-white min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
         <span className="text-accent font-bold text-xs uppercase tracking-widest">Get In Touch</span>
         <h1 className="text-4xl sm:text-6xl font-black font-heading uppercase text-white tracking-tight">
           Let’s Collaborate
@@ -260,6 +540,28 @@ function ContactPage() {
         </div>
       </div>
     </div>
+  </div>
+);
+}
+
+// Main Layout for public pages (hides footer on home page hero)
+function MainLayout({ settings, pages, portfolio }) {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+
+  return (
+    <>
+      <Navigation />
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<HomePage settings={settings} pages={pages} />} />
+          <Route path="/about-me" element={<AboutPage pages={pages} />} />
+          <Route path="/work" element={<WorkPage portfolio={portfolio} />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
+      </main>
+      {!isHome && <Footer />}
+    </>
   );
 }
 
@@ -300,7 +602,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-dominant selection:bg-accent selection:text-white">
+    <div className="min-h-screen flex flex-col bg-white selection:bg-[#ff1d25] selection:text-white">
       <Routes>
         {/* Admin Routes without main site header/footer */}
         <Route path="/admin/login" element={<Login />} />
@@ -309,20 +611,7 @@ export default function App() {
         {/* Public Routes with Navigation & Footer */}
         <Route
           path="/*"
-          element={
-            <>
-              <Navigation />
-              <main className="flex-1">
-                <Routes>
-                  <Route path="/" element={<HomePage settings={settings} pages={pages} />} />
-                  <Route path="/about-me" element={<AboutPage pages={pages} />} />
-                  <Route path="/work" element={<WorkPage portfolio={portfolio} />} />
-                  <Route path="/contact" element={<ContactPage />} />
-                </Routes>
-              </main>
-              <Footer />
-            </>
-          }
+          element={<MainLayout settings={settings} pages={pages} portfolio={portfolio} />}
         />
       </Routes>
     </div>

@@ -21,6 +21,8 @@ export default {
       },
       fontFamily: {
         heading: ['"Archivo Black"', 'Montserrat', 'sans-serif'],
+        archivo: ['"Archivo Black"', 'sans-serif'],
+        raleway: ['Raleway', 'sans-serif'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
       }
     },

@@ -11,14 +11,24 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--color-dominant-60);
+  background-color: #ffffff;
 }
 
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: #f8fafc;
-  background-color: var(--color-dominant-60);
+  font-family: 'Raleway', 'Inter', system-ui, -apple-system, sans-serif;
+  color: #011437;
+  background-color: #ffffff;
+}
+
+@keyframes moveUpDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(15px); }
+  100% { transform: translateY(0); }
+}
+
+.animate-moveUpDown {
+  animation: moveUpDown 2s ease infinite;
 }
 
 /* Glassmorphism navigation */
