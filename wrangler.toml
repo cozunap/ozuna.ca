@@ -2,13 +2,9 @@ name = "ozuna"
 compatibility_date = "2026-10-01"
 pages_build_output_dir = "frontend/dist"
 
-# Optional Cloudflare D1 Database Binding for Edge Deployment
+# Cloudflare D1 Database Binding for Edge Deployment
 [[d1_databases]]
 binding = "DB"
-database_name = "ozuna-replica-db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_name = "ozuna-db"
+database_id = "7a8dafec-3a0b-4241-8099-9dfa9e25297f"
 
-# Optional Cloudflare R2 Bucket for Edge Media Uploads
-[[r2_buckets]]
-binding = "MEDIA_BUCKET"
-bucket_name = "ozuna-media"
