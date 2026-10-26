@@ -7,6 +7,7 @@ import fallbackItems from '../work_items.json';
 export default function PortfolioGrid({ items = [] }) {
   const [activeFilter, setActiveFilter] = useState('ALL');
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Use provided items or authentic fallback
   const portfolioList = items && items.length > 0 ? items : fallbackItems;
@@ -24,6 +25,64 @@ export default function PortfolioGrid({ items = [] }) {
     return cat === activeFilter;
   });
 
+  // Reset image index when switching projects
+  const selectProject = (index) => {
+    setSelectedItemIndex(index);
+    setCurrentImageIndex(0);
+  };
+
+  // URL slug, hash, or query param detector (e.g. /work/degan-tax, ?project=degan-tax, or #degan-tax)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const pathPart = window.location.pathname.replace(/^\/work\/?/, '').replace(/^\//, '');
+    const projectSlug = params.get('project') || window.location.hash.replace('#', '') || pathPart;
+    if (projectSlug && projectSlug !== 'work' && projectSlug !== 'about-me' && projectSlug !== 'contact') {
+      const idx = filteredItems.findIndex(
+        (p) => (p.slug || '').toLowerCase() === projectSlug.toLowerCase() || p.id === projectSlug
+      );
+      if (idx !== -1) {
+        setSelectedItemIndex(idx);
+        setCurrentImageIndex(0);
+      }
+    }
+  }, [portfolioList]);
+
+  const activeItem = selectedItemIndex !== null ? filteredItems[selectedItemIndex] : null;
+
+  // Active project's gallery images (with fallback to single image)
+  const galleryImages =
+    activeItem && activeItem.gallery && activeItem.gallery.length > 0
+      ? activeItem.gallery
+      : activeItem
+      ? [activeItem.image]
+      : [];
+
+  const currentImage = galleryImages[currentImageIndex] || activeItem?.image;
+
+  // Next / Prev Image inside current project gallery
+  const prevImage = (e) => {
+    if (e) e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : galleryImages.length - 1));
+  };
+
+  const nextImage = (e) => {
+    if (e) e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev < galleryImages.length - 1 ? prev + 1 : 0));
+  };
+
+  // Switch to Next / Prev Project
+  const prevProject = (e) => {
+    if (e) e.stopPropagation();
+    const newIdx = selectedItemIndex > 0 ? selectedItemIndex - 1 : filteredItems.length - 1;
+    selectProject(newIdx);
+  };
+
+  const nextProject = (e) => {
+    if (e) e.stopPropagation();
+    const newIdx = selectedItemIndex < filteredItems.length - 1 ? selectedItemIndex + 1 : 0;
+    selectProject(newIdx);
+  };
+
   // Handle keyboard navigation for modal lightbox
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -31,16 +90,14 @@ export default function PortfolioGrid({ items = [] }) {
       if (e.key === 'Escape') {
         setSelectedItemIndex(null);
       } else if (e.key === 'ArrowLeft') {
-        setSelectedItemIndex((prev) => (prev > 0 ? prev - 1 : filteredItems.length - 1));
+        prevImage();
       } else if (e.key === 'ArrowRight') {
-        setSelectedItemIndex((prev) => (prev < filteredItems.length - 1 ? prev + 1 : 0));
+        nextImage();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedItemIndex, filteredItems.length]);
-
-  const activeItem = selectedItemIndex !== null ? filteredItems[selectedItemIndex] : null;
+  }, [selectedItemIndex, currentImageIndex, galleryImages.length]);
 
   return (
     <div className="w-full bg-white">
@@ -116,7 +173,7 @@ export default function PortfolioGrid({ items = [] }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.35, ease: 'easeInOut' }}
-                onClick={() => setSelectedItemIndex(index)}
+                onClick={() => selectProject(index)}
                 className="group relative aspect-square w-full overflow-hidden bg-[#111111] cursor-pointer rounded-none"
               >
                 {/* Project Image */}
@@ -126,19 +183,23 @@ export default function PortfolioGrid({ items = [] }) {
                   loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   onError={(e) => {
-                    // Fallback to local image or unsplash
                     e.currentTarget.src = '/images/cozuna-contact.jpeg';
                   }}
                 />
 
                 {/* Cobalt Blue Overlay on Hover (rgba(0, 58, 167, 0.84)) */}
                 <div
-                  className="absolute inset-0 flex items-center justify-center p-6 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out"
+                  className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out"
                   style={{ backgroundColor: 'rgba(0, 58, 167, 0.84)' }}
                 >
-                  <h3 className="font-raleway text-[16px] font-extrabold text-white uppercase tracking-[2px] leading-tight select-none px-2">
+                  <h3 className="font-raleway text-[16px] font-extrabold text-white uppercase tracking-[2px] leading-tight select-none px-2 mb-2">
                     {item.title}
                   </h3>
+                  {item.gallery && item.gallery.length > 1 && (
+                    <span className="text-[11px] font-bold tracking-widest uppercase text-white/90 bg-black/40 px-3 py-1 rounded-full">
+                      {item.gallery.length} Images in Gallery
+                    </span>
+                  )}
                 </div>
               </motion.article>
             ))}
@@ -152,14 +213,14 @@ export default function PortfolioGrid({ items = [] }) {
         )}
       </section>
 
-      {/* 4. Full-Screen Interactive Lightbox Viewer */}
+      {/* 4. Full-Featured Interactive Gallery Lightbox */}
       <AnimatePresence>
         {activeItem && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 sm:p-8"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-2 sm:p-6"
             onClick={() => setSelectedItemIndex(null)}
           >
             {/* Modal Container */}
@@ -168,22 +229,27 @@ export default function PortfolioGrid({ items = [] }) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="relative max-w-4xl max-h-[90vh] w-full bg-[#111] border border-white/10 rounded-lg overflow-hidden flex flex-col shadow-2xl"
+              className="relative max-w-5xl max-h-[96vh] w-full bg-[#111] border border-white/10 rounded-xl overflow-hidden flex flex-col shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header Bar */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#181818]">
-                <div className="flex items-center gap-3">
-                  <span className="text-[12px] uppercase font-bold tracking-wider text-[#ff1d25] font-raleway">
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/10 bg-[#161616]">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="text-[11px] uppercase font-extrabold tracking-wider text-[#ff1d25] font-raleway shrink-0">
                     {activeItem.category}
                   </span>
-                  <span className="text-white/30 text-xs">•</span>
-                  <h2 className="text-white font-raleway text-sm sm:text-base font-extrabold uppercase tracking-wide truncate max-w-md">
+                  <span className="text-white/30 text-xs shrink-0">•</span>
+                  <h2 className="text-white font-raleway text-sm sm:text-base font-extrabold uppercase tracking-wide truncate">
                     {activeItem.title}
                   </h2>
+                  {galleryImages.length > 1 && (
+                    <span className="hidden sm:inline-block text-[11px] text-white/70 bg-white/10 px-2.5 py-0.5 rounded-full font-raleway font-semibold shrink-0">
+                      Image {currentImageIndex + 1} of {galleryImages.length}
+                    </span>
+                  )}
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 shrink-0">
                   {(activeItem.link || activeItem.href) && (
                     <a
                       href={activeItem.link || activeItem.href}
@@ -206,51 +272,110 @@ export default function PortfolioGrid({ items = [] }) {
                 </div>
               </div>
 
-              {/* High-Resolution Media Canvas */}
-              <div className="relative flex-1 flex items-center justify-center p-4 sm:p-6 bg-black overflow-auto min-h-[350px] max-h-[75vh]">
-                <img
-                  src={activeItem.image}
-                  alt={activeItem.title}
-                  className="max-h-[68vh] max-w-full object-contain rounded shadow-lg"
-                />
+              {/* Main Image Stage */}
+              <div className="relative flex-1 flex items-center justify-center p-3 sm:p-5 bg-black overflow-hidden min-h-[300px] max-h-[60vh] sm:max-h-[66vh]">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={currentImage}
+                    src={currentImage}
+                    alt={`${activeItem.title} - ${currentImageIndex + 1}`}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="max-h-full max-w-full object-contain rounded shadow-lg select-none"
+                    onError={(e) => {
+                      e.currentTarget.src = activeItem.image;
+                    }}
+                  />
+                </AnimatePresence>
 
-                {/* Previous Button */}
-                <button
-                  type="button"
-                  aria-label="Previous project"
-                  onClick={() =>
-                    setSelectedItemIndex((prev) =>
-                      prev > 0 ? prev - 1 : filteredItems.length - 1
-                    )
-                  }
-                  className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/60 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-lg"
-                >
-                  <ChevronLeft size={24} />
-                </button>
+                {/* Previous Image in Gallery */}
+                {galleryImages.length > 1 && (
+                  <button
+                    type="button"
+                    aria-label="Previous gallery image"
+                    onClick={prevImage}
+                    className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/70 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-xl"
+                  >
+                    <ChevronLeft size={22} />
+                  </button>
+                )}
 
-                {/* Next Button */}
-                <button
-                  type="button"
-                  aria-label="Next project"
-                  onClick={() =>
-                    setSelectedItemIndex((prev) =>
-                      prev < filteredItems.length - 1 ? prev + 1 : 0
-                    )
-                  }
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/60 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-lg"
-                >
-                  <ChevronRight size={24} />
-                </button>
+                {/* Next Image in Gallery */}
+                {galleryImages.length > 1 && (
+                  <button
+                    type="button"
+                    aria-label="Next gallery image"
+                    onClick={nextImage}
+                    className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/70 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-xl"
+                  >
+                    <ChevronRight size={22} />
+                  </button>
+                )}
               </div>
 
-              {/* Bottom Caption Bar */}
-              <div className="px-6 py-3 bg-[#181818] border-t border-white/10 flex items-center justify-between text-xs text-slate-400 font-raleway">
-                <span>
-                  Project {selectedItemIndex + 1} of {filteredItems.length}
-                </span>
-                <span className="hidden sm:inline text-slate-500">
-                  Use Left / Right arrow keys or Escape to navigate
-                </span>
+              {/* Interactive Thumbnail Carousel Strip (when project has multiple images) */}
+              {galleryImages.length > 1 && (
+                <div className="bg-[#141414] border-t border-white/10 px-4 py-2.5 overflow-x-auto flex items-center gap-2.5 scrollbar-thin scrollbar-thumb-white/20">
+                  {galleryImages.map((imgSrc, idx) => {
+                    const isCurrent = idx === currentImageIndex;
+                    return (
+                      <button
+                        key={imgSrc + idx}
+                        type="button"
+                        onClick={() => setCurrentImageIndex(idx)}
+                        className={`relative shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded overflow-hidden transition-all duration-200 cursor-pointer ${
+                          isCurrent
+                            ? 'ring-2 ring-[#ff1d25] scale-105 opacity-100'
+                            : 'opacity-50 hover:opacity-90 hover:scale-100 ring-1 ring-white/10'
+                        }`}
+                      >
+                        <img
+                          src={imgSrc}
+                          alt=""
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Bottom Caption & Project Details Bar */}
+              <div className="px-5 py-3 bg-[#181818] border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-raleway">
+                <div className="text-slate-300 max-w-2xl">
+                  {activeItem.description && (
+                    <p className="line-clamp-2 leading-relaxed text-slate-300">
+                      {activeItem.description}
+                    </p>
+                  )}
+                  {activeItem.client && (
+                    <span className="text-[11px] text-slate-400 mt-0.5 block">
+                      Client: <strong className="text-white">{activeItem.client}</strong>
+                      {activeItem.year && ` • ${activeItem.year}`}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wider shrink-0 self-end sm:self-auto">
+                  <button
+                    type="button"
+                    onClick={prevProject}
+                    className="text-slate-400 hover:text-white transition-colors"
+                  >
+                    ← Prev Project
+                  </button>
+                  <span className="text-white/20">|</span>
+                  <button
+                    type="button"
+                    onClick={nextProject}
+                    className="text-slate-400 hover:text-white transition-colors"
+                  >
+                    Next Project →
+                  </button>
+                </div>
               </div>
             </motion.div>
           </motion.div>

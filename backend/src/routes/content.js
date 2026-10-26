@@ -121,7 +121,16 @@ router.get('/portfolio', async (req, res) => {
       where,
       orderBy: { order: 'asc' }
     });
-    res.json(items);
+    // Enrich with authentic multi-image galleries
+    const workItems = await import('../../frontend/src/work_items.json', { with: { type: 'json' } }).catch(() => null);
+    const enriched = items.map(item => {
+      const match = workItems?.default?.find(w => w.slug === item.slug);
+      return {
+        ...item,
+        gallery: match?.gallery || [item.image]
+      };
+    });
+    res.json(enriched);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

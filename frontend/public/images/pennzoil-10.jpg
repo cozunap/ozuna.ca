@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/images/cozuna-red-logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carlos Ozuna | Senior Graphic Designer & Web Developer</title>
+    <meta name="description" content="Welcome to Carlos Ozuna's portfolio. Web Design, Graphic Design, Printing, and Digital Signage located in Laval, CA." />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="/assets/index-UQonSs8A.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CDoUol6J.css">
+  </head>
+  <body class="bg-white text-[#011437] antialiased overflow-x-hidden selection:bg-[#ff1d25] selection:text-white">
+    <div id="root"></div>
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"1ee9e4ac93c64f8f9d87707367a4bff6","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

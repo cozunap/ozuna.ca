@@ -237,6 +237,7 @@ function MainLayout({ settings, pages, portfolio }) {
           <Route path="/" element={<HomePage settings={settings} pages={pages} />} />
           <Route path="/about-me" element={<AboutPage pages={pages} />} />
           <Route path="/work" element={<WorkPage portfolio={portfolio} />} />
+          <Route path="/work/:slug" element={<WorkPage portfolio={portfolio} />} />
           <Route path="/contact" element={<ContactRedirect />} />
         </Routes>
       </main>
