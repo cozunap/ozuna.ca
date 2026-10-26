@@ -152,7 +152,7 @@ const DEFAULT_PORTFOLIO = [
       "/images/Roll_Up_Banner.jpg",
       "/images/5-hour-Poster.jpg",
       "/images/Poster.jpg",
-      "/images/Flyers.jpg",
+      "/images/flyers.jpg",
       "/images/crossway_business_card.jpg",
       "/images/crossway_flag.jpg"
     ]
