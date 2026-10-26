@@ -131,8 +131,11 @@ router.get('/portfolio', async (req, res) => {
         } catch (_) {}
       }
       const match = workItems?.default?.find(w => w.slug === item.slug);
+      const isBooklet = item.slug === 'roberto-clemente-foundation-booklet';
       return {
         ...item,
+        displayType: item.displayType || match?.displayType || (isBooklet ? 'flipbook' : 'gallery'),
+        pdfUrl: item.pdfUrl || match?.pdfUrl || (isBooklet ? '/images/Roberto-Clemente-Booklet.pdf' : null),
         gallery: (customGallery && customGallery.length > 0) ? customGallery : (match?.gallery || [item.image])
       };
     });
@@ -144,7 +147,7 @@ router.get('/portfolio', async (req, res) => {
 
 router.post('/portfolio', authMiddleware, async (req, res) => {
   try {
-    const { title, category, slug, image, description, client, year, link, featured, order, gallery } = req.body;
+    const { title, category, slug, image, description, client, year, link, featured, order, gallery, displayType, pdfUrl } = req.body;
     const galleryJson = Array.isArray(gallery) ? JSON.stringify(gallery) : null;
     const item = await prisma.portfolioItem.create({
       data: {
@@ -158,7 +161,9 @@ router.post('/portfolio', authMiddleware, async (req, res) => {
         link,
         featured: featured ?? true,
         order: order ?? 0,
-        galleryJson
+        galleryJson,
+        displayType: displayType || 'gallery',
+        pdfUrl: pdfUrl || null
       }
     });
     res.status(201).json({
@@ -172,7 +177,7 @@ router.post('/portfolio', authMiddleware, async (req, res) => {
 
 router.put('/portfolio/:id', authMiddleware, async (req, res) => {
   try {
-    const { title, category, slug, image, description, client, year, link, featured, order, gallery } = req.body;
+    const { title, category, slug, image, description, client, year, link, featured, order, gallery, displayType, pdfUrl } = req.body;
     const updateData = {
       title,
       category,
@@ -183,7 +188,9 @@ router.put('/portfolio/:id', authMiddleware, async (req, res) => {
       year,
       link,
       featured,
-      order
+      order,
+      displayType: displayType || 'gallery',
+      pdfUrl: pdfUrl || null
     };
     if (gallery !== undefined) {
       updateData.galleryJson = Array.isArray(gallery) ? JSON.stringify(gallery) : null;

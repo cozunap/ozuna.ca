@@ -16,6 +16,7 @@ import {
   Shield,
   Video,
   Images,
+  BookOpen,
   ArrowLeft,
   ArrowRight,
   Star
@@ -462,6 +463,8 @@ export default function AdminDashboard() {
                   setEditingItem({
                     title: '',
                     category: 'Graphic Design',
+                    displayType: 'gallery',
+                    pdfUrl: '',
                     slug: '',
                     image: '/images/ajsmechanical-net.jpg',
                     description: '',
@@ -490,10 +493,103 @@ export default function AdminDashboard() {
                   <h3 className="text-sm font-bold uppercase tracking-wider text-accent flex items-center gap-2">
                     {isNewItem ? 'Create New Project' : `Edit Project: ${editingItem.title}`}
                   </h3>
-                  <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-0.5 rounded-full bg-surface border border-subtle text-slate-300">
-                    {editingItem.category}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {editingItem.displayType === 'flipbook' && (
+                      <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1">
+                        <BookOpen size={11} /> Flipbook Mode
+                      </span>
+                    )}
+                    <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-0.5 rounded-full bg-surface border border-subtle text-slate-300">
+                      {editingItem.category}
+                    </span>
+                  </div>
                 </div>
+
+                {/* Showcase Display Format Selector */}
+                <div>
+                  <label className="block text-xs font-semibold text-muted uppercase mb-2">
+                    Showcase Format (How this project renders on the website)
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setEditingItem({ ...editingItem, displayType: 'gallery' })}
+                      className={`p-3.5 rounded-xl border text-left transition-all flex items-start gap-3 ${
+                        editingItem.displayType === 'gallery' || !editingItem.displayType
+                          ? 'bg-accent/15 border-accent text-white shadow-lg shadow-accent/10'
+                          : 'bg-surface border-subtle text-slate-400 hover:text-white hover:border-slate-500'
+                      }`}
+                    >
+                      <Images size={20} className={editingItem.displayType === 'gallery' || !editingItem.displayType ? 'text-accent' : 'text-slate-400'} />
+                      <div>
+                        <div className="text-xs font-bold uppercase tracking-wider text-white">
+                          Image Gallery Lightbox
+                        </div>
+                        <div className="text-[11px] text-muted mt-0.5">
+                          Multi-image slideshow & carousel. Best for posters, branding, packaging, and web designs.
+                        </div>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setEditingItem({
+                        ...editingItem,
+                        displayType: 'flipbook',
+                        pdfUrl: editingItem.pdfUrl || (editingItem.slug === 'roberto-clemente-foundation-booklet' ? '/images/Roberto-Clemente-Booklet.pdf' : '')
+                      })}
+                      className={`p-3.5 rounded-xl border text-left transition-all flex items-start gap-3 ${
+                        editingItem.displayType === 'flipbook'
+                          ? 'bg-amber-500/15 border-amber-500 text-white shadow-lg shadow-amber-500/10'
+                          : 'bg-surface border-subtle text-slate-400 hover:text-white hover:border-slate-500'
+                      }`}
+                    >
+                      <BookOpen size={20} className={editingItem.displayType === 'flipbook' ? 'text-amber-400' : 'text-slate-400'} />
+                      <div>
+                        <div className="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-1.5">
+                          PDF Flipbook Reader
+                          <span className="text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/30 px-1.5 py-0.2 rounded font-mono">
+                            2-PAGE SPREAD
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-muted mt-0.5">
+                          2-page open publication spread with realistic page turns and PDF download. Ideal for booklets, magazines, and catalogs.
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Flipbook PDF File Link Configuration */}
+                {editingItem.displayType === 'flipbook' && (
+                  <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                        <BookOpen size={14} /> PDF Document Path / URL for Flipbook
+                      </label>
+                      {editingItem.pdfUrl && (
+                        <a
+                          href={editingItem.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[11px] text-amber-400 hover:underline flex items-center gap-1"
+                        >
+                          <ExternalLink size={12} /> Test PDF Link
+                        </a>
+                      )}
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="e.g. /images/Roberto-Clemente-Booklet.pdf or https://..."
+                      value={editingItem.pdfUrl || ''}
+                      onChange={(e) => setEditingItem({ ...editingItem, pdfUrl: e.target.value })}
+                      className="w-full px-4 py-2 bg-surface border border-subtle rounded-xl text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                    />
+                    <p className="text-[11px] text-muted">
+                      Visitors will be able to download this complete PDF directly from the Flipbook reader modal. The gallery images below will render as the sequential 2-page publication spreads.
+                    </p>
+                  </div>
+                )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -514,7 +610,7 @@ export default function AdminDashboard() {
                       onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
                       className="w-full px-4 py-2 bg-surface border border-subtle rounded-xl text-sm text-white"
                     >
-                      <option value="Graphic Design">Graphic Design (Interactive Gallery)</option>
+                      <option value="Graphic Design">Graphic Design</option>
                       <option value="Web Design">Web Design</option>
                     </select>
                   </div>
@@ -562,23 +658,39 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                {/* Interactive Multi-Image Gallery Manager (Especially for Graphic Design) */}
+                {/* Interactive Multi-Image Gallery or Flipbook Pages Manager */}
                 <div className="pt-4 border-t border-subtle space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                       <div className="flex items-center gap-2">
-                        <Images size={18} className="text-accent" />
-                        <h4 className="text-sm font-bold uppercase tracking-wider text-white">
-                          Project Gallery ({editingItem.gallery?.length || 0} Images)
-                        </h4>
-                        {editingItem.category === 'Graphic Design' && (
-                          <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-accent/20 text-accent border border-accent/30">
-                            Graphic Design Gallery
-                          </span>
+                        {editingItem.displayType === 'flipbook' ? (
+                          <>
+                            <BookOpen size={18} className="text-amber-400" />
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-white">
+                              Booklet Page Spreads ({editingItem.gallery?.length || 0} Pages)
+                            </h4>
+                            <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                              Flipbook Spreads
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <Images size={18} className="text-accent" />
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-white">
+                              Project Gallery ({editingItem.gallery?.length || 0} Images)
+                            </h4>
+                            {editingItem.category === 'Graphic Design' && (
+                              <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-accent/20 text-accent border border-accent/30">
+                                Graphic Design Gallery
+                              </span>
+                            )}
+                          </>
                         )}
                       </div>
                       <p className="text-xs text-muted mt-1">
-                        These images render in the interactive lightbox carousel on ozuna.ca/work. Drag or reorder them and set the primary cover.
+                        {editingItem.displayType === 'flipbook'
+                          ? 'Page #1 is the front cover. Pages #2 & #3 form the first two-page spread, and so on. Rearrange with arrows or set the cover.'
+                          : 'These images render in the interactive lightbox carousel on ozuna.ca/work. Drag or reorder them and set the primary cover.'}
                       </p>
                     </div>
 
@@ -861,10 +973,16 @@ export default function AdminDashboard() {
                           <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-surface border border-subtle text-slate-300">
                             {item.category}
                           </span>
-                          {item.gallery && item.gallery.length > 1 && (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-accent/15 text-accent border border-accent/25">
-                              {item.gallery.length} Images
+                          {item.displayType === 'flipbook' ? (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1">
+                              <BookOpen size={11} /> Flipbook ({item.gallery?.length || 0}p)
                             </span>
+                          ) : (
+                            item.gallery && item.gallery.length > 1 && (
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-accent/15 text-accent border border-accent/25 flex items-center gap-1">
+                                <Images size={11} /> Gallery ({item.gallery.length})
+                              </span>
+                            )
                           )}
                         </div>
                       </td>
@@ -874,6 +992,8 @@ export default function AdminDashboard() {
                           onClick={() => {
                             setEditingItem({
                               ...item,
+                              displayType: item.displayType || (item.slug === 'roberto-clemente-foundation-booklet' ? 'flipbook' : 'gallery'),
+                              pdfUrl: item.pdfUrl || (item.slug === 'roberto-clemente-foundation-booklet' ? '/images/Roberto-Clemente-Booklet.pdf' : ''),
                               gallery: Array.isArray(item.gallery) && item.gallery.length > 0
                                 ? [...item.gallery]
                                 : [item.image || '/images/ajsmechanical-net.jpg']

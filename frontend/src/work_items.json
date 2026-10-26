@@ -310,6 +310,8 @@
     "link": "https://ozuna.ca/roberto-clemente-foundation-booklet/",
     "order": 12,
     "featured": false,
+    "displayType": "flipbook",
+    "pdfUrl": "/images/Roberto-Clemente-Booklet.pdf",
     "gallery": [
       "/images/Roberto-Clemente-Booklet-1.jpg",
       "/images/Roberto-Clemente-Booklet-2.jpg",

@@ -48,6 +48,8 @@ model PortfolioItem {
   order       Int      @default(0)
   featured    Boolean  @default(true)
   galleryJson String?
+  displayType String?  @default("gallery")
+  pdfUrl      String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
