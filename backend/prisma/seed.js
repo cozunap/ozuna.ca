@@ -10,16 +10,16 @@ async function main() {
   // 1. Admin User
   const hashedPassword = await bcrypt.hash('OzunaMaster2026!', 10);
   await prisma.user.upsert({
-    where: { username: 'admin@ozuna.ca' },
+    where: { username: 'cmozunap@gmail.com' },
     update: { password: hashedPassword },
     create: {
-      username: 'admin@ozuna.ca',
+      username: 'cmozunap@gmail.com',
       password: hashedPassword,
       name: 'Carlos Ozuna',
       role: 'admin'
     }
   });
-  console.log('✓ Admin user seeded: admin@ozuna.ca / OzunaMaster2026!');
+  console.log('✓ Admin user seeded: cmozunap@gmail.com / OzunaMaster2026!');
 
   // 2. Global Site Settings
   await prisma.siteSetting.upsert({

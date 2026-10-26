@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Lock, User, ArrowRight, AlertCircle, Shield } from 'lucide-react';
 
 export default function Login() {
-  const [username, setUsername] = useState('admin@ozuna.ca');
+  const [username, setUsername] = useState('cmozunap@gmail.com');
   const [password, setPassword] = useState('OzunaMaster2026!');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -77,7 +77,7 @@ export default function Login() {
                 onChange={(e) => setUsername(e.target.value)}
                 required
                 className="w-full pl-11 pr-4 py-3 bg-surface border border-subtle rounded-xl text-white text-sm focus:outline-none focus:border-accent transition-colors"
-                placeholder="admin@ozuna.ca"
+                placeholder="cmozunap@gmail.com"
               />
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function Login() {
 
         <div className="mt-8 pt-6 border-t border-subtle/50 text-center">
           <p className="text-xs text-muted">
-            Pre-seeded master credentials: <code className="text-slate-300">admin@ozuna.ca</code>
+            Pre-seeded master credentials: <code className="text-slate-300">cmozunap@gmail.com</code>
           </p>
         </div>
       </div>

@@ -36,7 +36,7 @@ npm run dev
 | Portal / View | Local URL | Credentials / Notes |
 | :--- | :--- | :--- |
 | **Public Frontend** | `http://localhost:3000/` | Multi-page routes: `/`, `/about-me`, `/work`, `/contact` |
-| **Admin Login** | `http://localhost:3000/admin/login` | **Username**: `admin@ozuna.ca`<br>**Password**: `OzunaMaster2026!` |
+| **Admin Login** | `http://localhost:3000/admin/login` | **Username**: `cmozunap@gmail.com`<br>**Password**: `OzunaMaster2026!` |
 | **CMS Admin Dashboard** | `http://localhost:3000/admin` | Protected by JWT token with real-time CRUD |
 | **Backend API Health** | `http://localhost:5000/api/health` | Status & uptime monitor |
 
