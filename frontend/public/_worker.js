@@ -171,7 +171,7 @@ const DEFAULT_PORTFOLIO = [
     "featured": true,
     "gallery": [
       "/images/Bus-Advertising.jpg",
-      "/images/flyers.jpg",
+      "/images/degan-flyers.jpg",
       "/images/Degan-Business-C.jpg",
       "/images/degan-posters.jpg",
       "/images/Poeters.jpg",

@@ -335,7 +335,7 @@ export default function PortfolioGrid({ items = [] }) {
                           src={imgSrc}
                           alt=""
                           className="w-full h-full object-cover"
-                          loading="lazy"
+                          loading="eager"
                           onError={(e) => {
                             e.currentTarget.src = activeItem.image;
                           }}
