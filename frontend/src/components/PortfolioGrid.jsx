@@ -4,6 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import fallbackItems from '../work_items.json';
 
+const cacheBust = (src) => {
+  if (!src) return '/images/cozuna-contact.jpeg';
+  if (src.startsWith('data:') || src.startsWith('blob:')) return src;
+  return src.includes('?') ? src : `${src}?v=20261026_1`;
+};
+
 export default function PortfolioGrid({ items = [] }) {
   const [activeFilter, setActiveFilter] = useState('ALL');
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
@@ -178,12 +184,12 @@ export default function PortfolioGrid({ items = [] }) {
               >
                 {/* Project Image */}
                 <img
-                  src={item.image}
+                  src={cacheBust(item.image)}
                   alt={item.title}
                   loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   onError={(e) => {
-                    e.currentTarget.src = '/images/cozuna-contact.jpeg';
+                    console.warn('Grid card image failed:', item.image);
                   }}
                 />
 
@@ -277,7 +283,7 @@ export default function PortfolioGrid({ items = [] }) {
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={currentImage}
-                    src={currentImage}
+                    src={cacheBust(currentImage)}
                     alt={`${activeItem.title} - ${currentImageIndex + 1}`}
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -285,7 +291,7 @@ export default function PortfolioGrid({ items = [] }) {
                     transition={{ duration: 0.2 }}
                     className="max-h-full max-w-full object-contain rounded shadow-lg select-none"
                     onError={(e) => {
-                      e.currentTarget.src = activeItem.image;
+                      console.warn('Main stage image failed:', currentImage);
                     }}
                   />
                 </AnimatePresence>
@@ -332,12 +338,12 @@ export default function PortfolioGrid({ items = [] }) {
                         }`}
                       >
                         <img
-                          src={imgSrc}
+                          src={cacheBust(imgSrc)}
                           alt=""
                           className="w-full h-full object-cover"
                           loading="eager"
                           onError={(e) => {
-                            e.currentTarget.src = activeItem.image;
+                            console.warn('Thumbnail image failed:', imgSrc);
                           }}
                         />
                       </button>
