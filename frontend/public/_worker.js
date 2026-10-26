@@ -632,8 +632,17 @@ export default {
               const { results } = await env.DB.prepare(query).bind(...params).all();
               if (results && results.length > 0) {
                 const mapped = results.map(r => {
+                  let customGallery = null;
+                  if (r.galleryJson) {
+                    try {
+                      customGallery = JSON.parse(r.galleryJson);
+                    } catch (_) {}
+                  }
                   const def = DEFAULT_PORTFOLIO.find(p => p.slug === r.slug);
-                  return { ...r, gallery: def ? def.gallery : [r.image] };
+                  return {
+                    ...r,
+                    gallery: (customGallery && customGallery.length > 0) ? customGallery : (def ? def.gallery : [r.image])
+                  };
                 });
                 return jsonResponse(mapped);
               }
@@ -647,9 +656,10 @@ export default {
           if (method === "POST") {
             const body = await request.json().catch(() => ({}));
             const id = "item_" + Date.now();
+            const galleryJson = Array.isArray(body.gallery) ? JSON.stringify(body.gallery) : null;
             if (env.DB) {
               await env.DB.prepare(
-                'INSERT INTO PortfolioItem ("id", "title", "category", "slug", "image", "description", "client", "year", "link", "order", "featured", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+                'INSERT INTO PortfolioItem ("id", "title", "category", "slug", "image", "description", "client", "year", "link", "order", "featured", "galleryJson", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
               ).bind(
                 id,
                 body.title || "New Project",
@@ -662,11 +672,12 @@ export default {
                 body.link || "",
                 body.order || 0,
                 body.featured ? 1 : 0,
+                galleryJson,
                 Date.now(),
                 Date.now()
               ).run();
             }
-            return jsonResponse({ id, ...body }, 201);
+            return jsonResponse({ id, ...body, gallery: Array.isArray(body.gallery) ? body.gallery : [body.image] }, 201);
           }
         }
 
@@ -675,14 +686,15 @@ export default {
           const itemId = url.pathname.replace("/api/content/portfolio/", "");
           if (method === "PUT") {
             const body = await request.json().catch(() => ({}));
+            const galleryJson = Array.isArray(body.gallery) ? JSON.stringify(body.gallery) : null;
             if (env.DB) {
               await env.DB.prepare(
-                'UPDATE PortfolioItem SET "title" = ?, "category" = ?, "slug" = ?, "image" = ?, "description" = ?, "client" = ?, "year" = ?, "link" = ?, "featured" = ?, "order" = ?, "updatedAt" = ? WHERE "id" = ?'
+                'UPDATE PortfolioItem SET "title" = ?, "category" = ?, "slug" = ?, "image" = ?, "description" = ?, "client" = ?, "year" = ?, "link" = ?, "featured" = ?, "order" = ?, "galleryJson" = ?, "updatedAt" = ? WHERE "id" = ?'
               ).bind(
-                body.title, body.category, body.slug, body.image, body.description, body.client, body.year, body.link, body.featured ? 1 : 0, body.order || 0, Date.now(), itemId
+                body.title, body.category, body.slug, body.image, body.description, body.client, body.year, body.link, body.featured ? 1 : 0, body.order || 0, galleryJson, Date.now(), itemId
               ).run();
             }
-            return jsonResponse({ id: itemId, ...body });
+            return jsonResponse({ id: itemId, ...body, gallery: Array.isArray(body.gallery) ? body.gallery : [body.image] });
           }
 
           if (method === "DELETE") {

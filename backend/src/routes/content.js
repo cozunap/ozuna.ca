@@ -124,10 +124,16 @@ router.get('/portfolio', async (req, res) => {
     // Enrich with authentic multi-image galleries
     const workItems = await import('../../frontend/src/work_items.json', { with: { type: 'json' } }).catch(() => null);
     const enriched = items.map(item => {
+      let customGallery = null;
+      if (item.galleryJson) {
+        try {
+          customGallery = JSON.parse(item.galleryJson);
+        } catch (_) {}
+      }
       const match = workItems?.default?.find(w => w.slug === item.slug);
       return {
         ...item,
-        gallery: match?.gallery || [item.image]
+        gallery: (customGallery && customGallery.length > 0) ? customGallery : (match?.gallery || [item.image])
       };
     });
     res.json(enriched);
@@ -138,7 +144,8 @@ router.get('/portfolio', async (req, res) => {
 
 router.post('/portfolio', authMiddleware, async (req, res) => {
   try {
-    const { title, category, slug, image, description, client, year, link, featured, order } = req.body;
+    const { title, category, slug, image, description, client, year, link, featured, order, gallery } = req.body;
+    const galleryJson = Array.isArray(gallery) ? JSON.stringify(gallery) : null;
     const item = await prisma.portfolioItem.create({
       data: {
         title,
@@ -150,10 +157,14 @@ router.post('/portfolio', authMiddleware, async (req, res) => {
         year,
         link,
         featured: featured ?? true,
-        order: order ?? 0
+        order: order ?? 0,
+        galleryJson
       }
     });
-    res.status(201).json(item);
+    res.status(201).json({
+      ...item,
+      gallery: Array.isArray(gallery) ? gallery : [item.image]
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -161,23 +172,30 @@ router.post('/portfolio', authMiddleware, async (req, res) => {
 
 router.put('/portfolio/:id', authMiddleware, async (req, res) => {
   try {
-    const { title, category, slug, image, description, client, year, link, featured, order } = req.body;
+    const { title, category, slug, image, description, client, year, link, featured, order, gallery } = req.body;
+    const updateData = {
+      title,
+      category,
+      slug,
+      image,
+      description,
+      client,
+      year,
+      link,
+      featured,
+      order
+    };
+    if (gallery !== undefined) {
+      updateData.galleryJson = Array.isArray(gallery) ? JSON.stringify(gallery) : null;
+    }
     const item = await prisma.portfolioItem.update({
       where: { id: req.params.id },
-      data: {
-        title,
-        category,
-        slug,
-        image,
-        description,
-        client,
-        year,
-        link,
-        featured,
-        order
-      }
+      data: updateData
     });
-    res.json(item);
+    res.json({
+      ...item,
+      gallery: Array.isArray(gallery) ? gallery : (item.galleryJson ? JSON.parse(item.galleryJson) : [item.image])
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -14,7 +14,11 @@ import {
   CheckCircle2,
   ExternalLink,
   Shield,
-  Video
+  Video,
+  Images,
+  ArrowLeft,
+  ArrowRight,
+  Star
 } from 'lucide-react';
 import ContentEditor from './ContentEditor';
 
@@ -29,6 +33,9 @@ export default function AdminDashboard() {
   const [isNewItem, setIsNewItem] = useState(false);
   const [loading, setLoading] = useState(true);
   const [settingsSaved, setSettingsSaved] = useState(false);
+  const [newGalleryUrl, setNewGalleryUrl] = useState('');
+  const [bulkGalleryText, setBulkGalleryText] = useState('');
+  const [showBulkAdd, setShowBulkAdd] = useState(false);
 
   const navigate = useNavigate();
   const token = localStorage.getItem('ozuna_token');
@@ -459,12 +466,16 @@ export default function AdminDashboard() {
                     image: '/images/ajsmechanical-net.jpg',
                     description: '',
                     client: '',
-                    year: '2023',
+                    year: '2026',
                     link: '',
                     featured: true,
-                    order: portfolio.length + 1
+                    order: portfolio.length + 1,
+                    gallery: ['/images/ajsmechanical-net.jpg']
                   });
                   setIsNewItem(true);
+                  setShowBulkAdd(false);
+                  setNewGalleryUrl('');
+                  setBulkGalleryText('');
                 }}
                 className="btn-accent px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
               >
@@ -474,10 +485,15 @@ export default function AdminDashboard() {
 
             {/* Edit / Create Form Modal/Drawer */}
             {editingItem && (
-              <form onSubmit={handleSavePortfolioItem} className="bg-card border border-accent/40 rounded-2xl p-6 space-y-4">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-accent">
-                  {isNewItem ? 'Create New Project' : `Edit Project: ${editingItem.title}`}
-                </h3>
+              <form onSubmit={handleSavePortfolioItem} className="bg-card border border-accent/40 rounded-2xl p-6 space-y-6">
+                <div className="flex items-center justify-between pb-3 border-b border-subtle">
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-accent flex items-center gap-2">
+                    {isNewItem ? 'Create New Project' : `Edit Project: ${editingItem.title}`}
+                  </h3>
+                  <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-0.5 rounded-full bg-surface border border-subtle text-slate-300">
+                    {editingItem.category}
+                  </span>
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -498,18 +514,29 @@ export default function AdminDashboard() {
                       onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
                       className="w-full px-4 py-2 bg-surface border border-subtle rounded-xl text-sm text-white"
                     >
-                      <option value="Graphic Design">Graphic Design</option>
+                      <option value="Graphic Design">Graphic Design (Interactive Gallery)</option>
                       <option value="Web Design">Web Design</option>
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-muted uppercase mb-1">Image Path</label>
+                    <label className="block text-xs font-semibold text-muted uppercase mb-1">Cover Image Path</label>
                     <input
                       type="text"
                       required
                       value={editingItem.image}
-                      onChange={(e) => setEditingItem({ ...editingItem, image: e.target.value })}
+                      onChange={(e) => {
+                        const newImg = e.target.value;
+                        const currentGallery = editingItem.gallery || [];
+                        const updatedGallery = currentGallery.length > 0
+                          ? [newImg, ...currentGallery.slice(1)]
+                          : [newImg];
+                        setEditingItem({
+                          ...editingItem,
+                          image: newImg,
+                          gallery: updatedGallery
+                        });
+                      }}
                       className="w-full px-4 py-2 bg-surface border border-subtle rounded-xl text-sm text-white"
                     />
                   </div>
@@ -535,10 +562,260 @@ export default function AdminDashboard() {
                   />
                 </div>
 
+                {/* Interactive Multi-Image Gallery Manager (Especially for Graphic Design) */}
+                <div className="pt-4 border-t border-subtle space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Images size={18} className="text-accent" />
+                        <h4 className="text-sm font-bold uppercase tracking-wider text-white">
+                          Project Gallery ({editingItem.gallery?.length || 0} Images)
+                        </h4>
+                        {editingItem.category === 'Graphic Design' && (
+                          <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-accent/20 text-accent border border-accent/30">
+                            Graphic Design Gallery
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted mt-1">
+                        These images render in the interactive lightbox carousel on ozuna.ca/work. Drag or reorder them and set the primary cover.
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setShowBulkAdd(!showBulkAdd)}
+                      className="px-3 py-1.5 bg-surface border border-subtle rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:border-slate-500 transition-colors shrink-0"
+                    >
+                      {showBulkAdd ? 'Simple Add Mode' : 'Bulk Import (Multiple Paths)'}
+                    </button>
+                  </div>
+
+                  {/* Bulk Add Textarea or Single Input */}
+                  {showBulkAdd ? (
+                    <div className="bg-surface/80 border border-subtle rounded-xl p-4 space-y-3">
+                      <label className="block text-xs font-semibold text-muted uppercase">
+                        Paste Image Paths / URLs (one per line)
+                      </label>
+                      <textarea
+                        rows={4}
+                        placeholder={`/images/Bus-Advertising.jpg\n/images/degan-flyers.jpg\n/images/Degan-Business-C.jpg`}
+                        value={bulkGalleryText}
+                        onChange={(e) => setBulkGalleryText(e.target.value)}
+                        className="w-full px-3 py-2 bg-card border border-subtle rounded-xl text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-accent"
+                      />
+                      <div className="flex justify-end gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const urls = bulkGalleryText
+                              .split('\n')
+                              .map((u) => u.trim())
+                              .filter((u) => u.length > 0);
+                            if (urls.length > 0) {
+                              const current = editingItem.gallery || [];
+                              const combined = [...current, ...urls];
+                              setEditingItem({
+                                ...editingItem,
+                                gallery: combined,
+                                image: editingItem.image || combined[0]
+                              });
+                              setBulkGalleryText('');
+                              setShowBulkAdd(false);
+                            }
+                          }}
+                          className="btn-accent px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider"
+                        >
+                          Add All Images
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <input
+                          type="text"
+                          placeholder="Enter image path e.g. /images/degan-flyers.jpg or full URL"
+                          value={newGalleryUrl}
+                          onChange={(e) => setNewGalleryUrl(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              if (newGalleryUrl.trim()) {
+                                const current = editingItem.gallery || [];
+                                const updated = [...current, newGalleryUrl.trim()];
+                                setEditingItem({
+                                  ...editingItem,
+                                  gallery: updated,
+                                  image: editingItem.image || updated[0]
+                                });
+                                setNewGalleryUrl('');
+                              }
+                            }
+                          }}
+                          className="w-full px-4 py-2 bg-surface border border-subtle rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-accent"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (newGalleryUrl.trim()) {
+                            const current = editingItem.gallery || [];
+                            const updated = [...current, newGalleryUrl.trim()];
+                            setEditingItem({
+                              ...editingItem,
+                              gallery: updated,
+                              image: editingItem.image || updated[0]
+                            });
+                            setNewGalleryUrl('');
+                          }
+                        }}
+                        className="px-4 py-2 bg-accent/20 hover:bg-accent text-accent hover:text-white border border-accent/40 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 shrink-0"
+                      >
+                        <Plus size={15} /> Add to Gallery
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Gallery Thumbnails List */}
+                  {editingItem.gallery && editingItem.gallery.length > 0 ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 pt-2">
+                      {editingItem.gallery.map((imgSrc, idx) => {
+                        const isCover = idx === 0 || imgSrc === editingItem.image;
+                        return (
+                          <div
+                            key={`${imgSrc}-${idx}`}
+                            className={`group relative rounded-xl overflow-hidden border transition-all ${
+                              isCover
+                                ? 'border-accent ring-2 ring-accent/30 bg-accent/5'
+                                : 'border-subtle bg-surface hover:border-slate-500'
+                            }`}
+                          >
+                            {/* Thumbnail Preview */}
+                            <div className="aspect-[4/3] w-full bg-black/70 relative overflow-hidden flex items-center justify-center">
+                              <img
+                                src={imgSrc}
+                                alt={`Gallery ${idx + 1}`}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                onError={(e) => {
+                                  e.currentTarget.src = '/images/cozuna-contact.jpeg';
+                                }}
+                              />
+                              <span
+                                className={`absolute top-1.5 left-1.5 text-[9px] font-black uppercase px-2 py-0.5 rounded-md shadow ${
+                                  isCover ? 'bg-accent text-white' : 'bg-black/80 text-white/90 backdrop-blur-sm'
+                                }`}
+                              >
+                                {isCover ? 'Cover' : `#${idx + 1}`}
+                              </span>
+                            </div>
+
+                            {/* Path and Actions */}
+                            <div className="p-2 bg-card border-t border-subtle/50">
+                              <p className="text-[10px] font-mono text-slate-300 truncate" title={imgSrc}>
+                                {imgSrc.split('/').pop() || imgSrc}
+                              </p>
+
+                              <div className="flex items-center justify-between gap-1 mt-2 pt-1.5 border-t border-subtle/40">
+                                <div className="flex items-center gap-0.5">
+                                  <button
+                                    type="button"
+                                    disabled={idx === 0}
+                                    onClick={() => {
+                                      const newG = [...editingItem.gallery];
+                                      const temp = newG[idx];
+                                      newG[idx] = newG[idx - 1];
+                                      newG[idx - 1] = temp;
+                                      setEditingItem({
+                                        ...editingItem,
+                                        gallery: newG,
+                                        image: idx - 1 === 0 ? temp : editingItem.image
+                                      });
+                                    }}
+                                    title="Move earlier"
+                                    className="p-1 rounded text-slate-400 hover:text-white hover:bg-surface disabled:opacity-20 disabled:hover:bg-transparent"
+                                  >
+                                    <ArrowLeft size={12} />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    disabled={idx === editingItem.gallery.length - 1}
+                                    onClick={() => {
+                                      const newG = [...editingItem.gallery];
+                                      const temp = newG[idx];
+                                      newG[idx] = newG[idx + 1];
+                                      newG[idx + 1] = temp;
+                                      setEditingItem({
+                                        ...editingItem,
+                                        gallery: newG
+                                      });
+                                    }}
+                                    title="Move later"
+                                    className="p-1 rounded text-slate-400 hover:text-white hover:bg-surface disabled:opacity-20 disabled:hover:bg-transparent"
+                                  >
+                                    <ArrowRight size={12} />
+                                  </button>
+                                </div>
+
+                                <div className="flex items-center gap-1">
+                                  {!isCover && (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const newG = [imgSrc, ...editingItem.gallery.filter((_, i) => i !== idx)];
+                                        setEditingItem({
+                                          ...editingItem,
+                                          image: imgSrc,
+                                          gallery: newG
+                                        });
+                                      }}
+                                      title="Set as Main Cover Image"
+                                      className="p-1 rounded text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/10"
+                                    >
+                                      <Star size={12} />
+                                    </button>
+                                  )}
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const newG = editingItem.gallery.filter((_, i) => i !== idx);
+                                      const newCover = (idx === 0 && newG.length > 0) ? newG[0] : editingItem.image;
+                                      setEditingItem({
+                                        ...editingItem,
+                                        gallery: newG,
+                                        image: newCover
+                                      });
+                                    }}
+                                    title="Delete from Gallery"
+                                    className="p-1 rounded text-red-400 hover:text-red-300 hover:bg-red-400/10"
+                                  >
+                                    <Trash2 size={12} />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="p-6 text-center border border-dashed border-subtle rounded-xl bg-surface/30">
+                      <p className="text-xs text-muted">
+                        No gallery images added yet. Add images above to build this project's interactive gallery.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
                 <div className="flex justify-end gap-3 pt-2">
                   <button
                     type="button"
-                    onClick={() => setEditingItem(null)}
+                    onClick={() => {
+                      setEditingItem(null);
+                      setNewGalleryUrl('');
+                      setBulkGalleryText('');
+                      setShowBulkAdd(false);
+                    }}
                     className="px-4 py-2 bg-surface border border-subtle rounded-xl text-xs font-bold uppercase text-slate-400"
                   >
                     Cancel
@@ -580,16 +857,31 @@ export default function AdminDashboard() {
                       </td>
                       <td className="py-3 px-4 font-bold text-white">{item.title}</td>
                       <td className="py-3 px-4">
-                        <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-surface border border-subtle text-slate-300">
-                          {item.category}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-surface border border-subtle text-slate-300">
+                            {item.category}
+                          </span>
+                          {item.gallery && item.gallery.length > 1 && (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-accent/15 text-accent border border-accent/25">
+                              {item.gallery.length} Images
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="py-3 px-4 text-muted text-xs">{item.client || '—'}</td>
                       <td className="py-3 px-4 text-right space-x-2">
                         <button
                           onClick={() => {
-                            setEditingItem(item);
+                            setEditingItem({
+                              ...item,
+                              gallery: Array.isArray(item.gallery) && item.gallery.length > 0
+                                ? [...item.gallery]
+                                : [item.image || '/images/ajsmechanical-net.jpg']
+                            });
                             setIsNewItem(false);
+                            setShowBulkAdd(false);
+                            setNewGalleryUrl('');
+                            setBulkGalleryText('');
                           }}
                           className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface"
                           title="Edit"
