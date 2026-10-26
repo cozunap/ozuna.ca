@@ -336,6 +336,9 @@ export default function PortfolioGrid({ items = [] }) {
                           alt=""
                           className="w-full h-full object-cover"
                           loading="lazy"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
                         />
                       </button>
                     );
