@@ -322,7 +322,7 @@ export default function PortfolioGrid({ items = [] }) {
                     const isCurrent = idx === currentImageIndex;
                     return (
                       <button
-                        key={imgSrc + idx}
+                        key={`${activeItem.id || activeItem.slug}-thumb-${idx}-${imgSrc}`}
                         type="button"
                         onClick={() => setCurrentImageIndex(idx)}
                         className={`relative shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded overflow-hidden transition-all duration-200 cursor-pointer ${
@@ -337,7 +337,7 @@ export default function PortfolioGrid({ items = [] }) {
                           className="w-full h-full object-cover"
                           loading="lazy"
                           onError={(e) => {
-                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.src = activeItem.image;
                           }}
                         />
                       </button>
