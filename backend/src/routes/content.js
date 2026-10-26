@@ -122,7 +122,7 @@ router.get('/portfolio', async (req, res) => {
       orderBy: { order: 'asc' }
     });
     // Enrich with authentic multi-image galleries
-    const workItems = await import('../../frontend/src/work_items.json', { with: { type: 'json' } }).catch(() => null);
+    const workItems = await import('../../../frontend/src/work_items.json', { with: { type: 'json' } }).catch(() => null);
     const enriched = items.map(item => {
       let customGallery = null;
       if (item.galleryJson) {
