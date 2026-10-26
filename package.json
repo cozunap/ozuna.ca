@@ -1,0 +1,11 @@
+{
+  "name": "ozuna-ca",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm --prefix frontend install && npm --prefix frontend run build",
+    "pages:build": "npm --prefix frontend install && npm --prefix frontend run build",
+    "deploy": "npx wrangler pages deploy frontend/dist --project-name ozuna --branch main"
+  }
+}
