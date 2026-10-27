@@ -303,53 +303,53 @@ export default function PortfolioGrid({ items = [] }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-2 sm:p-5"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-xl p-3 sm:p-6 lg:p-8"
             onClick={() => setSelectedItemIndex(null)}
           >
-            {/* Modal Container */}
+            {/* Modal Container: Modern, elegant, clean glass styling */}
             <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="relative max-w-6xl max-h-[96vh] w-full bg-[#121212] border border-white/10 rounded-xl overflow-hidden flex flex-col shadow-2xl"
+              initial={{ scale: 0.96, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.96, opacity: 0, y: 10 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="relative max-w-6xl max-h-[92vh] w-full bg-[#0d0f12] border border-white/[0.12] rounded-2xl overflow-hidden flex flex-col shadow-[0_25px_70px_rgba(0,0,0,0.85)] ring-1 ring-white/5"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header Bar */}
-              <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-white/10 bg-[#171717]">
-                <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                  <span className="text-[11px] uppercase font-extrabold tracking-wider text-[#ff1d25] font-raleway shrink-0">
+              <div className="flex items-center justify-between px-5 sm:px-7 py-4 border-b border-white/[0.08] bg-[#13161c]/90 backdrop-blur-md">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="text-[10px] sm:text-[11px] uppercase font-black tracking-widest text-[#ff1d25] font-raleway shrink-0 px-2.5 py-0.5 rounded-full bg-[#ff1d25]/10 border border-[#ff1d25]/20">
                     {activeItem.category}
                   </span>
-                  <span className="text-white/30 text-xs shrink-0">•</span>
+                  <span className="text-white/20 text-xs shrink-0">•</span>
                   <h2 className="text-white font-raleway text-sm sm:text-base font-extrabold uppercase tracking-wide truncate">
                     {activeItem.title}
                   </h2>
 
                   {/* Status Indicator */}
                   {isFlipbook ? (
-                    <span className="hidden md:inline-flex items-center gap-1.5 text-[11px] text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-full font-raleway font-semibold shrink-0">
+                    <span className="hidden md:inline-flex items-center gap-1.5 text-[11px] text-amber-300 bg-amber-500/10 border border-amber-500/25 px-2.5 py-0.5 rounded-full font-raleway font-semibold shrink-0">
                       <BookOpen size={12} /> {currentSpread?.label} of {spreads.length - 1} spreads ({galleryImages.length} pgs)
                     </span>
                   ) : (
                     galleryImages.length > 1 && (
-                      <span className="hidden sm:inline-block text-[11px] text-white/70 bg-white/10 px-2.5 py-0.5 rounded-full font-raleway font-semibold shrink-0">
+                      <span className="hidden sm:inline-block text-[11px] text-white/60 bg-white/[0.06] border border-white/[0.08] px-2.5 py-0.5 rounded-full font-raleway font-semibold shrink-0">
                         Image {currentImageIndex + 1} of {galleryImages.length}
                       </span>
                     )
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                   {/* View Mode Toggle for Flipbooks */}
                   {isFlipbook && (
-                    <div className="hidden sm:flex items-center bg-[#202020] border border-white/10 rounded-lg p-0.5 text-xs">
+                    <div className="hidden sm:flex items-center bg-white/[0.05] border border-white/[0.08] rounded-lg p-0.5 text-xs">
                       <button
                         type="button"
                         onClick={() => setViewMode('spread')}
-                        className={`px-2.5 py-1 rounded-md font-semibold transition-all ${
+                        className={`px-3 py-1 rounded-md font-semibold transition-all ${
                           viewMode === 'spread'
-                            ? 'bg-[#a40404] text-white shadow'
+                            ? 'bg-[#ff1d25] text-white shadow-md'
                             : 'text-slate-400 hover:text-white'
                         }`}
                         title="2-Page Book Spread View"
@@ -359,9 +359,9 @@ export default function PortfolioGrid({ items = [] }) {
                       <button
                         type="button"
                         onClick={() => setViewMode('single')}
-                        className={`px-2.5 py-1 rounded-md font-semibold transition-all ${
+                        className={`px-3 py-1 rounded-md font-semibold transition-all ${
                           viewMode === 'single'
-                            ? 'bg-[#a40404] text-white shadow'
+                            ? 'bg-[#ff1d25] text-white shadow-md'
                             : 'text-slate-400 hover:text-white'
                         }`}
                         title="Single Page View"
@@ -379,10 +379,10 @@ export default function PortfolioGrid({ items = [] }) {
                       target="_blank"
                       rel="noopener noreferrer"
                       title="Download Complete PDF Publication"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#a40404]/20 hover:bg-[#a40404] text-white border border-[#a40404]/50 text-xs font-bold uppercase tracking-wider transition-all"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#ff1d25]/15 hover:bg-[#ff1d25] text-white border border-[#ff1d25]/40 text-xs font-bold uppercase tracking-wider transition-all"
                     >
-                      <Download size={14} />
-                      <span className="hidden sm:inline">Download PDF</span>
+                      <Download size={13} />
+                      <span className="hidden sm:inline">PDF</span>
                     </a>
                   )}
 
@@ -393,9 +393,9 @@ export default function PortfolioGrid({ items = [] }) {
                       target="_blank"
                       rel="noopener noreferrer"
                       title="Visit Original Project"
-                      className="p-1.5 text-white/70 hover:text-white transition-colors"
+                      className="p-1.5 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-all"
                     >
-                      <ExternalLink size={18} />
+                      <ExternalLink size={17} />
                     </a>
                   )}
 
@@ -403,9 +403,9 @@ export default function PortfolioGrid({ items = [] }) {
                     type="button"
                     onClick={() => setSelectedItemIndex(null)}
                     aria-label="Close modal"
-                    className="p-1.5 text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+                    className="p-1.5 text-white/60 hover:text-white hover:bg-white/10 rounded-full transition-all"
                   >
-                    <X size={20} />
+                    <X size={19} />
                   </button>
                 </div>
               </div>
@@ -413,9 +413,9 @@ export default function PortfolioGrid({ items = [] }) {
               {/* Main Stage */}
               {isFlipbook && viewMode === 'spread' ? (
                 /* 4A. INTERACTIVE 2-PAGE SPREAD FLIPBOOK VIEWER */
-                <div className="relative flex-1 flex flex-col items-center justify-center p-3 sm:p-6 bg-[#0a0a0a] min-h-[380px] max-h-[70vh] overflow-hidden select-none">
-                  {/* Background Table Texture */}
-                  <div className="absolute inset-0 bg-radial from-[#1e1e1e] to-[#080808] opacity-80 pointer-events-none" />
+                <div className="relative flex-1 flex flex-col items-center justify-center p-4 sm:p-8 bg-[#090b0e] min-h-[380px] max-h-[70vh] overflow-hidden select-none">
+                  {/* Subtle ambient stage glow */}
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none" />
 
                   {/* Book Stage Container */}
                   <div className="relative z-10 w-full max-w-4xl max-h-[58vh] flex items-center justify-center">
@@ -499,9 +499,9 @@ export default function PortfolioGrid({ items = [] }) {
                       type="button"
                       aria-label="Previous spread"
                       onClick={prevSpread}
-                      className="absolute -left-2 sm:left-2 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/85 hover:bg-[#a40404] text-white border border-white/20 transition-all shadow-2xl z-20 hover:scale-110"
+                      className="absolute -left-2 sm:left-2 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/70 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-xl z-20 hover:scale-105 backdrop-blur-md"
                     >
-                      <ChevronLeft size={24} />
+                      <ChevronLeft size={22} />
                     </button>
 
                     {/* Next Spread Button */}
@@ -509,28 +509,28 @@ export default function PortfolioGrid({ items = [] }) {
                       type="button"
                       aria-label="Next spread"
                       onClick={nextSpread}
-                      className="absolute -right-2 sm:right-2 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/85 hover:bg-[#a40404] text-white border border-white/20 transition-all shadow-2xl z-20 hover:scale-110"
+                      className="absolute -right-2 sm:right-2 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/70 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-xl z-20 hover:scale-105 backdrop-blur-md"
                     >
-                      <ChevronRight size={24} />
+                      <ChevronRight size={22} />
                     </button>
                   </div>
 
                   {/* Spread Bar & Fast Navigation */}
-                  <div className="mt-3 sm:mt-4 flex items-center justify-center gap-4 text-xs font-raleway z-10">
+                  <div className="mt-4 flex items-center justify-center gap-3 text-xs font-raleway z-10">
                     <button
                       type="button"
                       onClick={prevSpread}
-                      className="px-3 py-1 bg-white/10 hover:bg-white/20 rounded-md text-white transition-colors"
+                      className="px-3.5 py-1.5 bg-white/[0.07] hover:bg-white/[0.14] rounded-lg text-white font-medium transition-colors border border-white/[0.08]"
                     >
                       ← Prev Spread
                     </button>
-                    <span className="font-bold text-white tracking-wider">
+                    <span className="font-bold text-white/90 tracking-wider px-2">
                       {currentSpread?.label}
                     </span>
                     <button
                       type="button"
                       onClick={nextSpread}
-                      className="px-3 py-1 bg-white/10 hover:bg-white/20 rounded-md text-white transition-colors"
+                      className="px-3.5 py-1.5 bg-white/[0.07] hover:bg-white/[0.14] rounded-lg text-white font-medium transition-colors border border-white/[0.08]"
                     >
                       Next Spread →
                     </button>
@@ -538,17 +538,20 @@ export default function PortfolioGrid({ items = [] }) {
                 </div>
               ) : (
                 /* 4B. SINGLE-IMAGE LIGHTBOX STAGE (Standard Gallery or Single Page Flipbook) */
-                <div className="relative flex-1 flex items-center justify-center p-3 sm:p-5 bg-black overflow-hidden min-h-[300px] max-h-[60vh] sm:max-h-[66vh]">
+                <div className="relative flex-1 flex items-center justify-center p-4 sm:p-6 bg-[#090b0e] overflow-hidden min-h-[300px] max-h-[60vh] sm:max-h-[66vh]">
+                  {/* Subtle ambient light gradient */}
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_75%)] pointer-events-none" />
+
                   <AnimatePresence mode="wait">
                     <motion.img
                       key={currentImage}
                       src={cacheBust(currentImage)}
                       alt={`${activeItem.title} - ${currentImageIndex + 1}`}
-                      initial={{ opacity: 0, scale: 0.98 }}
+                      initial={{ opacity: 0, scale: 0.985 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="max-h-full max-w-full object-contain rounded shadow-lg select-none"
+                      transition={{ duration: 0.22 }}
+                      className="max-h-full max-w-full object-contain rounded-lg shadow-[0_15px_40px_rgba(0,0,0,0.7)] select-none border border-white/[0.06]"
                     />
                   </AnimatePresence>
 
@@ -558,9 +561,9 @@ export default function PortfolioGrid({ items = [] }) {
                       type="button"
                       aria-label="Previous gallery image"
                       onClick={prevImage}
-                      className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/70 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-xl"
+                      className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-xl backdrop-blur-md hover:scale-105"
                     >
-                      <ChevronLeft size={22} />
+                      <ChevronLeft size={20} />
                     </button>
                   )}
 
@@ -570,9 +573,9 @@ export default function PortfolioGrid({ items = [] }) {
                       type="button"
                       aria-label="Next gallery image"
                       onClick={nextImage}
-                      className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/70 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-xl"
+                      className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-xl backdrop-blur-md hover:scale-105"
                     >
-                      <ChevronRight size={22} />
+                      <ChevronRight size={20} />
                     </button>
                   )}
                 </div>
@@ -580,7 +583,7 @@ export default function PortfolioGrid({ items = [] }) {
 
               {/* Thumbnails Navigator Bar */}
               {galleryImages.length > 1 && (
-                <div className="bg-[#141414] border-t border-white/10 px-4 py-2.5 overflow-x-auto flex items-center gap-2.5 scrollbar-thin scrollbar-thumb-white/20">
+                <div className="bg-[#0f1217] border-t border-white/[0.08] px-5 py-3 overflow-x-auto flex items-center gap-3 dark-scrollbar">
                   {isFlipbook && viewMode === 'spread'
                     ? spreads.map((spd, sIdx) => {
                         const isCurrent = sIdx === currentSpreadIndex;
@@ -589,9 +592,9 @@ export default function PortfolioGrid({ items = [] }) {
                             key={`spread-thumb-${sIdx}`}
                             type="button"
                             onClick={() => setCurrentSpreadIndex(sIdx)}
-                            className={`relative shrink-0 h-14 sm:h-16 px-2 rounded flex items-center gap-1 bg-[#222] border transition-all duration-200 cursor-pointer ${
+                            className={`relative shrink-0 h-14 sm:h-16 px-2 rounded-lg flex items-center gap-1.5 bg-[#171a21] border transition-all duration-200 cursor-pointer ${
                               isCurrent
-                                ? 'border-[#ff1d25] ring-2 ring-[#ff1d25] scale-105 opacity-100'
+                                ? 'border-[#ff1d25] ring-2 ring-[#ff1d25]/60 scale-105 opacity-100 shadow-md'
                                 : 'border-white/10 opacity-50 hover:opacity-90'
                             }`}
                           >
@@ -622,10 +625,10 @@ export default function PortfolioGrid({ items = [] }) {
                             key={`${activeItem.id || activeItem.slug}-thumb-${idx}-${imgSrc}`}
                             type="button"
                             onClick={() => setCurrentImageIndex(idx)}
-                            className={`relative shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded overflow-hidden transition-all duration-200 cursor-pointer ${
+                            className={`relative shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden transition-all duration-200 cursor-pointer ${
                               isCurrent
-                                ? 'ring-2 ring-[#ff1d25] scale-105 opacity-100'
-                                : 'opacity-50 hover:opacity-90 hover:scale-100 ring-1 ring-white/10'
+                                ? 'ring-2 ring-[#ff1d25] scale-105 opacity-100 shadow-lg'
+                                : 'opacity-40 hover:opacity-85 ring-1 ring-white/10'
                             }`}
                           >
                             <img
@@ -634,7 +637,7 @@ export default function PortfolioGrid({ items = [] }) {
                               className="w-full h-full object-cover"
                               loading="eager"
                             />
-                            <span className="absolute bottom-0 inset-x-0 bg-black/75 text-[9px] font-mono text-center text-white/90">
+                            <span className="absolute bottom-0 inset-x-0 bg-black/80 backdrop-blur-xs text-[9px] font-mono text-center text-white/90 py-0.5">
                               {idx + 1}
                             </span>
                           </button>
@@ -644,7 +647,7 @@ export default function PortfolioGrid({ items = [] }) {
               )}
 
               {/* Bottom Caption & Details Bar */}
-              <div className="px-5 py-3 bg-[#181818] border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-raleway">
+              <div className="px-6 py-4 bg-[#13161c]/95 border-t border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-raleway">
                 <div className="text-slate-300 max-w-2xl">
                   {activeItem.description && (
                     <p className="line-clamp-2 leading-relaxed text-slate-300">
