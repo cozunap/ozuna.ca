@@ -413,12 +413,12 @@ export default function PortfolioGrid({ items = [] }) {
               {/* Main Stage */}
               {isFlipbook && viewMode === 'spread' ? (
                 /* 4A. INTERACTIVE 2-PAGE SPREAD FLIPBOOK VIEWER */
-                <div className="relative flex-1 flex flex-col items-center justify-center p-4 sm:p-8 bg-[#090b0e] min-h-[380px] max-h-[70vh] overflow-hidden select-none">
+                <div className="relative flex-1 min-h-0 flex flex-col items-center justify-center p-3 sm:p-6 bg-[#090b0e] overflow-hidden select-none">
                   {/* Subtle ambient stage glow */}
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none" />
 
                   {/* Book Stage Container */}
-                  <div className="relative z-10 w-full max-w-4xl max-h-[58vh] flex items-center justify-center">
+                  <div className="relative z-10 w-full max-w-4xl h-full flex items-center justify-center">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={`spread-${currentSpreadIndex}`}
@@ -426,21 +426,21 @@ export default function PortfolioGrid({ items = [] }) {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.25 }}
-                        className="relative flex items-center justify-center shadow-2xl rounded-sm overflow-hidden border border-white/10"
+                        className="relative flex items-center justify-center shadow-2xl rounded-sm overflow-hidden border border-white/10 max-h-full"
                         style={{
                           boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0,0,0,0.8)'
                         }}
                       >
                         {/* If Cover Page (Spread 0) */}
                         {currentSpread.index === 0 ? (
-                          <div className="relative flex items-center justify-center bg-[#151515]">
+                          <div className="relative flex items-center justify-center bg-[#151515] max-h-full">
                             {/* Realistic Left Binding Spine Edge */}
                             <div className="w-4 sm:w-6 h-full bg-gradient-to-r from-[#222] via-[#333] to-[#111] shadow-inner border-r border-black/50" />
-                            <div className="relative max-h-[55vh] overflow-hidden">
+                            <div className="relative max-h-full overflow-hidden flex items-center justify-center">
                               <img
                                 src={cacheBust(currentSpread.right.src)}
                                 alt="Booklet Cover"
-                                className="max-h-[55vh] w-auto object-contain block"
+                                className="max-h-[52vh] sm:max-h-[58vh] max-w-full w-auto object-contain block"
                               />
                               <div className="absolute top-2 right-2 px-2 py-0.5 rounded bg-black/80 text-[10px] font-bold text-white uppercase tracking-wider backdrop-blur-sm">
                                 Cover Page
@@ -449,15 +449,15 @@ export default function PortfolioGrid({ items = [] }) {
                           </div>
                         ) : (
                           /* Open 2-Page Publication Spread */
-                          <div className="flex items-center justify-center bg-[#181818] divide-x divide-black/60">
+                          <div className="flex items-center justify-center bg-[#181818] divide-x divide-black/60 max-h-full">
                             {/* Left Page */}
-                            <div className="relative max-h-[55vh] flex-1 overflow-hidden group">
+                            <div className="relative max-h-full flex-1 overflow-hidden group flex items-center justify-center">
                               {currentSpread.left ? (
                                 <>
                                   <img
                                     src={cacheBust(currentSpread.left.src)}
                                     alt={`Page ${currentSpread.left.pageNum}`}
-                                    className="max-h-[55vh] w-auto object-contain block"
+                                    className="max-h-[52vh] sm:max-h-[58vh] max-w-full w-auto object-contain block"
                                   />
                                   {/* Realistic Book Spine Crease & Shadow on right edge */}
                                   <div className="absolute inset-y-0 right-0 w-8 pointer-events-none bg-gradient-to-l from-black/50 via-black/15 to-transparent" />
@@ -471,13 +471,13 @@ export default function PortfolioGrid({ items = [] }) {
                             </div>
 
                             {/* Right Page */}
-                            <div className="relative max-h-[55vh] flex-1 overflow-hidden group">
+                            <div className="relative max-h-full flex-1 overflow-hidden group flex items-center justify-center">
                               {currentSpread.right ? (
                                 <>
                                   <img
                                     src={cacheBust(currentSpread.right.src)}
                                     alt={`Page ${currentSpread.right.pageNum}`}
-                                    className="max-h-[55vh] w-auto object-contain block"
+                                    className="max-h-[52vh] sm:max-h-[58vh] max-w-full w-auto object-contain block"
                                   />
                                   {/* Realistic Book Spine Crease & Shadow on left edge */}
                                   <div className="absolute inset-y-0 left-0 w-8 pointer-events-none bg-gradient-to-r from-black/50 via-black/15 to-transparent" />
@@ -516,7 +516,7 @@ export default function PortfolioGrid({ items = [] }) {
                   </div>
 
                   {/* Spread Bar & Fast Navigation */}
-                  <div className="mt-4 flex items-center justify-center gap-3 text-xs font-raleway z-10">
+                  <div className="mt-3 sm:mt-4 flex items-center justify-center gap-3 text-xs font-raleway z-10 shrink-0">
                     <button
                       type="button"
                       onClick={prevSpread}
@@ -537,23 +537,30 @@ export default function PortfolioGrid({ items = [] }) {
                   </div>
                 </div>
               ) : (
-                /* 4B. SINGLE-IMAGE LIGHTBOX STAGE (Standard Gallery or Single Page Flipbook) */
-                <div className="relative flex-1 flex items-center justify-center p-4 sm:p-6 bg-[#090b0e] overflow-hidden min-h-[300px] max-h-[60vh] sm:max-h-[66vh]">
+                /* 4B. SINGLE-IMAGE LIGHTBOX STAGE (Full Uncropped Image View) */
+                <div className="relative flex-1 min-h-0 w-full flex items-center justify-center p-3 sm:p-6 bg-[#090b0e] overflow-hidden">
                   {/* Subtle ambient light gradient */}
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_75%)] pointer-events-none" />
 
-                  <AnimatePresence mode="wait">
-                    <motion.img
-                      key={currentImage}
-                      src={cacheBust(currentImage)}
-                      alt={`${activeItem.title} - ${currentImageIndex + 1}`}
-                      initial={{ opacity: 0, scale: 0.985 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.22 }}
-                      className="max-h-full max-w-full object-contain rounded-lg shadow-[0_15px_40px_rgba(0,0,0,0.7)] select-none border border-white/[0.06]"
-                    />
-                  </AnimatePresence>
+                  <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+                    <AnimatePresence mode="wait">
+                      <motion.img
+                        key={currentImage}
+                        src={cacheBust(currentImage)}
+                        alt={`${activeItem.title} - ${currentImageIndex + 1}`}
+                        initial={{ opacity: 0, scale: 0.985 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.22 }}
+                        className="max-h-full max-w-full w-auto h-auto object-contain rounded-lg shadow-[0_15px_40px_rgba(0,0,0,0.7)] select-none border border-white/[0.06]"
+                        style={{
+                          maxHeight: '100%',
+                          maxWidth: '100%',
+                          objectFit: 'contain'
+                        }}
+                      />
+                    </AnimatePresence>
+                  </div>
 
                   {/* Previous Image in Gallery */}
                   {galleryImages.length > 1 && (
@@ -561,7 +568,7 @@ export default function PortfolioGrid({ items = [] }) {
                       type="button"
                       aria-label="Previous gallery image"
                       onClick={prevImage}
-                      className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-xl backdrop-blur-md hover:scale-105"
+                      className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-xl backdrop-blur-md hover:scale-105 z-20"
                     >
                       <ChevronLeft size={20} />
                     </button>
@@ -573,7 +580,7 @@ export default function PortfolioGrid({ items = [] }) {
                       type="button"
                       aria-label="Next gallery image"
                       onClick={nextImage}
-                      className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-xl backdrop-blur-md hover:scale-105"
+                      className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-[#ff1d25] text-white border border-white/20 transition-all shadow-xl backdrop-blur-md hover:scale-105 z-20"
                     >
                       <ChevronRight size={20} />
                     </button>
