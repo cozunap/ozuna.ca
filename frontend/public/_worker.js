@@ -767,6 +767,18 @@ export default {
       response = await env.ASSETS.fetch(indexRequest);
     }
 
+    // Set 1-year immutable caching & CORS on self-hosted fonts
+    if (url.pathname.startsWith("/fonts/") && response.status === 200) {
+      const headers = new Headers(response.headers);
+      headers.set("Cache-Control", "public, max-age=31536000, immutable");
+      headers.set("Access-Control-Allow-Origin", "*");
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers
+      });
+    }
+
     return response;
   }
 };
